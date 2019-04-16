@@ -9,6 +9,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, 
 ```
 
 ```{r}
+library(tidyverse)
+
 # * data frame to use ----
 df <- msleep
 
@@ -29,8 +31,12 @@ set_ignore <- c("conservation", "awake")
 
 ```{r}
 source("R/initial_calcs.R")
+
 source("R/plot_inline.R")
 plot_inline()
 plot_inline_single_obs(labels = TRUE)
+
+source("R/field_scan.R")
+field_scan(n_cat = 5, n_quantile = 4)
 ```
 
