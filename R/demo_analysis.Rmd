@@ -1,0 +1,36 @@
+---
+title: "Demo analysis"
+author: "jake riley"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, comment = "")
+```
+
+```{r}
+# * data frame to use ----
+df <- msleep
+
+# * set_dv ----
+# can be a test "cyl == 4" or "(cyl == 4 & cty > 10)"
+set_dv <- "sleep_total" 
+
+# * columns to ignore ----
+set_ignore <- c("conservation", "awake")
+
+# df <- mpg; set_dv <- "cty %>% ntile(4) > 3"; set_ignore <- "cty";
+# df <- iris; set_dv <- "Species != 'versicolor'"; set_ignore <- "Species";
+# df <- mtcars; set_dv <- "vs == 1"; set_ignore <- "vs";
+# df <- survival::flchain; set_dv <- "death"; set_ignore <- "chapter";
+# df <- survival::colon; set_dv <- "status"; set_ignore <- "";
+# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); set_dv <- "dep_delay > 40"; set_ignore <- c("arr_delay", "dep_delay", "dep_time", "arr_time","year", "time_hour", "sched_arr_time", "hour");
+```
+
+```{r}
+source("R/initial_calcs.R")
+source("R/plot_inline.R")
+plot_inline()
+plot_inline_single_obs(labels = TRUE)
+```
+
