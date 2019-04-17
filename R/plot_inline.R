@@ -11,7 +11,7 @@ plot_inline <- function() {
     geom_point(aes(size = n), shape = 21, color = "black", stroke = 0.5) +
     #theme(axis.title.x = element_blank()) +
     guides(color = FALSE, fill = FALSE) +
-    xlim(0, NA) +
+    #xlim(0, NA) +
     #geom_point(data = one_obs_profile, aes(size = n), color = "black") +
     #plot_one_obs_mean_wt +
     labs(
