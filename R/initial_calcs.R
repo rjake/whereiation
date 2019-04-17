@@ -1,7 +1,6 @@
 # WORKSPACE ----
 library(tidyverse)
 library(ggrepel)
-library(plotly)
 
 options(digits = 3)
 
@@ -126,13 +125,14 @@ get_values <-
   ungroup() %>% 
   mutate(field = fct_reorder(field, value_diff, .fun = max, .desc = T),
          field_wt = field_range/max(field_range))
-
-compare_values <-
-  base_data %>% 
-  gather(field, value, -c(unique_id, outcome)) %>%
-  mutate(value = as.character(value)) %>% 
-  left_join(get_values) %>% 
-  filter(complete.cases(.)) 
+suppressWarnings(
+  compare_values <-
+    base_data %>% 
+    gather(field, value, -c(unique_id, outcome)) %>%
+    mutate(value = as.character(value)) %>% 
+    left_join(get_values, by = c("field", "value")) %>%
+    filter(complete.cases(.)) 
+)
 
 max_variance <- max(get_values$field_variance)
 mean_variance <- mean(get_values$field_variance)
@@ -149,7 +149,7 @@ field_ranks <-
 
 group_value_ranks <-
   get_values %>% 
-  left_join(field_ranks) %>% 
+  #left_join(field_ranks) %>% 
   mutate(
     field = fct_reorder(field, field_range, max),
     label = paste(field, ": \n",value)
