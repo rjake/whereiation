@@ -1,4 +1,4 @@
-plot_inline <- function() {
+variation_plot <- function() {
     ggplot(group_value_ranks,
            aes(
              x = group_mean,
@@ -23,7 +23,7 @@ plot_inline <- function() {
     )
 }
 
-plot_inline_single_obs <- function(labels = FALSE) {
+variation_plot_single_obs <- function(labels = FALSE) {
   
   get_id <- 
     base_data %>% 
