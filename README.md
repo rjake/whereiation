@@ -1,4 +1,4 @@
-# datascanR
+# datascanr
 
 The purpose of this code is to run a pre-analysis screen of your data. Before guessing which fields you should look at, these charts are designed to help you understand the fields of your data. The script takes just 3 user inputs and returns 2 main plots:
 * `field_scan()`: this looks at the frequency of all categorical and numeric data. Numeric data is cut into a specified number of quantiles
