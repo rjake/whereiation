@@ -53,7 +53,7 @@ And the functions:
 * `variation_plot()` this will create that colorful chart above
 * `variation_plot_single_obs()` this will show a demo of an observation. a vertical line will be shown where the dependent variable is for that observation. The line will then link to all of the factors/identies to which it belongs
 
-You can run a demo file [here](https://github.com/rjake/datascanr/blob/master/R/demo_analysis.Rmd). At the bottom are a lot of `df <-...; set_dv <-...; set_ignore...;` for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the `AER::Fatalities` data set is `Fatalities` out of the `AER` package.
+You can run a demo file [here](https://github.com/rjake/datascanr/blob/master/R/demo_analysis.Rmd). At the bottom are a lot of `df <-...; set_dv <-...; set_ignore...;` for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the `AER::Fatalities` data set is `Fatalities` out of the `AER` package. To see what is on your machine, you can use the top of [this script](https://github.com/rjake/datascanr/blob/master/R/find_datasets.R).
 
 please reach out with any questions
 
