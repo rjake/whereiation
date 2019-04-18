@@ -23,9 +23,7 @@ The idea is that categories matter. I like to think of it as a tug-of-war betwee
 
 ## Running the script
 Here is how to you can run it on your own. The script will create objects in your environment and so it works best with an empty environment.
-There are just 3 variables to set (example with mpg from `ggplot2`):
-
-This is then followed by the following 4 lines of code. For this to run, **it is best to clone the repo and use the `.Rproj` file for relative paths**
+There are just 3 variables to set (example with mpg from `ggplot2`). This is then followed by the following 4 lines of code. For this to run, **it is best to clone the repo and use the `.Rproj` file for relative paths**
 
 ```r
 library(tidyverse)
