@@ -1,5 +1,5 @@
 ---
-title: "Demo analysis"
+title: "datascanr: demo"
 author: "jake riley"
 output: html_document
 ---
@@ -12,41 +12,43 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, 
 library(tidyverse)
 
 # * data frame to use ----
-df <- msleep
+df <- mpg
 
 # * set_dv ----
-# can be a test "cyl == 4" or "(cyl == 4 & cty > 10)"
-set_dv <- "sleep_total" 
+# can be a single numeric column or a test "cyl == 4" or "(cyl == 4 & cty > 10)"
+set_dv <- "cty" 
 
 # * columns to ignore ----
-set_ignore <- c("conservation", "awake")
-
- df <- Ecdat::Kakadu; set_dv <- "income"; set_ignore <- "";
-# df <- HistData::Guerry; set_dv <- "Desertion"; set_ignore <- "";
-# df <- nlme::bdf; set_dv <- "IQ.perf"; set_ignore <- "";
-# df <- ISLR::Hitters; set_dv <- "HmRun"; set_ignore <- "";
- df <- VGAM::car.all; set_dv <- "Price"; set_ignore <- "";
-# df <- survival::flchain; set_dv <- "death"; set_ignore <- "chapter";
-# df <- survival::colon; set_dv <- "status"; set_ignore <- "";
-# df <- Ecdat::Schooling; set_dv <- "lwage76"; set_ignore <- "wage76";
-# df <- mpg; set_dv <- "cty %>% ntile(4) > 3"; set_ignore <- "cty";
-# df <- iris; set_dv <- "Species != 'versicolor'"; set_ignore <- "Species";
-# df <- iris; set_dv <- "Petal.Length"; set_ignore <- "";
-# df <- mtcars; set_dv <- "vs == 1"; set_ignore <- "vs";
-# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); set_dv <- "dep_delay > 40"; set_ignore <- c("arr_delay", "dep_delay", "dep_time", "arr_time","year", "time_hour", "sched_arr_time", "hour");
-#df <- ; set_dv <- ""; set_ignore <- "";
-#df <- ; set_dv <- ""; set_ignore <- "";
-#df <- ; set_dv <- ""; set_ignore <- "";
+set_ignore <- c("")
 
 ```
 
 ```{r}
 source("R/run_analysis.R")
 
+field_scan(n_cat = 10, n_quantile = 10)
+
 plot_inline()
 
 plot_inline_single_obs(labels = TRUE)
 
-field_scan(n_cat = 4, n_quantile = 4)
+
 ```
 
+```{r}
+# df <- AER::Fatalities; set_dv <- "(fatal/pop)"; set_ignore <- c("vfatcount", "Obs.", "casenum");
+# df <- gamclass::fars2007; set_dv <- "injury == 0"; set_ignore <- c("vfatcount", "Obs.", "casenum");
+# df <- Ecdat::Kakadu; set_dv <- "income"; set_ignore <- "";
+# df <- HistData::Guerry; set_dv <- "Desertion"; set_ignore <- "";
+# df <- nlme::bdf; set_dv <- "IQ.perf"; set_ignore <- "";
+# df <- ISLR::Hitters; set_dv <- "HmRun"; set_ignore <- "";
+# df <- VGAM::car.all; set_dv <- "Price"; set_ignore <- "";
+# df <- survival::flchain; set_dv <- "death"; set_ignore <- "chapter";
+# df <- survival::colon; set_dv <- "status"; set_ignore <- "";
+# df <- Ecdat::Schooling; set_dv <- "lwage76"; set_ignore <- "wage76";
+# df <- mpg; set_dv <- "cty %>% ntile(4) > 3"; set_ignore <- "cty";
+# df <- iris; set_dv <- "Species != 'versicolor'"; set_ignore <- "Species";
+# df <- iris; set_dv <- "Petal.Length"; set_ignore <- "";
+# df <- mtcars; set_dv <- "vs == 1"; set_ignore <- "";
+# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); set_dv <- "dep_delay"; set_ignore <- c("arr_delay", "dep_time","year", "tailnum", "time_hour");
+```
