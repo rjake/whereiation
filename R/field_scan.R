@@ -93,12 +93,15 @@ field_scan <- function(n_cat = 15, n_quantile = 10) {
   # plot of categorical variables
   get_cat_fields %>% 
     filter(field %in% c(all_cat_vars, all_num_vars)) %>% 
-    mutate(discrete = ifelse(field %in% all_cat_vars, "discrete", "cont.")) %>% 
-    ggplot(aes(x = fct_reorder(str_sub(value, 1, 15), n), y = n)) +
-    geom_col(aes(fill = discrete), show.legend = FALSE) +
-    facet_wrap(~discrete + field, scales = "free") +
-    coord_flip() +
-    labs(title = "categorical fields",
-         x = "")
+    mutate(
+      discrete = ifelse(field %in% all_cat_vars, "discrete", "cont.")#,
+      #value = ifelse(rep(sort == FALSE, n()), value, fct_reorder(value, n))
+    ) %>% 
+    ggplot(aes(x = (str_sub(value, 1, 15)), y = n)) + #fct_reorder, n
+      geom_col(aes(fill = discrete), show.legend = FALSE) +
+      facet_wrap(~discrete + field, scales = "free") +
+      coord_flip() +
+      labs(title = "Frequency chart of top values and quantiles",
+           x = "")
   
 }
