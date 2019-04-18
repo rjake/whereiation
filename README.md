@@ -1,6 +1,6 @@
 # datascanR
 
-The purpose of these tools is a pre-analysis screen of your data. Before digging into your analysis and guessing which fields you should look at, these charts are designed to help you understand the fields of your data. There are 2 main plots:
+The purpose of this code is to run a pre-analysis screen of your data. Before guessing which fields you should look at, these charts are designed to help you understand the fields of your data. The script takes just 3 user inputs and returns 2 main plots:
 * `field_scan()`: this looks at the frequency of all categorical and numeric data. Numeric data is cut into a specified number of quantiles
 <img src="images/mpg_field_scan.png" alt="field_scan" width="500"/>
 
@@ -8,14 +8,18 @@ The purpose of these tools is a pre-analysis screen of your data. Before digging
 
 <img src="images/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
 
-It can be read like this
+
+
+The variation plot is likely to be unfamiliar. This image should help explain what's going on (click to see a bigger pic):
 
 <img src="images/mpg_variation_plot_reading.png" alt="mpg_variation_plot_reading" width="500"/>
 
 
-An example of the differences can be called using `variation_plot_single_obs()`
+Sometimes it's easier to see an example of where one observation may fall. For this you can use `variation_plot_single_obs()`
 
 <img src="images/mpg_variation_plot_single_obs.png" alt="mpg_variation_plot_single_obs" width="500"/>
+
+The idea is that categories matter. I like to think of it as a tug-of-war between different identities a single observation holds. In te example above,  being a dodge linked it to having a lower city mpg as the group mean for `manufacturer == "dodge"` has a group mean well below the grand mean (across all manufacturers/observations). The 8 cyl (V8) engine has a similar contribution. As you work your way from highest to lowest, the expectation is that the impact of these different factors have less and less pull.
 
 ## Running the script
 Here is how to you can run it on your own. The script will create objects in your environment and so it works best with an empty environment.
