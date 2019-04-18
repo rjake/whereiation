@@ -2,21 +2,20 @@
 
 The purpose of these tools is a pre-analysis screen of your data. Before digging into your analysis and guessing which fields you should look at, these charts are designed to help you understand the fields of your data. There are 2 main plots:
 * `field_scan()`: this looks at the frequency of all categorical and numeric data. Numeric data is cut into a specified number of quantiles
-
-![field_scan](https://github.com/rjake/images/mpg_field_scan.png)
+<img src="images/mpg_field_scan.png" alt="field_scan" width="500"/>
 
 * `variation_plot()`: this looks at the variation in the dependent variable across all factors in a field. 
 
-![variation_plot](https://github.com/rjake/images/mpg_variation_plot.png)
+<img src="images/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
 
 It can be read like this
 
-![variation_plot_reading](https://github.com/rjake/images/mpg_variation_plot_reading.png)
+<img src="images/mpg_variation_plot_reading.png" alt="mpg_variation_plot_reading" width="500"/>
 
 
 An example of the differences can be called using `variation_plot_single_obs()`
 
-![variation_plot_single_obs](https://github.com/rjake/images/mpg_variation_plot_single_obs.png)
+<img src="images/mpg_variation_plot_single_obs.png" alt="mpg_variation_plot_single_obs" width="500"/>
 
 ## Running the script
 Here is how to you can run it on your own. The script will create objects in your environment and so it works best with an empty environment.
@@ -55,8 +54,4 @@ And the functions:
 
 You can run a demo file [here](https://github.com/rjake/datascanr/blob/master/R/demo_analysis.Rmd). At the bottom are a lot of `df <-...; set_dv <-...; set_ignore...;` for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the `AER::Fatalities` data set is `Fatalities` out of the `AER` package. To see what is on your machine, you can use the top of [this script](https://github.com/rjake/datascanr/blob/master/R/find_datasets.R).
 
-please reach out with any questions
-
-rjake@sas.upenn.edu
-
-twitter: [@yake_84](https://twitter.com/yake_84)
+Please reach out with any questions rjake@sas.upenn.edu, [@yake_84](https://twitter.com/yake_84)
