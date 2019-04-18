@@ -1,36 +1,38 @@
 library(tidyverse)
 
-all_data <- 
-  readRDS("find_datasets.rds")
+all_data <- # readRDS("find_datasets.rds")
+  read.csv(
+    "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/datasets.csv"
+  ) %>%
+  rename_all(tolower)
+
+installed_data <- installed.packages()
 
 good_datasets <-
   all_data %>% 
   filter(
+    package %in% installed_data,
     n_row > 50,
     between(n_col, 20, 100),
     n_char > 2,
     n_char != n_col
   )
 
+View(good_datasets)
 
 
-# rdatasets <-
-#   read.csv(
-#     "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/datasets.csv"
-#   ) %>%
-#   rename_all(tolower) %>% 
-#   filter(
-#     package %in% installed.packages(),
-#     cols > 2,
-#     rows > 100
-#   )
+
+
+
+
+# find all locally ###########################################################
 
 
 pkg_data <-
   data(package = .packages(all.available = TRUE))$results %>% 
   as_tibble() %>%
   rename_all(tolower) %>% 
-  dplyr::select(-libpath) #%>%dplyr::filter(package %in% packages)
+  select(-libpath)
 
 scan_dataset <- function(data, package) {
   
