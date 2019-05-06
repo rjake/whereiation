@@ -21,6 +21,8 @@ set_dv <- "cty"
 # * columns to ignore ----
 set_ignore <- c("")
 
+# * specify average, no quotes ("")
+avg_type <- "median"
 ```
 
 ```{r}
@@ -28,9 +30,9 @@ source("R/run_analysis.R")
 
 field_scan(n_cat = 10, n_quantile = 10)
 
-plot_inline()
+variation_plot()
 
-plot_inline_single_obs(labels = TRUE)
+variation_plot_single_obs(labels = TRUE, id = 3)
 
 
 ```

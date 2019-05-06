@@ -9,6 +9,9 @@ dv_name <-
   gsub(" .*" , "",.) %>% 
   gsub("\\(" , "",.)
 
+
+avg <- eval(parse(text = avg_type))
+
 # CUSTOM FUNCTIONS ----
 change_range <- function(x, new_min, new_max){
   (x - min(x))/(max(x)-min(x)) * (new_max - new_min) + new_min 
@@ -74,10 +77,10 @@ base_data <-
   mutate(unique_id = row_number())
 
 # GLOBAL STATS ----
-grand_mean <- mean(base_data$outcome) 
+grand_avg <- avg(base_data$outcome) 
 min_outcome <- min(base_data$outcome)
 max_outcome <- max(base_data$outcome)
-middle_outcome <- mean(c(min_outcome, max_outcome))
+middle_outcome <- avg(c(min_outcome, max_outcome))
 
 
 # AGG_FIELDS ----
@@ -93,14 +96,14 @@ agg_fields <-
       mutate(field = names(base_data)[i],
              value = as.character(value)) %>%
       group_by(field, value) %>% 
-      mutate(group_mean = mean(outcome),
+      mutate(group_avg = avg(outcome),
              group_var = var(outcome),
              group_sd = sd(outcome)) %>%   
-      group_by(field, value, outcome, group_mean, group_var, group_sd) %>% 
+      group_by(field, value, outcome, group_avg, group_var, group_sd) %>% 
       summarise(n = n()) %>%
       ungroup() %>%
       mutate(sum_outcome = n * outcome) %>% 
-      group_by(field, value, group_mean, group_var, group_sd) %>% 
+      group_by(field, value, group_avg, group_var, group_sd) %>% 
       summarise(n = sum(n),
                 sum_outcome = sum(sum_outcome)) %>% 
       ungroup() %>% 
@@ -114,14 +117,14 @@ get_fields <- map_dfr(seq_along(get_vars), agg_fields)
 get_values <-
   get_fields %>% 
   filter(!is.na(value)) %>% 
-  mutate(grand_mean = grand_mean,
-         value_diff = group_mean - grand_mean,
+  mutate(grand_avg = grand_avg,
+         value_diff = group_avg - grand_avg,
          abs_value_diff = abs(value_diff)) %>% 
   group_by(field) %>% 
   filter(max(row_number()) > 1) %>% 
-  mutate(field_variance = var(group_mean),
-         extreme_group = max(abs(group_mean)), 
-         field_range = max(group_mean) - min(group_mean)) %>% 
+  mutate(field_variance = var(group_avg),
+         extreme_group = max(abs(group_avg)), 
+         field_range = max(group_avg) - min(group_avg)) %>% 
   ungroup() %>% 
   mutate(field = fct_reorder(field, value_diff, .fun = max, .desc = T),
          field_wt = field_range/max(field_range))
@@ -135,7 +138,7 @@ suppressWarnings(
 )
 
 max_variance <- max(get_values$field_variance)
-mean_variance <- mean(get_values$field_variance)
+avg_variance <- avg(get_values$field_variance)
 
 field_ranks <-
   compare_values %>% 
@@ -156,8 +159,8 @@ group_value_ranks <-
   )
 
 # PLOT ELEMENTS ----
-plot_grand_mean <- 
-  geom_vline(xintercept = grand_mean, color = "grey60", size = 1, linetype = "dotted")
+plot_grand_avg <- 
+  geom_vline(xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted")
 
 plot_theme <-    
   theme(panel.background = element_rect(fill = "white", color = "grey60"))
