@@ -21,7 +21,7 @@ set_dv <- "cty"
 # * columns to ignore ----
 set_ignore <- c("")
 
-# * specify average, no quotes ("")
+# * specify average (mean or median)
 avg_type <- "median"
 ```
 
