@@ -23,12 +23,13 @@ variation_plot <- function() {
     )
 }
 
-variation_plot_single_obs <- function(labels = FALSE) {
+variation_plot_single_obs <- function(labels = FALSE, id = 1) {
+  
   
   get_id <- 
     base_data %>% 
     arrange(outcome) %>% 
-    slice(1) %>% 
+    slice(!! id) %>% 
     pull(unique_id)
   
   one_obs_profile <- 
@@ -49,10 +50,10 @@ variation_plot_single_obs <- function(labels = FALSE) {
   one_mean_wt <- mean(one_obs_profile$obs_estimate)
   
   plot_one_obs_mean <- geom_vline(xintercept = one_mean, size = 1, alpha = .5)
-  plot_one_obs_mean_wt <- geom_vline(xintercept = one_mean_wt, color = "black", size = 2)
+  #plot_one_obs_mean_wt <- geom_vline(xintercept = one_mean_wt, color = "black", size = 2)
   
   plot_orig <-
-    plot_inline() + 
+    variation_plot() + 
     plot_one_obs_mean +
     geom_segment(data = one_obs_profile, xend = one_mean,
                  aes(yend = field),
