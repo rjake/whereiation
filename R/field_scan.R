@@ -1,4 +1,4 @@
-field_scan <- function(n_cat = 15, n_quantile = 10) {
+field_scan <- function(df, n_cat = 15, n_quantile = 10, ignore_cols = NA_character_) {
   # confirm if numeric/date fields should be cut
   check_num_cat <- function(x) {
     (is.numeric(x) | is.integer(x) | lubridate::is.Date(x)) &
@@ -40,7 +40,7 @@ field_scan <- function(n_cat = 15, n_quantile = 10) {
   # transform all columns: remove set_ignore columns, remove rows with NAs cut numeric data into categories, lump categorical data, add id
   df_as_categories <-
     df %>%
-    select(-one_of(set_ignore)) %>%
+    select(-one_of(ignore_cols)) %>%
     # filter(complete.cases(.)) %>%
     mutate_if(check_num_cat, cut_custom) %>%
     mutate_if(is.character, collapse_cat) %>%
