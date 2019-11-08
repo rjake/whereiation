@@ -3,7 +3,7 @@ use_measures <- c("outcome", "estimate", "rescale_estimate")
 initial_estimates <-
   compare_values %>%
   group_by(unique_id, outcome) %>%
-  summarise(estimate = mean(group_mean + value_diff)) %>%
+  summarise(estimate = avg(group_avg + value_diff)) %>%
   ungroup() %>%
   mutate(
     rescale_estimate = change_range(estimate, min_outcome, max_outcome),
@@ -23,7 +23,7 @@ initial_estimates %>%
   ggplot(aes(value, fill = key, color = key)) +
   facet_grid(key ~ ., scales = "free") +
   geom_histogram(color = "white", bins = 50) +
-  plot_grand_mean + plot_theme +
+  plot_grand_avg + plot_theme +
   scale_fill_manual(values = c("grey40", "darkblue", "darkred")) +
   labs(title = "can we shift everything at the 50% line?")
 
@@ -36,27 +36,27 @@ all_obs <-
   mutate(x_n = value_diff * n) %>%
   group_by(unique_id, outcome) %>%
   mutate(
-    obs_mean = mean(group_mean),
-    group_dist = group_mean - obs_mean,
+    obs_avg = avg(group_avg),
+    group_dist = group_avg - obs_avg,
     group_dist_wt = group_dist * field_wt,
-    obs_wt = obs_mean + group_dist_wt,
-    obs_estimate = mean(obs_wt)
+    obs_wt = obs_avg + group_dist_wt,
+    obs_estimate = avg(obs_wt)
   ) %>%
   ungroup() %>%
   select(
-    unique_id, field, value, n, group_mean, obs_mean,
+    unique_id, field, value, n, group_avg, obs_avg,
     group_dist, field_wt, group_dist_wt, obs_wt, obs_estimate, outcome
   )
 
 all_obs_estimates <-
   all_obs %>%
   group_by(unique_id, outcome, obs_estimate) %>%
-  summarise(total_n = mean(n)) %>%
+  summarise(total_n = avg(n)) %>%
   ungroup() %>%
   mutate(
-    predict_side = obs_estimate > grand_mean,
-    actual_side = outcome > grand_mean,
-    same_side = sign(obs_estimate - grand_mean) == sign(outcome - grand_mean)
+    predict_side = obs_estimate > grand_avg,
+    actual_side = outcome > grand_avg,
+    same_side = sign(obs_estimate - grand_avg) == sign(outcome - grand_avg)
   )
 
 rm(all_obs)
@@ -64,8 +64,8 @@ rm(all_obs)
 hist(all_obs_estimates$obs_estimate, breaks = 100)
 
 ggplot(all_obs_estimates, aes(obs_estimate, total_n, color = same_side)) +
-  # facet_grid("actual"+actual_side~"predict") +
-  plot_theme + plot_grand_mean +
+  facet_grid("actual"+actual_side~"predict") +
+  plot_theme + plot_grand_avg +
   geom_count(alpha = 0.5) +
   labs(
     x = "estimate",
@@ -170,12 +170,12 @@ round_down <-
 one_obs_weight <-
   one_obs_profile %>%
   mutate(
-    mean_predict = mean(group_mean),
-    mean_field_var = mean(field_variance),
+    avg_predict = avg(group_avg),
+    avg_field_var = avg(field_variance),
     keep =
       case_when(
-        group_mean == min(group_mean) ~ "min_x",
-        group_mean == max(group_mean) ~ "max_x",
+        group_avg == min(group_avg) ~ "min_x",
+        group_avg == max(group_avg) ~ "max_x",
         field_variance == min(field_variance) ~ "min_y",
         field_variance == max(field_variance) ~ "max_y",
         TRUE ~ "remove"
@@ -185,26 +185,26 @@ one_obs_weight <-
   # mutate(weight = field_variance/max_variance,
   #       est_x = prediction * weight)
   mutate(
-    mean_x = grand_mean,
-    mean_y = mean(field_variance)
+    avg_x = grand_avg,
+    avg_y = avg(field_variance)
   ) %>%
   mutate(
-    diff_prediction = group_mean - mean_x,
-    diff_field_variance = field_variance - mean_y,
+    diff_prediction = group_avg - avg_x,
+    diff_field_variance = field_variance - avg_y,
     pull_x = field_variance / max(field_variance),
-    pull_y = group_mean / max(group_mean)
+    pull_y = group_avg / max(group_avg)
   ) %>%
   # mutate(adj_x = pull_x*diff_prediction,
   #        adj_y = pull_y*diff_field_variance) %>%
 
   mutate(
-    adj_x = grand_mean + (pull_x * diff_prediction),
-    adj_y = mean(field_variance) + (pull_y * diff_field_variance)
+    adj_x = grand_avg + (pull_x * diff_prediction),
+    adj_y = avg(field_variance) + (pull_y * diff_field_variance)
   ) %>%
   group_by(unique_id) %>%
   summarise(
-    est_x = mean(ifelse(str_detect(keep, "_x"), adj_x, NA_real_), na.rm = T),
-    est_y = mean(ifelse(str_detect(keep, "_y"), adj_y, NA_real_), na.rm = T)
+    est_x = avg(ifelse(str_detect(keep, "_x"), adj_x, NA_real_), na.rm = T),
+    est_y = avg(ifelse(str_detect(keep, "_y"), adj_y, NA_real_), na.rm = T)
   ) %>%
-  # est_x = mean_x + mean(adj_x),est_y = mean_y + mean(adj_y)) %>%
+  # est_x = avg_x + avg(adj_x),est_y = avg_y + avg(adj_y)) %>%
   mutate_if(is.numeric, function(x) round(x, 2))
