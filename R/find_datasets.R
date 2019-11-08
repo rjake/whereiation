@@ -9,7 +9,7 @@ all_data <- # readRDS("find_datasets.rds")
 installed_data <- installed.packages()
 
 good_datasets <-
-  all_data %>% 
+  all_data %>%
   filter(
     package %in% installed_data,
     n_row > 50,
@@ -29,27 +29,27 @@ View(good_datasets)
 
 
 pkg_data <-
-  data(package = .packages(all.available = TRUE))$results %>% 
+  data(package = .packages(all.available = TRUE))$results %>%
   as_tibble() %>%
-  rename_all(tolower) %>% 
+  rename_all(tolower) %>%
   select(-libpath)
 
 scan_dataset <- function(data, package) {
-  
+
   # data = "cd4.nested";package = "boot";
   e <- new.env(
     hash = TRUE,
     parent = parent.frame(),
     size = 29L
   )
-  
+
   tryCatch({
     scan_df <- (data(list = data, package = package, envir = e))
-    
+
     df <- e[[data]]
-    
+
     print(paste(package, data))
-    
+
     if (any(class(df) %in% "data.frame")) {
       meta <-
         tibble(
@@ -71,8 +71,8 @@ scan_dataset <- function(data, package) {
 scan_dataset("CNES", "sem")
 
 system.time(
-  scan_all <- 
+  scan_all <-
     map2_dfr(pkg_data$item, pkg_data$package, scan_dataset)
-)  
+)
 
 # saveRDS(scan_all, "find_datasets.rds")
