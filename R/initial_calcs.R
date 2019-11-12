@@ -22,7 +22,6 @@ refactor_columns <- function(df,
                              ignore_cols = NA_character_,
                              n_cat = 15,
                              n_quantile = 10) {
-
   avg <- avg_type
 
   dv_name <-
@@ -33,24 +32,27 @@ refactor_columns <- function(df,
 
   suppressWarnings(
     keep_cols <-
-        df %>%
-        mutate(datascanr_outcome = eval(parse(text = dep_var))) %>%
-        select(-one_of(c(ignore_cols, dv_name))) %>%
-        mutate(datascanr_id = row_number())
+      df %>%
+      mutate(datascanr_outcome = eval(parse(text = dep_var))) %>%
+      select(-one_of(c(ignore_cols, dv_name))) %>%
+      mutate(datascanr_id = row_number())
   )
 
-    keep_cols %>%
-      select(-starts_with("datascanr")) %>%
-      # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
-      mutate_if(check_num_cat, cut_custom, n_quantile = n_quantile) %>%
-      mutate_if(is.factor, as.character) %>%
-      mutate_if(is.character, collapse_cat, n = n_cat) %>%
-      bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
-      filter(!is.na(datascanr_outcome))
+  keep_cols %>%
+    select(-starts_with("datascanr")) %>%
+    # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
+    mutate_if(check_num_cat, cut_custom, n_quantile = n_quantile) %>%
+    mutate_if(is.factor, as.character) %>%
+    mutate_if(is.character, collapse_cat, n = n_cat) %>%
+    bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
+    filter(!is.na(datascanr_outcome))
 }
 
 
-#' Title
+#' Summarize fields
+#'
+#' Pivots data and summarizes factor frequencies by field and generates stats
+#' used for plotting
 #'
 #' @param ...
 #'
@@ -59,8 +61,7 @@ refactor_columns <- function(df,
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
-summarize_factors <- function(...){
-
+summarize_factors <- function(...) {
   base_data <- refactor_columns(...)
   avg <- avg_type
 
@@ -118,25 +119,23 @@ summarize_factors <- function(...){
 }
 
 
-#' Title
+#' Generate stats for each observation at the factor level
+#'
+#' The dataset returned will be the length of the # of columns x # of rows
 #'
 #' @param ...
 #'
-#' @return
-#' @export
 #' @inheritDotParams refactor_columns
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
-#' @examples
 calculate_factor_stats <- function(...) {
   avg <- avg_type
   base_data <- refactor_columns(...)
   group_stats <- summarize_factors(...)
 
   suppressWarnings(
-    #compare_values <-
-      base_data %>%
+    base_data %>%
       gather(field, value, -c(datascanr_id, datascanr_outcome)) %>%
       mutate(value = as.character(value)) %>%
       left_join(group_stats, by = c("field", "value")) %>%
@@ -144,11 +143,8 @@ calculate_factor_stats <- function(...) {
       arrange(desc(field_wt)) %>%
       mutate(group_dist_wt = group_dist * field_wt) %>%
       group_by(datascanr_id) %>%
-      mutate(estimate =
-               #sum(group_dist_wt)
-               mean(group_dist_wt)
-               #mean(group_dist_wt) + grand_avg
-               ) %>%
+      mutate(estimate = mean(group_dist_wt)) %>%
+      # alt: sum(group_dist_wt) mean(group_dist_wt) + grand_avg
       ungroup() %>%
       mutate(
         orig_min = boxplot.stats(df[[dep_var]])$stats[1],
@@ -157,5 +153,3 @@ calculate_factor_stats <- function(...) {
       )
   )
 }
-
-
