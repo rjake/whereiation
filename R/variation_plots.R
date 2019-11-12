@@ -1,4 +1,4 @@
-#' Title
+#' Visualize variation among all factor levels for all variables
 #'
 #' @param df dataframe to evaluate
 #' @param dep_var dependent variable to use (column name)
@@ -14,16 +14,33 @@
 #'
 #' @export
 #'
+#' @importFrom dplyr mutate
+#' @importFrom forcats fct_reorder
+#' @importFrom ggplot2 ggplot aes geom_vline geom_line geom_point guides theme element_rect labs
+#'
 #' @examples
 #' variation_plot(ggplot2::mpg, "hwy")
-variation_plot <- function(..., avg_type = c("mean", "median")) {
+variation_plot <- function(df,
+                           dep_var,
+                           n_cat = 10,
+                           n_quantile = 10,
+                           avg_type = c("mean", "median"),
+                           ignore_cols = NA_character_) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
     avg_name <- match.arg(avg_type)
   }
 
-  factor_stats <- summarize_factors(..., avg_type = avg_name)
+  factor_stats <-
+    summarize_factors(
+      df = df,
+      dep_var = dep_var,
+      n_cat = n_cat,
+      n_quantile = n_quantile,
+      avg_type = avg_name,
+      ignore_cols = ignore_cols
+    )
 
   grand_avg <- factor_stats$grand_avg[1]
 
@@ -52,21 +69,27 @@ variation_plot <- function(..., avg_type = c("mean", "median")) {
 }
 
 
-#' Title
+#' Visualize variation and logic for a single observation
 #'
 #' @param labels when TRUE will show the labels of the factor levels outlined in the plot
-#' @id is id (row number) from \code{base_data()} to use
+#' @param id is id (row number) from \code{base_data()} to use
 #'
-#' @return
 #' @export
+#'
 #' @inheritDotParams variation_plot
+#'
+#' @importFrom dplyr filter select
+#' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs
+#' @importFrom ggrepel geom_label_repel
+#'
 #' @examples
 #' variation_plot_single_obs(ggplot2::mpg, "hwy")
-variation_plot_single_obs <- function(...,
+variation_plot_single_obs <- function(df,
+                                      dep_var,
+                                      ...,
                                       avg_type = c("mean", "median"),
                                       labels = FALSE,
                                       id = 1) {
-  compare_values <- calculate_factor_stats(...)
 
   if(missing(avg_type)) {
     avg_name <- "mean"
@@ -75,6 +98,14 @@ variation_plot_single_obs <- function(...,
   }
 
   avg <- eval(parse(text = avg_name))
+
+  compare_values <-
+    calculate_factor_stats(
+      df = df,
+      dep_var = dep_var,
+      avg_type = avg_name,
+      ...
+    )
 
   get_id <- id
 
@@ -91,8 +122,7 @@ variation_plot_single_obs <- function(...,
   obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
-    variation_plot(...) +
-    #variation_plot(mpg, "hwy") +
+    variation_plot(df = df, dep_var = dep_var, ...) +
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
