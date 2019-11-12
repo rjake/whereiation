@@ -1,18 +1,6 @@
 #' Convert data to a table of factors
 #'
-#' @param df dataframe to evaluate
-#' @param dep_var dependent variable to use (column name)
-#' @param avg_type mean or median
-#' @param ignore_cols columns to ignore from analysis. Good candidates are
-#' fields that have have no duplicate values (primary keys) or fields with
-#' a large proportion of null values
-#' @param n_cat for categorical variables, the max number of unique values
-#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
-#' @param n_quantile for numeric/date fields, the number of quantiles used
-#' to split the data into a factor. Fields that have less than this amount
-#' will not be changed.
-#'
-#' @return dataframe
+#' @inheritDotParams variation_plot
 #'
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
@@ -22,7 +10,7 @@ refactor_columns <- function(df,
                              ignore_cols = NA_character_,
                              n_cat = 15,
                              n_quantile = 10) {
-  avg <- avg_type
+  avg <- eval(parse(text = avg_type))
 
   dv_name <-
     dep_var %>%
@@ -56,14 +44,14 @@ refactor_columns <- function(df,
 #'
 #' @param ...
 #'
-#' @return
-#' @inheritDotParams refactor_columns
+#' @inheritDotParams variation_plot
+#'
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 summarize_factors <- function(...) {
   base_data <- refactor_columns(...)
-  avg <- avg_type
+  avg <- eval(parse(text = avg_type))
 
   grand_avg <- avg(base_data$datascanr_outcome)
 
@@ -95,7 +83,6 @@ summarize_factors <- function(...) {
   # map_dfr all fields ----
   get_fields <- map_dfr(seq_along(get_vars), agg_fields)
 
-
   get_fields %>%
     filter(!is.na(value)) %>%
     mutate(
@@ -125,12 +112,13 @@ summarize_factors <- function(...) {
 #'
 #' @param ...
 #'
-#' @inheritDotParams refactor_columns
+#' @inheritDotParams variation_plot
+#'
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
 calculate_factor_stats <- function(...) {
-  avg <- avg_type
+  avg <- eval(parse(text = avg_type))
   base_data <- refactor_columns(...)
   group_stats <- summarize_factors(...)
 
