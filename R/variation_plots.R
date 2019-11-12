@@ -66,8 +66,8 @@ variation_plot_single_obs <- function(...,
                                       avg_type = c("mean", "median"),
                                       labels = FALSE,
                                       id = 1) {
-  base_data <- refactor_columns(...)
   compare_values <- calculate_factor_stats(...)
+
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
@@ -76,46 +76,28 @@ variation_plot_single_obs <- function(...,
 
   avg <- eval(parse(text = avg_name))
 
-
   get_id <- id
-
-  field_ranks <-
-    compare_values %>%
-    distinct(field, field_range, field_wt) %>%
-    arrange(desc(field_range)) %>%
-    mutate(rank_range = factor(row_number()))
 
   one_obs_profile <-
     compare_values %>%
     filter(datascanr_id == get_id) %>%
-    select(datascanr_outcome:group_avg, grand_avg, n, field_range, field_wt, group_dist) %>%
-    mutate(
-      obs_avg = avg(group_avg),
-      group_dist = group_avg - obs_avg,
-      # group_dist_wt = group_dist * field_wt,
-      group_dist_wt = group_dist * field_range,
-      obs_wt = obs_avg + group_dist_wt,
-      obs_estimate = avg(obs_wt)
-    ) %>%
     select(
-      datascanr_id, field, value, n, grand_avg, group_avg, obs_avg,
-      group_dist, field_wt, group_dist_wt, obs_wt, obs_estimate
-    ) %>%
-    left_join(field_ranks)
+      field, value, field_wt,
+      group_avg, group_dist, group_dist_wt,
+      estimate
+    )
 
-  one_avg <- avg(one_obs_profile$obs_avg)
-  one_avg_wt <- avg(one_obs_profile$obs_estimate)
 
-  # plot_one_obs_avg_wt <- geom_vline(xintercept = one_avg_wt, color = "black", size = 2)
+  obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
     variation_plot(...) +
-    geom_vline(xintercept = one_avg, size = 1, alpha = .5) +
+    #variation_plot(mpg, "hwy") +
+    geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
-      data = one_obs_profile, xend = one_avg,
-      aes(yend = field),
-      color = "black",
-      size = 2, alpha = 0.5
+      data = one_obs_profile, xend = obs_estimate,
+      aes(yend = field, size = field_wt*10, alpha = field_wt*10),
+      color = "black"
     ) +
     geom_point(
       data = one_obs_profile,
