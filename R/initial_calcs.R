@@ -67,6 +67,9 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
 
   grand_avg <- avg(base_data$datascanr_outcome)
 
+  orig_min <- boxplot.stats(base_data$datascanr_outcome)$stats[1]
+  orig_max <- boxplot.stats(base_data$datascanr_outcome)$stats[5]
+
   get_vars <-
     names(base_data %>% select(-starts_with("datascanr")))
 
@@ -98,6 +101,7 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
   get_fields %>%
     filter(!is.na(value)) %>%
     mutate(
+      group_avg = change_range(group_avg, orig_min, orig_max),
       grand_avg = grand_avg,
       group_dist = group_avg - grand_avg
       # value_diff = group_avg - grand_avg,
@@ -140,13 +144,7 @@ calculate_factor_stats <- function(...) {
       arrange(desc(field_wt)) %>%
       mutate(group_dist_wt = group_dist * field_wt) %>%
       group_by(datascanr_id) %>%
-      mutate(estimate = mean(group_dist_wt)) %>%
-      # alt: sum(group_dist_wt) mean(group_dist_wt) + grand_avg
-      ungroup() %>%
-      mutate(
-        orig_min = boxplot.stats(df[[dep_var]])$stats[1],
-        orig_max = boxplot.stats(df[[dep_var]])$stats[5],
-        estimate_expand = change_range(estimate, orig_min, orig_max)
-      )
+      mutate(estimate = weighted.mean(group_avg, field_wt)) %>%
+      ungroup()
   )
 }
