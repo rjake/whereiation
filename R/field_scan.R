@@ -36,7 +36,6 @@ field_scan <- function(df, n_cat = 15, n_quantile = 10, ignore_cols = NA_charact
     }
   }
 
-
   # transform all columns: remove set_ignore columns, remove rows with NAs cut numeric data into categories, lump categorical data, add id
   df_as_categories <-
     df %>%
@@ -45,8 +44,6 @@ field_scan <- function(df, n_cat = 15, n_quantile = 10, ignore_cols = NA_charact
     mutate_if(check_num_cat, cut_custom) %>%
     mutate_if(is.character, collapse_cat) %>%
     mutate(id = row_number())
-
-
 
   # table of class attributes
   column_class <-
