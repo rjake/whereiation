@@ -35,7 +35,7 @@ refactor_columns <- function(df,
   keep_cols %>%
     select(-starts_with("datascanr")) %>%
     # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
-    mutate_if(check_num_cat, cut_custom, n_quantile = n_quantile) %>%
+    mutate_if(~check_num_cat(., n_quantile), cut_custom, n_quantile) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat) %>%
     bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
