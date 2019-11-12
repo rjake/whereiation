@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, 
 
 ```{r}
 library(tidyverse)
-source("R/run_analysis.R")
+library(datascanr)
 ```
 
 ```{r}
@@ -39,7 +39,7 @@ compare_estimate(msleep, "sleep_total", "mean")
 
 refactor_columns(mpg, "hwy", "mean")
 summarize_factors(mpg, "hwy", "mean")
-calculate_factor_stats(mpg, "hwy", "mean") %>% filter(unique_id == 1)
+calculate_factor_stats(mpg, "hwy") %>% filter(datascanr_id == 1)
 field_scan(mpg)
 variation_plot_single_obs(mpg, "hwy", "mean")
 variation_plot(mpg, "hwy", "mean")
