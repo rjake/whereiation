@@ -1,72 +1,89 @@
-refactor_columns <- function(df, dep_var, avg_type, ignore_cols = NA) {
-  avg <- eval(parse(text = avg_type))
-  
+#' Convert data to a table of factors
+#'
+#' @param df dataframe to evaluate
+#' @param dep_var dependent variable to use (column name)
+#' @param avg_type mean or median
+#' @param ignore_cols columns to ignore from analysis. Good candidates are
+#' fields that have have no duplicate values (primary keys) or fields with
+#' a large proportion of null values
+#' @param n_cat for categorical variables, the max number of unique values
+#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
+#' @param n_quantile for numeric/date fields, the number of quantiles used
+#' to split the data into a factor. Fields that have less than this amount
+#' will not be changed.
+#'
+#' @return dataframe
+#'
+#' @importFrom tibble tibble
+#' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
+refactor_columns <- function(df,
+                             dep_var,
+                             avg_type = mean,
+                             ignore_cols = NA_character_,
+                             n_cat = 15,
+                             n_quantile = 10) {
+
+  avg <- avg_type
+
   dv_name <-
     dep_var %>%
     gsub(pattern = " .*", replacement = "") %>%
     gsub(pattern = "\\(", replacement = "")
-  
-  column_summary <-
-    tibble(
-      names = names(df),
-      class = sapply(df, class),
-      cut = sapply(df, check_cut),
-      n_cat = sapply(df, check_n_cat)
-    ) %>%
-    filter(
-      !names %in% ignore_cols,
-      (cut == TRUE | n_cat == TRUE)
-    )
 
-
-  vars_cut <-
-    column_summary %>%
-    filter(names != dv_name, cut == TRUE) %>%
-    pull(names)
-
-  # vars_keep <-
-  #   column_summary %>%
-  #   filter(names %in% vars_cut) %>%
-  #   pull(names)
 
   suppressWarnings(
-    df %>%
-      mutate(outcome = eval(parse(text = dep_var))) %>% # get(set_dv)
-      filter(!is.na(outcome)) %>%
+    keep_cols <-
+        df %>%
+        mutate(datascanr_outcome = eval(parse(text = dep_var))) %>%
         select(-one_of(c(ignore_cols, dv_name))) %>%
-      mutate_at(vars_cut, cut_custom) %>%
-      # select(one_of(vars_keep), outcome) %>%
-      # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome)) %>%
-      mutate(unique_id = row_number())
+        mutate(datascanr_id = row_number())
   )
+
+    keep_cols %>%
+      select(-starts_with("datascanr")) %>%
+      # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
+      mutate_if(check_num_cat, cut_custom, n_quantile = n_quantile) %>%
+      mutate_if(is.factor, as.character) %>%
+      mutate_if(is.character, collapse_cat, n = n_cat) %>%
+      bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
+      filter(!is.na(datascanr_outcome))
 }
 
 
-summarize_factors <- function(df, dep_var, avg_type, ignore_cols = NA){
-  
-  base_data <- refactor_columns(df, dep_var, avg_type, ignore_cols)
-  avg <- eval(parse(text = avg_type))
-  
-  grand_avg <- avg(base_data$outcome)
+#' Title
+#'
+#' @param ...
+#'
+#' @return
+#' @inheritDotParams refactor_columns
+#' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
+#' @importFrom purrr map_dfr
+#' @importFrom forcats fct_reorder
+summarize_factors <- function(...){
+
+  base_data <- refactor_columns(...)
+  avg <- avg_type
+
+  grand_avg <- avg(base_data$datascanr_outcome)
 
   get_vars <-
-    names(base_data %>% select(-c(unique_id, outcome)))
+    names(base_data %>% select(-starts_with("datascanr")))
 
   agg_fields <- function(i) {
     # i = 1
     base_data %>%
-      select(value = i, outcome) %>%
+      select(value = i, datascanr_outcome) %>%
       mutate(
         field = names(base_data)[i],
         value = as.character(value)
       ) %>%
       group_by(field, value) %>%
       mutate(
-        group_avg = avg(outcome),
-        # group_var = var(outcome),
-        group_sd = sd(outcome)
+        group_avg = avg(datascanr_outcome),
+        # group_var = var(datascanr_outcome),
+        group_sd = sd(datascanr_outcome)
       ) %>%
-      group_by(field, value, outcome, group_avg, group_sd) %>%
+      group_by(field, value, datascanr_outcome, group_avg, group_sd) %>%
       summarise(n = n()) %>%
       group_by(field, value, group_avg, group_sd) %>%
       summarise(n = sum(n)) %>%
@@ -100,27 +117,39 @@ summarize_factors <- function(df, dep_var, avg_type, ignore_cols = NA){
     )
 }
 
-calculate_factor_stats <- function(df, dep_var, avg_type, ignore_cols = NA) {
-  avg <- eval(parse(text = avg_type))
-  base_data <- refactor_columns(df, dep_var, avg_type, ignore_cols)
-  group_stats <- summarize_factors(df, dep_var, avg_type, ignore_cols)
-  
+
+#' Title
+#'
+#' @param ...
+#'
+#' @return
+#' @export
+#' @inheritDotParams refactor_columns
+#' @importFrom tidyr gather
+#' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
+#' @importFrom grDevices boxplot.stats
+#' @examples
+calculate_factor_stats <- function(...) {
+  avg <- avg_type
+  base_data <- refactor_columns(...)
+  group_stats <- summarize_factors(...)
+
   suppressWarnings(
     #compare_values <-
       base_data %>%
-      gather(field, value, -c(unique_id, outcome)) %>%
+      gather(field, value, -c(datascanr_id, datascanr_outcome)) %>%
       mutate(value = as.character(value)) %>%
       left_join(group_stats, by = c("field", "value")) %>%
-      filter(complete.cases(.)) %>% 
-      arrange(desc(field_wt)) %>% 
+      filter(complete.cases(.)) %>%
+      arrange(desc(field_wt)) %>%
       mutate(group_dist_wt = group_dist * field_wt) %>%
-      group_by(unique_id) %>% 
-      mutate(estimate = 
+      group_by(datascanr_id) %>%
+      mutate(estimate =
                #sum(group_dist_wt)
                mean(group_dist_wt)
                #mean(group_dist_wt) + grand_avg
-               ) %>% 
-      ungroup() %>% 
+               ) %>%
+      ungroup() %>%
       mutate(
         orig_min = boxplot.stats(df[[dep_var]])$stats[1],
         orig_max = boxplot.stats(df[[dep_var]])$stats[5],
