@@ -1,16 +1,22 @@
 #' Convert data to a table of factors
 #'
-#' @inheritDotParams variation_plot
+#' @inheritParams variation_plot
 #'
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
 refactor_columns <- function(df,
                              dep_var,
-                             avg_type = mean,
-                             ignore_cols = NA_character_,
-                             n_cat = 15,
-                             n_quantile = 10) {
-  avg <- eval(parse(text = avg_type))
+                             n_cat = 10,
+                             n_quantile = 10,
+                             avg_type = c("mean", "median"),
+                             ignore_cols = NA_character_) {
+  if(missing(avg_type)) {
+    avg_name <- "mean"
+  } else {
+    avg_name <- match.arg(avg_type)
+  }
+
+  avg <- eval(parse(text = avg_name))
 
   dv_name <-
     dep_var %>%
@@ -35,6 +41,7 @@ refactor_columns <- function(df,
     bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
     filter(!is.na(datascanr_outcome))
 }
+#refactor_columns(mpg, "hwy")
 
 
 #' Summarize fields
@@ -42,16 +49,21 @@ refactor_columns <- function(df,
 #' Pivots data and summarizes factor frequencies by field and generates stats
 #' used for plotting
 #'
-#' @param ...
-#'
 #' @inheritDotParams variation_plot
 #'
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
-summarize_factors <- function(...) {
-  base_data <- refactor_columns(...)
-  avg <- eval(parse(text = avg_type))
+summarize_factors <- function(..., avg_type = c("mean", "median")) {
+
+  if(missing(avg_type)) {
+    avg_name <- "mean"
+  } else {
+    avg_name <- match.arg(avg_type)
+  }
+
+  base_data <- refactor_columns(..., avg_type = avg_name)
+  avg <- eval(parse(text = avg_name))
 
   grand_avg <- avg(base_data$datascanr_outcome)
 
@@ -80,7 +92,7 @@ summarize_factors <- function(...) {
       filter(n > 5)
   }
 
-  # map_dfr all fields ----
+  # map_dfr all fields
   get_fields <- map_dfr(seq_along(get_vars), agg_fields)
 
   get_fields %>%
@@ -110,15 +122,12 @@ summarize_factors <- function(...) {
 #'
 #' The dataset returned will be the length of the # of columns x # of rows
 #'
-#' @param ...
-#'
 #' @inheritDotParams variation_plot
 #'
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
 calculate_factor_stats <- function(...) {
-  avg <- eval(parse(text = avg_type))
   base_data <- refactor_columns(...)
   group_stats <- summarize_factors(...)
 
