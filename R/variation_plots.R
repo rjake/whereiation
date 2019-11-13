@@ -127,7 +127,7 @@ variation_plot_single_obs <- function(df,
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
       aes(yend = field, size = field_wt*10, alpha = field_wt*10),
-      color = "black"
+      color = "black", show.legend = FALSE
     ) +
     geom_point(
       data = one_obs_profile,
