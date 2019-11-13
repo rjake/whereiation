@@ -4,6 +4,7 @@
 #'
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
+#' @importFrom lubridate is.Date is.POSIXct
 refactor_columns <- function(df,
                              dep_var,
                              n_cat = 10,
@@ -35,11 +36,11 @@ refactor_columns <- function(df,
   keep_cols %>%
     select(-starts_with("datascanr")) %>%
     # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
+    mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
     mutate_if(~check_num_cat(., n_quantile), cut_custom, n_quantile) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat) %>%
-    bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
-    filter(!is.na(datascanr_outcome))
+    bind_cols(keep_cols %>% select(starts_with("datascanr")))
 }
 #refactor_columns(mpg, "hwy")
 
@@ -55,14 +56,16 @@ refactor_columns <- function(df,
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 summarize_factors <- function(..., avg_type = c("mean", "median")) {
-
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
     avg_name <- match.arg(avg_type)
   }
 
-  base_data <- refactor_columns(..., avg_type = avg_name)
+  base_data <-
+    refactor_columns(..., avg_type = avg_name) %>%
+    filter(!is.na(datascanr_outcome))
+
   avg <- eval(parse(text = avg_name))
 
   grand_avg <- avg(base_data$datascanr_outcome)
@@ -132,7 +135,10 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
 calculate_factor_stats <- function(...) {
-  base_data <- refactor_columns(...)
+  base_data <-
+    refactor_columns(...) %>%
+    filter(!is.na(datascanr_outcome))
+
   group_stats <- summarize_factors(...)
 
   suppressWarnings(
