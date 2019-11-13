@@ -17,7 +17,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
 #' @importFrom ggplot2 ggplot aes geom_vline geom_line geom_point guides theme element_rect labs
-#'
+#' @importFrom rlang .data
 #' @examples
 #' variation_plot(ggplot2::mpg, "hwy")
 variation_plot <- function(df,
@@ -48,15 +48,15 @@ variation_plot <- function(df,
     factor_stats %>%
     # left_join(field_ranks) %>%
     mutate(
-      field = fct_reorder(field, field_range, max),
-      label = paste(field, ": \n", value)
+      field = fct_reorder(.data$field, .data$field_range, .fun = max),
+      label = paste(.data$field, ": \n", .data$value)
     )
 
   group_value_ranks %>%
-    ggplot(aes(group_avg, field, color = field, fill = field)) +
+    ggplot(aes(.data$group_avg, .data$field, color = .data$field, fill = .data$field)) +
     geom_vline(xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted") +
     geom_line(size = 6, alpha = 0.2, lineend = "round") +
-    geom_point(aes(size = n), shape = 21, color = "black", stroke = 0.5) +
+    geom_point(aes(size = .data$n), shape = 21, color = "black", stroke = 0.5) +
     guides(color = FALSE, fill = FALSE) +
     theme(panel.background = element_rect(fill = "white", color = "grey60")) +
     labs(
@@ -76,11 +76,12 @@ variation_plot <- function(df,
 #'
 #' @export
 #'
-#' @inheritDotParams variation_plot
+#' @inheritParams variation_plot
 #'
 #' @importFrom dplyr filter select
 #' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs
 #' @importFrom ggrepel geom_label_repel
+#' @importFrom rlang .data
 #'
 #' @examples
 #' variation_plot_single_obs(ggplot2::mpg, "hwy")
@@ -111,11 +112,11 @@ variation_plot_single_obs <- function(df,
 
   one_obs_profile <-
     compare_values %>%
-    filter(datascanr_id == get_id) %>%
+    filter(.data$datascanr_id == get_id) %>%
     select(
-      field, value, field_wt,
-      group_avg, group_dist, group_dist_wt,
-      estimate
+      .data$field, .data$value, .data$field_wt,
+      .data$group_avg, .data$group_dist, .data$group_dist_wt,
+      .data$estimate
     )
 
 
@@ -126,7 +127,7 @@ variation_plot_single_obs <- function(df,
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
-      aes(yend = field, size = field_wt*10, alpha = field_wt*10),
+      aes(yend = .data$field, size = .data$field_wt*10, alpha = .data$field_wt*10),
       color = "black", show.legend = FALSE
     ) +
     geom_point(
@@ -142,7 +143,7 @@ variation_plot_single_obs <- function(df,
       plot_orig +
       geom_label_repel(
         data = one_obs_profile, size = 4,
-        aes(label = paste0(field, ": ", value)),
+        aes(label = paste0(.data$field, ": ", .data$value)),
         color = "black",
         segment.color = NA,
         hjust = -0.15
