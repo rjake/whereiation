@@ -37,7 +37,12 @@ cut_custom <- function(x, n_quantile, order = FALSE) {
       paste0("(", str_pad(as.integer(label), 2, pad = "0"), ") ")
 
     # if cut returns brackets, add order ex: "(02) [5-9)"
-    label <- ifelse(str_detect(label, "\\["), paste0(ord, label), as.character(label))
+    label <-
+      ifelse(
+        grepl("\\[", label),
+        paste0(ord, label),
+        as.character(label)
+      )
   }
 
   label
