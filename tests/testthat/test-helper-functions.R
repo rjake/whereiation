@@ -1,6 +1,6 @@
 test_that("change_range works", {
-  actual <- 1
-  expected <- 1
+  actual <- change_range(1:10, 10, 100)
+  expected <- 1:10*10
   expect_equal(actual, expected)
 })
 
