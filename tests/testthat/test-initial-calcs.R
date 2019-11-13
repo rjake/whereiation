@@ -1,3 +1,49 @@
-test_that("multiplication works", {
-  expect_equal(2 * 2, 4)
+test_that("refactor_columns works", {
+  df <- refactor_columns(iris, "Petal.Length")
+
+  actual_dim <- dim(df)
+  expected_dim <- c(150, 6)
+  expect_equal(actual_dim, expected_dim)
+
+  actual_names <- names(df)
+  expected_names <-
+    c(names(iris)[c(1:2, 4:5)], "datascanr_outcome", "datascanr_id")
+
+  expect_equal(actual_names, expected_names)
+
 })
+
+
+test_that("summarize_factors works", {
+  df <- summarize_factors(iris, "Petal.Length")
+
+  actual_dim <- dim(df)
+  expected_dim <- c(28, 9)
+  expect_equal(actual_dim, expected_dim)
+
+  actual_names <- names(df)
+  expected_names <-
+    c("field", "value", "group_avg", "group_sd", "n",
+      "grand_avg", "group_dist", "field_range", "field_wt")
+
+  expect_equal(actual_names, expected_names)
+})
+
+
+test_that("calculate_factor_stats works", {
+  df <- calculate_factor_stats(iris, "Petal.Length")
+
+  actual_dim <- dim(df)
+  expected_dim <- c(586, 13)
+  expect_equal(actual_dim, expected_dim)
+
+  actual_names <- names(df)
+  expected_names <-
+    c("datascanr_outcome", "datascanr_id", "field", "value",
+      "group_avg", "group_sd", "n", "grand_avg",
+      "group_dist", "field_range", "field_wt", "group_dist_wt",
+      "estimate")
+
+  expect_equal(actual_names, expected_names)
+})
+
