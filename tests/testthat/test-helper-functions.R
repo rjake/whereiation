@@ -4,11 +4,13 @@ test_that("change_range works", {
   expect_equal(actual, expected)
 })
 
+
 test_that("check_cut_numeric works", {
   # x is numeric and the # of distinct vals > n_quantile
   expect_true(check_cut_numeric(x = 1:10, n_quantile = 3))
   expect_false(check_cut_numeric(x = 1:10, n_quantile = 30))
 })
+
 
 test_that("cut_custom works", {
   actual <- unique(cut_custom(10:20, 2))
@@ -16,6 +18,7 @@ test_that("cut_custom works", {
   expected <- factor(vals, levels = vals, ordered = TRUE)
   expect_equal(actual, expected)
 })
+
 
 test_that("cut_custom adds order", {
   actual <- unique(cut_custom(10:20, 2, order = TRUE))
