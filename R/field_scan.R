@@ -1,6 +1,6 @@
 field_scan <- function(df, n_cat = 15, n_quantile = 10, ignore_cols = NA_character_) {
   # confirm if numeric/date fields should be cut
-  check_num_cat <- function(x) {
+  check_cut_numeric <- function(x) {
     (is.numeric(x) | is.integer(x) | lubridate::is.Date(x)) &
       n_distinct(x) > n_quantile
   }
@@ -41,7 +41,7 @@ field_scan <- function(df, n_cat = 15, n_quantile = 10, ignore_cols = NA_charact
     df %>%
     select(-one_of(ignore_cols)) %>%
     # filter(complete.cases(.)) %>%
-    mutate_if(check_num_cat, cut_custom) %>%
+    mutate_if(check_cut_numeric, cut_custom) %>%
     mutate_if(is.character, collapse_cat) %>%
     mutate(id = row_number())
 

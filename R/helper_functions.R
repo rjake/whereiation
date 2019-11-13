@@ -5,7 +5,7 @@ change_range <- function(x, new_min, new_max) {
 
 
 # confirm if numeric/date fields should be cut
-check_num_cat <- function(x, n_quantile) {
+check_cut_numeric <- function(x, n_quantile) {
   (is.numeric(x) | is.integer(x) |
      lubridate::is.Date(x) | lubridate::is.POSIXct(x)
    ) &
