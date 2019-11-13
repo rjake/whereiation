@@ -14,6 +14,74 @@ library(datascanr)
 ```
 
 ```{r}
+with(mpg, chisq.test(manufacturer, cty))$p.value
+with(mpg, chisq.test(year, cty))$p.value
+
+with(msleep, chisq.test(order, awake))$p.value
+with(msleep, chisq.test(vore, awake))$p.value
+
+with(iris, chisq.test(floor(Petal.Width), Petal.Length))$p.value
+with(iris, chisq.test(Species, Petal.Length))$p.value
+
+df <- ggplot2::mpg
+dep_var <- "cty"
+ignore_cols <- NA_character_
+
+
+
+refactor_columns(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+
+summarize_factors(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+
+calculate_factor_stats(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+) %>%
+  filter(datascanr_id == 1)
+
+variation_plot_single_obs(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols,
+  id = 182
+)
+
+variation_plot(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+# field_scan(mpg)```
+
+
+```{r}
+# df <- AER::Fatalities; dep_var <- "(fatal/pop)"; ignore_cols <- c("vfatcount", "Obs.", "casenum");
+# df <- gamclass::fars2007; dep_var <- "injury == 0"; ignore_cols <- c("vfatcount", "Obs.", "casenum");
+# df <- Ecdat::Kakadu; dep_var <- "income"; ignore_cols <- "";
+# df <- HistData::Guerry; dep_var <- "Desertion"; ignore_cols <- "";
+# df <- nlme::bdf; dep_var <- "IQ.perf"; ignore_cols <- "";
+# df <- ISLR::Hitters; dep_var <- "HmRun"; ignore_cols <- "";
+# df <- VGAM::car.all; dep_var <- "Price"; ignore_cols <- "";
+# df <- survival::flchain; dep_var <- "death"; ignore_cols <- "chapter";
+# df <- survival::colon; dep_var <- "status"; ignore_cols <- "";
+# df <- Ecdat::Schooling; dep_var <- "lwage76"; ignore_cols <- "wage76";
+# df <- mpg; dep_var <- "cty %>% ntile(4) > 3"; ignore_cols <- "cty";
+# df <- iris; dep_var <- "Species != 'versicolor'"; ignore_cols <- "Species";
+# df <- iris; dep_var <- "Petal.Length"; ignore_cols <- "";
+# df <- mtcars; dep_var <- "vs == 1"; ignore_cols <- "";
+# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); dep_var <- "dep_delay"; ignore_cols <- c("arr_delay", "dep_time","year", "tailnum", "time_hour");
+```
+
+```{r}
 compare_estimate <- function(df, dep_var, avg_type, ignore_cols = NA) {
   new_vals <- 
     calculate_factor_stats(df, dep_var, avg_type, ignore_cols) %>% 
@@ -35,31 +103,5 @@ compare_estimate <- function(df, dep_var, avg_type, ignore_cols = NA) {
 compare_estimate(mpg, "hwy", "mean")
 compare_estimate(survival::colon, "status", "mean")
 compare_estimate(msleep, "sleep_total", "mean")
-
-
-refactor_columns(mpg, "hwy", "mean")
-summarize_factors(mpg, "hwy", "mean")
-calculate_factor_stats(mpg, "hwy") %>% filter(datascanr_id == 1)
-field_scan(mpg)
-variation_plot_single_obs(mpg, "hwy", "mean")
-variation_plot(mpg, "hwy", "mean")
 ```
 
-
-```{r}
-# df <- AER::Fatalities; set_dv <- "(fatal/pop)"; set_ignore <- c("vfatcount", "Obs.", "casenum");
-# df <- gamclass::fars2007; set_dv <- "injury == 0"; set_ignore <- c("vfatcount", "Obs.", "casenum");
-# df <- Ecdat::Kakadu; set_dv <- "income"; set_ignore <- "";
-# df <- HistData::Guerry; set_dv <- "Desertion"; set_ignore <- "";
-# df <- nlme::bdf; set_dv <- "IQ.perf"; set_ignore <- "";
-# df <- ISLR::Hitters; set_dv <- "HmRun"; set_ignore <- "";
-# df <- VGAM::car.all; set_dv <- "Price"; set_ignore <- "";
-# df <- survival::flchain; set_dv <- "death"; set_ignore <- "chapter";
-# df <- survival::colon; set_dv <- "status"; set_ignore <- "";
-# df <- Ecdat::Schooling; set_dv <- "lwage76"; set_ignore <- "wage76";
-# df <- mpg; set_dv <- "cty %>% ntile(4) > 3"; set_ignore <- "cty";
-# df <- iris; set_dv <- "Species != 'versicolor'"; set_ignore <- "Species";
-# df <- iris; set_dv <- "Petal.Length"; set_ignore <- "";
-# df <- mtcars; set_dv <- "vs == 1"; set_ignore <- "";
-# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); set_dv <- "dep_delay"; set_ignore <- c("arr_delay", "dep_time","year", "tailnum", "time_hour");
-```
