@@ -23,7 +23,7 @@ test_that("cut_custom works", {
 test_that("cut_custom adds order", {
   actual <- unique(cut_custom(10:20, 2, order = TRUE))
   expected <- c("(01) [9.99,15)", "(02) [15,20.01]")
-  expect_equal(actual, vals)
+  expect_equal(actual, expected)
 })
 
 test_that("collapse_cat works", {
