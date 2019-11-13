@@ -51,6 +51,7 @@ refactor_columns <- function(df,
 #' used for plotting
 #'
 #' @inhereitDotParams variation_plot
+#' @inheritParams variation_plot
 #'
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
 #' @importFrom purrr map_dfr

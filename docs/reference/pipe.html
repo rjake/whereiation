@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize variation and logic for a single observation — variation_plot_single_obs • datascanr</title>
+<title>Pipe operator — %&gt;% • datascanr</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Visualize variation and logic for a single observation — variation_plot_single_obs" />
+<meta property="og:title" content="Pipe operator — %&gt;%" />
 
-<meta property="og:description" content="Visualize variation and logic for a single observation" />
+<meta property="og:description" content="See magrittr::%&amp;gt;% for details." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -94,72 +94,25 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize variation and logic for a single observation</h1>
+    <h1>Pipe operator</h1>
     
-    <div class="hidden name"><code>variation_plot_single_obs.Rd</code></div>
+    <div class="hidden name"><code>pipe.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Visualize variation and logic for a single observation</p>
+    <p>See <code>magrittr::%&gt;%</code> for details.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>variation_plot_single_obs</span>(<span class='no'>df</span>, <span class='no'>dep_var</span>, <span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>,
-  <span class='st'>"median"</span>), <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>df</th>
-      <td><p>dataframe to evaluate</p></td>
-    </tr>
-    <tr>
-      <th>dep_var</th>
-      <td><p>dependent variable to use (column name)</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>variation_plot</code></p><dl class='dl-horizontal'>
-  <dt>df</dt><dd><p>dataframe to evaluate</p></dd>
-  <dt>dep_var</dt><dd><p>dependent variable to use (column name)</p></dd>
-  <dt>avg_type</dt><dd><p>mean or median</p></dd>
-  <dt>ignore_cols</dt><dd><p>columns to ignore from analysis. Good candidates are
-fields that have have no duplicate values (primary keys) or fields with
-a large proportion of null values</p></dd>
-  <dt>n_cat</dt><dd><p>for categorical variables, the max number of unique values
-to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
-  <dt>n_quantile</dt><dd><p>for numeric/date fields, the number of quantiles used
-to split the data into a factor. Fields that have less than this amount
-will not be changed.</p></dd>
-</dl></td>
-    </tr>
-    <tr>
-      <th>avg_type</th>
-      <td><p>mean or median</p></td>
-    </tr>
-    <tr>
-      <th>labels</th>
-      <td><p>when TRUE will show the labels of the factor levels outlined in the plot</p></td>
-    </tr>
-    <tr>
-      <th>id</th>
-      <td><p>is id (row number) from <code>base_data()</code> to use</p></td>
-    </tr>
-    </table>
-    
+    <pre class="usage"><span class='no'>lhs</span> <span class='kw'>%&gt;%</span> <span class='no'>rhs</span></pre>
+        
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>variation_plot_single_obs</span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, <span class='st'>"hwy"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = c("field", "value")</span></div><div class='img'><img src='variation_plot_single_obs-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-            
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+                </ul>
 
   </div>
 </div>

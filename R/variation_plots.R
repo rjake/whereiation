@@ -76,6 +76,7 @@ variation_plot <- function(df,
 #'
 #' @export
 #'
+#' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
 #' @importFrom dplyr filter select

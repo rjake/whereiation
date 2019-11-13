@@ -113,20 +113,8 @@ used for plotting</p>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>variation_plot</code></p><dl class='dl-horizontal'>
-  <dt>df</dt><dd><p>dataframe to evaluate</p></dd>
-  <dt>dep_var</dt><dd><p>dependent variable to use (column name)</p></dd>
-  <dt>avg_type</dt><dd><p>mean or median</p></dd>
-  <dt>ignore_cols</dt><dd><p>columns to ignore from analysis. Good candidates are
-fields that have have no duplicate values (primary keys) or fields with
-a large proportion of null values</p></dd>
-  <dt>n_cat</dt><dd><p>for categorical variables, the max number of unique values
-to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
-  <dt>n_quantile</dt><dd><p>for numeric/date fields, the number of quantiles used
-to split the data into a factor. Fields that have less than this amount
-will not be changed.</p></dd>
-</dl></td>
+      <th>avg_type</th>
+      <td><p>mean or median</p></td>
     </tr>
     </table>
     
@@ -143,7 +131,7 @@ will not be changed.</p></dd>
 
       <footer>
       <div class="copyright">
-  <p>Developed by First Last.</p>
+  <p>Developed by Jake Riley.</p>
 </div>
 
 <div class="pkgdown">
