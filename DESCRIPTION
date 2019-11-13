@@ -10,14 +10,15 @@ LazyData: true
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
 Suggests: 
-    testthat,
-    knitr
+  testthat,
+  knitr
 Imports: 
   dplyr,
   forcats,
   ggplot2,
   ggrepel,
   lubridate,
+  magrittr,
   purrr,
   stringr,
   tibble,
