@@ -55,6 +55,7 @@ refactor_columns <- function(df,
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
+#' @importFrom stats sd
 summarize_factors <- function(..., avg_type = c("mean", "median")) {
   if(missing(avg_type)) {
     avg_name <- "mean"
@@ -134,6 +135,7 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
 #' @importFrom tidyr gather
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
+#' @importFrom stats complete.cases weighted.mean
 calculate_factor_stats <- function(...) {
   base_data <-
     refactor_columns(...) %>%
