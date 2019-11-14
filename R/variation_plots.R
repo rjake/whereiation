@@ -34,7 +34,7 @@ variation_plot <- function(df,
 
   factor_stats <-
     summarize_factors(
-      df = df,
+      df = refactor_columns(df, dep_var),
       dep_var = dep_var,
       n_cat = n_cat,
       n_quantile = n_quantile,
@@ -116,7 +116,8 @@ variation_plot_single_obs <- function(df,
     filter(.data$datascanr_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
-      .data$group_avg, .data$group_dist, .data$group_dist_wt,
+      .data$group_avg, #.data$group_dist,
+      .data$group_avg_wt,
       .data$estimate
     )
 

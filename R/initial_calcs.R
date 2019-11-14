@@ -40,7 +40,8 @@ refactor_columns <- function(df,
     mutate_if(~check_cut_numeric(., n_quantile), cut_custom, n_quantile) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat) %>%
-    bind_cols(keep_cols %>% select(starts_with("datascanr")))
+    bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
+    mutate_if(is.logical, as.integer)
 }
 #refactor_columns(mpg, "hwy")
 
@@ -50,7 +51,7 @@ refactor_columns <- function(df,
 #' Pivots data and summarizes factor frequencies by field and generates stats
 #' used for plotting
 #'
-#' @inhereitDotParams variation_plot
+#' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
 #' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
@@ -58,7 +59,7 @@ refactor_columns <- function(df,
 #' @importFrom forcats fct_reorder
 #' @importFrom stats sd
 #' @importFrom rlang .data
-summarize_factors <- function(..., avg_type = c("mean", "median")) {
+summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
@@ -66,7 +67,7 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
   }
 
   base_data <-
-    refactor_columns(..., avg_type = avg_name) %>%
+    df %>%
     filter(!is.na(.data$datascanr_outcome))
 
   avg <- eval(parse(text = avg_name))
@@ -89,16 +90,19 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
       ) %>%
       group_by(.data$field, .data$value) %>%
       mutate(
-        group_avg = avg(.data$datascanr_outcome),
-        # group_var = var(datascanr_outcome),
-        group_sd = sd(.data$datascanr_outcome)
+        group_avg = avg(.data$datascanr_outcome)#,
+        #group_var = var(datascanr_outcome),
+        #group_sd = sd(.data$datascanr_outcome)
       ) %>%
       group_by(
         .data$field, .data$value, .data$datascanr_outcome,
-        .data$group_avg, .data$group_sd
+        .data$group_avg#, .data$group_sd, .data$group_var
       ) %>%
       summarise(n = n()) %>%
-      group_by(.data$field, .data$value, .data$group_avg, .data$group_sd) %>%
+      group_by(
+        .data$field, .data$value,
+        .data$group_avg#, .data$group_sd, .data$group_var
+      ) %>%
       summarise(n = sum(.data$n)) %>%
       ungroup() %>%
       filter(.data$n > 5)
@@ -111,8 +115,8 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
     filter(!is.na(.data$value)) %>%
     mutate(
       group_avg = change_range(.data$group_avg, orig_min, orig_max),
-      grand_avg = grand_avg,
-      group_dist = .data$group_avg - .data$grand_avg
+      grand_avg = grand_avg#,
+      #group_dist = .data$group_avg - .data$grand_avg
       # value_diff = group_avg - grand_avg,
       # abs_value_diff = abs(value_diff)
     ) %>%
@@ -134,20 +138,25 @@ summarize_factors <- function(..., avg_type = c("mean", "median")) {
 #' Generate stats for each observation at the factor level
 #'
 #' The dataset returned will be the length of the # of columns x # of rows
-#'
+#' @param train_data training dataset generated from summarize_factors
 #' @inheritDotParams variation_plot
+#' @inheritParams variation_plot
 #'
 #' @importFrom tidyr gather drop_na
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
 #' @importFrom grDevices boxplot.stats
 #' @importFrom stats complete.cases weighted.mean
 #' @importFrom rlang .data
-calculate_factor_stats <- function(...) {
-  base_data <-
-    refactor_columns(...) %>%
-    filter(!is.na(.data$datascanr_outcome))
+calculate_factor_stats <- function(df, train_data, dep_var, ...) {
 
-  group_stats <- summarize_factors(...)
+  if (missing(train_data)) {
+    base_data <- refactor_columns(df, dep_var = dep_var, ...)
+    group_stats <- summarize_factors(base_data, ...)
+  } else {
+    base_data <- df
+    group_stats <- summarize_factors(train_data, ...)
+  }
+
 
   suppressWarnings(
     base_data %>%
@@ -157,11 +166,14 @@ calculate_factor_stats <- function(...) {
       ) %>%
       mutate(value = as.character(.data$value)) %>%
       left_join(
-        group_stats#, by = c("field", "value")
+        group_stats, by = c("field", "value")
       ) %>%
-      drop_na() %>%
-      arrange(desc(.data$field_wt)) %>%
-      mutate(group_dist_wt = .data$group_dist * .data$field_wt) %>%
+      group_by(.data$datascanr_id) %>%
+      mutate(complete = sum(!is.na(.data$group_avg))) %>%
+      ungroup() %>%
+      drop_na(.data$group_avg:.data$field_wt) %>%
+      #arrange(desc(.data$field_wt)) %>%
+      mutate(group_avg_wt = .data$group_avg * .data$field_wt) %>%
       group_by(.data$datascanr_id) %>%
       mutate(estimate = weighted.mean(.data$group_avg, .data$field_wt)) %>%
       ungroup()
