@@ -1,0 +1,114 @@
+---
+title: "datascanr: demo"
+author: "jake riley"
+output: html_document
+---
+
+```{r}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, comment = "")
+```
+
+```{r}
+library(tidyverse)
+library(datascanr)
+```
+
+```{r}
+summary(aov(cty ~ ., data = mpg))
+a <- summary(aov(cty ~ ., data = mpg))[[1]][5]
+a
+View(a)
+
+
+with(mpg, chisq.test(manufacturer, cty))$p.value
+with(mpg, chisq.test(year, cty))$p.value
+
+with(msleep, chisq.test(order, awake))$p.value
+with(msleep, chisq.test(vore, awake))$p.value
+
+with(iris, chisq.test(floor(Petal.Width), Petal.Length))$p.value
+with(iris, chisq.test(Species, Petal.Length))$p.value
+
+df <- ggplot2::mpg
+dep_var <- "cty"
+ignore_cols <- NA_character_
+
+
+
+refactor_columns(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+
+summarize_factors(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+
+calculate_factor_stats(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+) %>%
+  filter(datascanr_id == 1)
+
+variation_plot_single_obs(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols,
+  id = 182
+)
+
+variation_plot(
+  df = df,
+  dep_var = dep_var,
+  ignore_cols = ignore_cols
+)
+# field_scan(mpg)
+```
+
+
+```{r}
+# df <- AER::Fatalities; dep_var <- "(fatal/pop)"; ignore_cols <- c("vfatcount", "Obs.", "casenum");
+# df <- gamclass::fars2007; dep_var <- "injury == 0"; ignore_cols <- c("vfatcount", "Obs.", "casenum");
+# df <- Ecdat::Kakadu; dep_var <- "income"; ignore_cols <- "";
+# df <- HistData::Guerry; dep_var <- "Desertion"; ignore_cols <- "";
+# df <- nlme::bdf; dep_var <- "IQ.perf"; ignore_cols <- "";
+# df <- ISLR::Hitters; dep_var <- "HmRun"; ignore_cols <- "";
+# df <- VGAM::car.all; dep_var <- "Price"; ignore_cols <- "";
+# df <- survival::flchain; dep_var <- "death"; ignore_cols <- "chapter";
+# df <- survival::colon; dep_var <- "status"; ignore_cols <- "";
+# df <- Ecdat::Schooling; dep_var <- "lwage76"; ignore_cols <- "wage76";
+# df <- mpg; dep_var <- "cty %>% ntile(4) > 3"; ignore_cols <- "cty";
+# df <- iris; dep_var <- "Species != 'versicolor'"; ignore_cols <- "Species";
+# df <- iris; dep_var <- "Petal.Length"; ignore_cols <- "";
+# df <- mtcars; dep_var <- "vs == 1"; ignore_cols <- "";
+# df <- nycflights13::flights %>% mutate(wday = weekdays(time_hour)); dep_var <- "dep_delay"; ignore_cols <- c("arr_delay", "dep_time","year", "tailnum", "time_hour");
+```
+
+```{r}
+compare_estimate <- function(df, dep_var, avg_type, ignore_cols = NA) {
+  new_vals <- 
+    calculate_factor_stats(df, dep_var, avg_type, ignore_cols) %>% 
+    distinct(unique_id, y = estimate_expand) %>% 
+    pull(y)
+  
+  orig_vals <- df[[dep_var]]
+  
+  tibble(group = "new", x = new_vals) %>% 
+    bind_rows(tibble(group = "old", x = orig_vals)) %>% 
+    ggplot(aes(x, fill = group)) +
+    geom_histogram() +
+    geom_histogram() +
+    facet_grid(rows = vars(group)) +
+    scale_fill_manual(values = c("blue", "black"))
+}
+
+
+compare_estimate(mpg, "hwy", "mean")
+compare_estimate(survival::colon, "status", "mean")
+compare_estimate(msleep, "sleep_total", "mean")
+```
+
