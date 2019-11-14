@@ -107,11 +107,31 @@ used for plotting</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_factors</span>(<span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>))</pre>
+    <pre class="usage"><span class='fu'>summarize_factors</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>df</th>
+      <td><p>dataframe to evaluate</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments passed on to <code>variation_plot</code></p><dl class='dl-horizontal'>
+  <dt>df</dt><dd><p>dataframe to evaluate</p></dd>
+  <dt>dep_var</dt><dd><p>dependent variable to use (column name)</p></dd>
+  <dt>avg_type</dt><dd><p>mean or median</p></dd>
+  <dt>ignore_cols</dt><dd><p>columns to ignore from analysis. Good candidates are
+fields that have have no duplicate values (primary keys) or fields with
+a large proportion of null values</p></dd>
+  <dt>n_cat</dt><dd><p>for categorical variables, the max number of unique values
+to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
+  <dt>n_quantile</dt><dd><p>for numeric/date fields, the number of quantiles used
+to split the data into a factor. Fields that have less than this amount
+will not be changed.</p></dd>
+</dl></td>
+    </tr>
     <tr>
       <th>avg_type</th>
       <td><p>mean or median</p></td>

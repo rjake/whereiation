@@ -4,9 +4,15 @@
 \alias{calculate_factor_stats}
 \title{Generate stats for each observation at the factor level}
 \usage{
-calculate_factor_stats(...)
+calculate_factor_stats(df, train_data, dep_var, ...)
 }
 \arguments{
+\item{df}{dataframe to evaluate}
+
+\item{train_data}{training dataset generated from summarize_factors}
+
+\item{dep_var}{dependent variable to use (column name)}
+
 \item{...}{Arguments passed on to \code{variation_plot}
 \describe{
   \item{df}{dataframe to evaluate}

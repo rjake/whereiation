@@ -4,9 +4,26 @@
 \alias{summarize_factors}
 \title{Summarize fields}
 \usage{
-summarize_factors(..., avg_type = c("mean", "median"))
+summarize_factors(df, ..., avg_type = c("mean", "median"))
 }
 \arguments{
+\item{df}{dataframe to evaluate}
+
+\item{...}{Arguments passed on to \code{variation_plot}
+\describe{
+  \item{df}{dataframe to evaluate}
+  \item{dep_var}{dependent variable to use (column name)}
+  \item{avg_type}{mean or median}
+  \item{ignore_cols}{columns to ignore from analysis. Good candidates are
+fields that have have no duplicate values (primary keys) or fields with
+a large proportion of null values}
+  \item{n_cat}{for categorical variables, the max number of unique values
+to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
+  \item{n_quantile}{for numeric/date fields, the number of quantiles used
+to split the data into a factor. Fields that have less than this amount
+will not be changed.}
+}}
+
 \item{avg_type}{mean or median}
 }
 \description{
