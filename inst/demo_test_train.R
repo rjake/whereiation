@@ -32,7 +32,7 @@ df_estimate <-
 
 
 ggplot(df_estimate) +
-  geom_count(aes(datascanr_outcome, estimate, color = side_correct), alpha = 0.3) +
+  geom_count(aes(datascanr_outcome, estimate, color = side_correct), alpha = 0.8) +
   geom_vline(aes(xintercept = grand_avg), linetype = "dotted") +
   geom_abline() +
   theme_minimal() +
@@ -41,7 +41,7 @@ ggplot(df_estimate) +
 
 
 ggplot(df_estimate) +
-  geom_count(aes(datascanr_outcome, off_by, color = side_correct), alpha = 0.3) +
+  geom_count(aes(datascanr_outcome, off_by, color = side_correct), alpha = 0.8) +
   geom_vline(aes(xintercept = grand_avg)) +
   geom_hline(yintercept = 0) +
   theme_minimal() +
