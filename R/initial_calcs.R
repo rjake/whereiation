@@ -222,6 +222,6 @@ calculate_factor_stats <- function(df, train_data, dep_var, ...) {
       group_by(.data$datascanr_id) %>%
       mutate(estimate = weighted.mean(.data$group_avg, .data$field_wt)) %>%
       ungroup() %>%
-      mutate(estimate = change_range(estimate, orig_min, orig_max))
+      mutate(estimate = change_range(.data$estimate, orig_min, orig_max))
   )
 }
