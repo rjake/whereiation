@@ -4,7 +4,8 @@
 \alias{summarize_factors}
 \title{Summarize fields}
 \usage{
-summarize_factors(df, ..., avg_type = c("mean", "median"))
+summarize_factors(df, ..., avg_type = c("mean", "median"),
+  return = c("data", "list"))
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -25,6 +26,10 @@ will not be changed.}
 }}
 
 \item{avg_type}{mean or median}
+
+\item{return}{option to return a dataframe when TRUE and a list when FALSE.
+The list option includes the original min/max of the data and the
+grand average.}
 }
 \description{
 Pivots data and summarizes factor frequencies by field and generates stats
