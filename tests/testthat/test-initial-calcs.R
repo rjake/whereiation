@@ -32,6 +32,16 @@ test_that("summarize_factors works", {
 })
 
 
+test_that("summarize_factors returns list", {
+  x <-
+    summarize_factors(
+      refactor_columns(iris, "Petal.Length"),
+      return = "list"
+    )
+
+  expect_true(is.list(x))
+})
+
 test_that("calculate_factor_stats works", {
   df <- calculate_factor_stats(df = iris, dep_var = "Petal.Length")
 

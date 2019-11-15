@@ -107,7 +107,8 @@ used for plotting</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_factors</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>))</pre>
+    <pre class="usage"><span class='fu'>summarize_factors</span>(<span class='no'>df</span>, <span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
+  <span class='kw'>return</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"data"</span>, <span class='st'>"list"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -135,6 +136,12 @@ will not be changed.</p></dd>
     <tr>
       <th>avg_type</th>
       <td><p>mean or median</p></td>
+    </tr>
+    <tr>
+      <th>return</th>
+      <td><p>option to return a dataframe when TRUE and a list when FALSE.
+The list option includes the original min/max of the data and the
+grand average.</p></td>
     </tr>
     </table>
     

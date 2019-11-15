@@ -53,6 +53,10 @@ refactor_columns <- function(df,
 #' Pivots data and summarizes factor frequencies by field and generates stats
 #' used for plotting
 #'
+#' @param return option to return a dataframe when TRUE and a list when FALSE.
+#' The list option includes the original min/max of the data and the
+#' grand average.
+#'
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
@@ -64,7 +68,11 @@ refactor_columns <- function(df,
 #'
 #' @export
 #' @family manipulation functions
-summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
+summarize_factors <- function(df,
+                              ...,
+                              avg_type = c("mean", "median"),
+                              return = c("data", "list")
+) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
@@ -81,6 +89,10 @@ summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
 
   orig_min <- boxplot.stats(base_data$datascanr_outcome)$stats[1]
   orig_max <- boxplot.stats(base_data$datascanr_outcome)$stats[5]
+
+  if (orig_min == orig_max && orig_min == 0) {
+    orig_max <- max(base_data$datascanr_outcome)
+  }
 
   get_vars <-
     names(base_data %>% select(-starts_with("datascanr")))
@@ -116,7 +128,8 @@ summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
   # map_dfr all fields
   get_fields <- map_dfr(seq_along(get_vars), agg_fields)
 
-  get_fields %>%
+  agg_data <-
+    get_fields %>%
     filter(!is.na(.data$value)) %>%
     mutate(
       group_avg = change_range(.data$group_avg, orig_min, orig_max),
@@ -137,6 +150,26 @@ summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
       field = fct_reorder(.data$field, .data$field_range, .fun = max, .desc = TRUE),
       field_wt = .data$field_range / max(.data$field_range)
     )
+
+  if (missing(return)) {
+    x_is <- "data"
+  } else {
+    x_is <- match.arg(return)
+  }
+
+  if (x_is == "data") {
+    x <- agg_data
+  } else {
+    x <-
+      list(
+        data = agg_data,
+        grand_avg = grand_avg,
+        orig_min = orig_min,
+        orig_max = orig_max
+      )
+  }
+
+  x
 }
 
 
@@ -159,11 +192,15 @@ calculate_factor_stats <- function(df, train_data, dep_var, ...) {
 
   if (missing(train_data)) {
     base_data <- refactor_columns(df, dep_var = dep_var, ...)
-    group_stats <- summarize_factors(base_data, ...)
+    group_stats <- summarize_factors(base_data, ..., return = "list")
   } else {
     base_data <- df
-    group_stats <- summarize_factors(train_data, ...)
+    group_stats <- summarize_factors(train_data, ..., return = "list")
   }
+
+  group_stats_data <- group_stats$data
+  orig_min <- group_stats$orig_min
+  orig_max <- group_stats$orig_max
 
 
   suppressWarnings(
@@ -174,7 +211,7 @@ calculate_factor_stats <- function(df, train_data, dep_var, ...) {
       ) %>%
       mutate(value = as.character(.data$value)) %>%
       left_join(
-        group_stats, by = c("field", "value")
+        group_stats_data, by = c("field", "value")
       ) %>%
       group_by(.data$datascanr_id) %>%
       mutate(complete = sum(!is.na(.data$group_avg))) %>%
@@ -184,6 +221,7 @@ calculate_factor_stats <- function(df, train_data, dep_var, ...) {
       mutate(group_avg_wt = .data$group_avg * .data$field_wt) %>%
       group_by(.data$datascanr_id) %>%
       mutate(estimate = weighted.mean(.data$group_avg, .data$field_wt)) %>%
-      ungroup()
+      ungroup() %>%
+      mutate(estimate = change_range(.data$estimate, orig_min, orig_max))
   )
 }
