@@ -5,6 +5,9 @@
 #' @importFrom tibble tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
 #' @importFrom lubridate is.Date is.POSIXct
+#'
+#' @export
+#' @family manipulation functions
 refactor_columns <- function(df,
                              dep_var,
                              n_cat = 10,
@@ -43,7 +46,6 @@ refactor_columns <- function(df,
     bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
     mutate_if(is.logical, as.integer)
 }
-#refactor_columns(mpg, "hwy")
 
 
 #' Summarize fields
@@ -59,6 +61,9 @@ refactor_columns <- function(df,
 #' @importFrom forcats fct_reorder
 #' @importFrom stats sd
 #' @importFrom rlang .data
+#'
+#' @export
+#' @family manipulation functions
 summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
   if(missing(avg_type)) {
     avg_name <- "mean"
@@ -147,6 +152,9 @@ summarize_factors <- function(df, ..., avg_type = c("mean", "median")) {
 #' @importFrom grDevices boxplot.stats
 #' @importFrom stats complete.cases weighted.mean
 #' @importFrom rlang .data
+#'
+#' @export
+#' @family manipulation functions
 calculate_factor_stats <- function(df, train_data, dep_var, ...) {
 
   if (missing(train_data)) {

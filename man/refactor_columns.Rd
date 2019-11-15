@@ -28,3 +28,8 @@ a large proportion of null values}
 \description{
 Convert data to a table of factors
 }
+\seealso{
+Other manipulation functions: \code{\link{calculate_factor_stats}},
+  \code{\link{summarize_factors}}
+}
+\concept{manipulation functions}

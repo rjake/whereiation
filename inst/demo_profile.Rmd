@@ -1,0 +1,99 @@
+---
+title: "Profiling Observations"
+author: "Jake Riley"
+date: "November 13, 2019"
+output: html_document
+---
+
+<style type="text/css">
+div.main-container {
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  message = FALSE, 
+  warning = FALSE,
+  fig.width = 11,
+  fig.height = 7
+)
+```
+
+```{r}
+library(tidyverse)
+library(glue)
+library(scales)
+library(knitr)
+library(kableExtra)
+library(datascanr)
+
+df <- survival::flchain; dep_var <- "death"; ignore_cols <- "chapter";
+# df <- ggplot2::mpg; dep_var <- "cty"; ignore_cols <- NA_character_;
+# df <- iris; dep_var <- "Petal.Width"; ignore_cols <- NA_character_;
+# df <- iris; dep_var <- "Petal.Length"; ignore_cols <- NA_character_;
+
+base_data <- 
+  datascanr:::refactor_columns(df, dep_var, ignore_cols = ignore_cols)
+
+set.seed(1234)
+df_train <- sample_frac(base_data, 0.8)
+df_test <- setdiff(base_data, df_train)
+
+df_estimate <-
+  datascanr:::calculate_factor_stats(df_test, df_train)
+```
+
+```{r}
+df_prep <-
+  df_estimate  %>% 
+  filter(estimate > 0.72) %>%
+  select(
+    id = datascanr_id, #orig = datascanr_outcome, 
+    field, field_wt, value, group_avg, estimate
+  ) %>% 
+  mutate(
+    pct_group = percent(group_avg, accuracy = 1),
+    est_obs = floor(estimate*100),
+    cell = glue("{value}\n{pct_group}"),
+    id = glue("est_{est_obs}_id_{id}")
+  ) %>% 
+  mutate(id = fct_reorder(id, estimate, .desc = TRUE))
+
+df_style <-
+  df_prep %>% 
+  mutate(
+    cell = cell_spec(
+      cell,
+      #color = "black", 
+      bold = TRUE,
+      #background =
+      color = 
+        spec_color(
+          group_avg, begin = 0, end = 0.7, option = "C", direction = -1#, alpha = 0.3
+        )
+    )
+  ) %>% 
+  select(-c(value, group_avg, pct_group, est_obs, estimate)) %>% 
+  spread(id, cell) %>% 
+  rename_all(str_replace, "est_(..)_(id.*)", "\\2\n\\1%") %>% 
+  arrange(desc(field_wt)) %>% 
+  mutate(field_wt = percent(field_wt, 3))
+
+
+df_style %>% 
+  kable(escape = F, align = "c") %>%
+  kable_styling(c("striped", "condensed"), full_width = TRUE)
+#%>%
+  #scroll_box(width = "100%", height = "600px")
+
+# DT::datatable(
+#   df_prep, 
+#   caption = glue("grand mean = {percent(df_estimate$grand_avg[1])}")
+# )
+
+```
+  

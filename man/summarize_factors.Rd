@@ -30,3 +30,8 @@ will not be changed.}
 Pivots data and summarizes factor frequencies by field and generates stats
 used for plotting
 }
+\seealso{
+Other manipulation functions: \code{\link{calculate_factor_stats}},
+  \code{\link{refactor_columns}}
+}
+\concept{manipulation functions}

@@ -31,3 +31,8 @@ will not be changed.}
 \description{
 The dataset returned will be the length of the # of columns x # of rows
 }
+\seealso{
+Other manipulation functions: \code{\link{refactor_columns}},
+  \code{\link{summarize_factors}}
+}
+\concept{manipulation functions}
