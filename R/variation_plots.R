@@ -12,12 +12,14 @@
 #' to split the data into a factor. Fields that have less than this amount
 #' will not be changed.
 #'
-#' @export
-#'
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
 #' @importFrom ggplot2 ggplot aes geom_vline geom_line geom_point guides theme element_rect labs
 #' @importFrom rlang .data
+#'
+#' @export
+#' @family visualization functions
+#'
 #' @examples
 #' variation_plot(ggplot2::mpg, "hwy")
 variation_plot <- function(df,
@@ -74,8 +76,6 @@ variation_plot <- function(df,
 #' @param labels when TRUE will show the labels of the factor levels outlined in the plot
 #' @param id is id (row number) from \code{base_data()} to use
 #'
-#' @export
-#'
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
@@ -83,6 +83,9 @@ variation_plot <- function(df,
 #' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom rlang .data
+#'
+#' @export
+#' @family visualization functions
 #'
 #' @examples
 #' variation_plot_single_obs(ggplot2::mpg, "hwy")

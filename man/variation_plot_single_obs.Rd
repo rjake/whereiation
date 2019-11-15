@@ -39,3 +39,7 @@ Visualize variation and logic for a single observation
 \examples{
 variation_plot_single_obs(ggplot2::mpg, "hwy")
 }
+\seealso{
+Other visualization functions: \code{\link{variation_plot}}
+}
+\concept{visualization functions}
