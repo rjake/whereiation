@@ -72,7 +72,7 @@ summarize_factors <- function(df,
                               ...,
                               avg_type = c("mean", "median"),
                               return = c("data", "list")
-) {
+                              ) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {

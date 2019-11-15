@@ -36,7 +36,6 @@ ggplot(df_estimate) +
   geom_vline(aes(xintercept = grand_avg), linetype = "dotted") +
   geom_abline() +
   theme_minimal() +
-  coord_equal() +
   labs(x = "original", y = "estimate")
 
 
@@ -45,7 +44,6 @@ ggplot(df_estimate) +
   geom_vline(aes(xintercept = grand_avg)) +
   geom_hline(yintercept = 0) +
   theme_minimal() +
-  coord_equal() +
   labs(x = "original", y = "estimate")
 
 
