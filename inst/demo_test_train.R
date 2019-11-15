@@ -2,9 +2,13 @@ df <- survival::flchain; dep_var <- "death"; ignore_cols <- "chapter";
 df <- ggplot2::mpg; dep_var <- "cty"; ignore_cols <- NA_character_;
 df <- iris; dep_var <- "Petal.Width"; ignore_cols <- NA_character_;
 df <- iris; dep_var <- "Petal.Length"; ignore_cols <- NA_character_;
+df <- read.csv("inst/extdata/kaggle_breast_cancer.csv"); dep_var <- "diagnosis == 'M'"; ignore_cols <- NA_character_;
+df <- read.csv("inst/extdata/kaggle_housing.csv"); dep_var <- "SalePrice"; ignore_cols <- NA_character_;
+df <- read.csv("inst/extdata/cognoma_samples.csv"); dep_var <- "dead"; ignore_cols <- "acronym";
 
 base_data <- refactor_columns(df, dep_var, ignore_cols = ignore_cols)
 
+set.seed(1234)
 df_train <- sample_frac(base_data, 0.8)
 df_test <- setdiff(base_data, df_train)
 
@@ -17,6 +21,7 @@ df_estimate <-
     estimate,
     grand_avg
   ) %>%
+  filter(!is.na(datascanr_outcome)) %>%
   mutate(
     off_by = estimate - datascanr_outcome,
     estimate_direction = ifelse(estimate > grand_avg, "above", "below"),
