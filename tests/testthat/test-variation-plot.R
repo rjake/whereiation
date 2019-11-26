@@ -2,7 +2,7 @@ test_that("variation_plot works", {
   p <- variation_plot(iris, "Petal.Length")
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(28, 8)
+  expected_dim <- c(28, 10)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)

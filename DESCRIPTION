@@ -13,6 +13,7 @@ Suggests:
   testthat,
   knitr
 Imports: 
+  broom,
   dplyr,
   forcats,
   ggplot2,
@@ -21,6 +22,7 @@ Imports:
   magrittr,
   purrr,
   rlang,
+  stats,
   stringr,
   tibble,
   tidyr
