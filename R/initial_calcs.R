@@ -60,10 +60,11 @@ refactor_columns <- function(df,
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
-#' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter
+#' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter do arrange desc rename
+#' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
-#' @importFrom stats sd
+#' @importFrom stats sd lm
 #' @importFrom rlang .data
 #'
 #' @export
@@ -125,12 +126,32 @@ summarize_factors <- function(df,
       filter(.data$n > 5)
   }
 
+  get_stats <- function(i) {
+   df %>%
+      select(value = i, .data$datascanr_outcome) %>%
+      gather(field, value, -.data$datascanr_outcome) %>%
+      rename(y = .data$datascanr_outcome) %>%
+      group_by(.data$field) %>%
+      do(glance(lm(.data$y ~ .data$value, data = .))) %>%
+      ungroup() %>%
+      arrange(desc(.data$adj.r.squared)) %>%
+      mutate(field = get_vars[i]) %>%
+      select(
+        .data$field,
+        field_r_sq = .data$r.squared,
+        field_r_sq_adj = .data$adj.r.squared,
+        field_p_value = .data$p.value
+      )
+  }
+
   # map_dfr all fields
   get_fields <- map_dfr(seq_along(get_vars), agg_fields)
+  field_stats <- map_dfr(seq_along(get_vars), get_stats)
 
   agg_data <-
     get_fields %>%
     filter(!is.na(.data$value)) %>%
+    left_join(field_stats) %>%
     mutate(
       group_avg = change_range(.data$group_avg, orig_min, orig_max),
       grand_avg = grand_avg#,
@@ -140,15 +161,16 @@ summarize_factors <- function(df,
     ) %>%
     group_by(.data$field) %>%
     filter(max(row_number()) > 1) %>%
-    mutate(
+    # mutate(
       # field_variance = var(group_avg),
       # extreme_group = max(abs(group_avg)),
-      field_range = max(.data$group_avg) - min(.data$group_avg)
-    ) %>%
+      # field_range = max(.data$group_avg) - min(.data$group_avg)
+    # ) %>%
     ungroup() %>%
     mutate(
-      field = fct_reorder(.data$field, .data$field_range, .fun = max, .desc = TRUE),
-      field_wt = .data$field_range / max(.data$field_range)
+      field_wt = abs(.data$field_r_sq_adj),
+      field = fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
+      #field_wt_old = .data$field_range / max(.data$field_range),
     )
 
   if (missing(return)) {
@@ -163,6 +185,8 @@ summarize_factors <- function(df,
     x <-
       list(
         data = agg_data,
+        field_stats = field_stats,
+        value_stats = get_fields,
         grand_avg = grand_avg,
         orig_min = orig_min,
         orig_max = orig_max

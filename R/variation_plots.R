@@ -50,7 +50,7 @@ variation_plot <- function(df,
     factor_stats %>%
     # left_join(field_ranks) %>%
     mutate(
-      field = fct_reorder(.data$field, .data$field_range, .fun = max),
+      field = fct_reorder(.data$field, .data$field_wt, .fun = max),
       label = paste(.data$field, ": \n", .data$value)
     )
 
@@ -64,7 +64,7 @@ variation_plot <- function(df,
     labs(
       title = paste0(dep_var, " across all factors of all fields"),
       subtitle = paste0("each point represents a factor in the field along the y axis, factors with 5 or fewer observations have been excluded \nthe dotted line is the grand ", avg_name, " across all observations"),
-      y = "Field",
+      y = "Field ranked by adjusted r-squared",
       x = paste0("group ", avg_name, " of the dependent variable for each factor"),
       size = "# of \n observations"
     )
