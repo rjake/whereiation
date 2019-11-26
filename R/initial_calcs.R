@@ -60,7 +60,7 @@ refactor_columns <- function(df,
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
-#' @importFrom dplyr select starts_with mutate group_by summarise n ungroup row_number filter do arrange desc rename
+#' @importFrom dplyr select starts_with select_if mutate group_by summarise n ungroup row_number filter do rename
 #' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
@@ -96,7 +96,10 @@ summarize_factors <- function(df,
   }
 
   get_vars <-
-    names(base_data %>% select(-starts_with("datascanr")))
+    base_data %>%
+    select(-starts_with("datascanr")) %>%
+    select_if(function(x) n_distinct(x) > 1) %>%
+    names()
 
   agg_fields <- function(i) {
     # i = 1
@@ -127,14 +130,13 @@ summarize_factors <- function(df,
   }
 
   get_stats <- function(i) {
-   df %>%
-      select(value = i, .data$datascanr_outcome) %>%
+    base_data %>%
+      select(value = get_vars[i], .data$datascanr_outcome) %>%
       gather(field, value, -.data$datascanr_outcome) %>%
       rename(y = .data$datascanr_outcome) %>%
       group_by(.data$field) %>%
       do(glance(lm(.data$y ~ .data$value, data = .))) %>%
       ungroup() %>%
-      arrange(desc(.data$adj.r.squared)) %>%
       mutate(field = get_vars[i]) %>%
       select(
         .data$field,
