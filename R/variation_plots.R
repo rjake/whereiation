@@ -110,7 +110,7 @@ variation_plot_single_obs <- function(df,
   avg <- eval(parse(text = avg_name))
 
   compare_values <-
-    analyze_data(
+    calculate_factor_stats(
       df = df,
       dep_var = dep_var,
       avg_type = avg_name,
@@ -121,7 +121,7 @@ variation_plot_single_obs <- function(df,
 
   one_obs_profile <-
     compare_values %>%
-    filter(.data$datascanr_id == get_id) %>%
+    filter(.data$y_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
       .data$factor_avg, #.data$group_dist,
