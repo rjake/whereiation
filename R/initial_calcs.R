@@ -106,10 +106,7 @@ summarize_factors <- function(df,
 }
 
 
-
-
-
-#' Calculate the importance of the FACTOR
+#' Calculate the importance of the FACTOR in a given field
 #'
 #' @param var variable/field to group by
 #' @param df refactored data
