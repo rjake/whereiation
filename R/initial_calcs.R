@@ -115,7 +115,7 @@ summarize_factors <- function(df,
 #' @param df refactored data
 #' @param avg_fn mean or median
 #'
-#' @import dplyr select mutate group_by summarise n ungroup filter everything
+#' @importFrom dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
 #' generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
@@ -141,8 +141,8 @@ generate_factor_stats <- function(var, df, avg_fn) {
 #' @param var variable/field to group by
 #' @param df refactored data
 #'
-#' @return
-#' @export
+#' @importFrom dplyr select do mutate
+#' @importFrom broom glance
 #'
 #' @examples
 #' generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
