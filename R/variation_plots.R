@@ -35,8 +35,8 @@ variation_plot <- function(df,
   }
 
   factor_stats <-
-    summarize_factors(
-      df = refactor_columns(df, dep_var),
+    analyze_data(
+      df = df,
       dep_var = dep_var,
       n_cat = n_cat,
       n_quantile = n_quantile,
@@ -55,7 +55,12 @@ variation_plot <- function(df,
     )
 
   group_value_ranks %>%
-    ggplot(aes(.data$group_avg, .data$field, color = .data$field, fill = .data$field)) +
+    ggplot(
+      aes(
+        .data$factor_avg, .data$field,
+        color = .data$field, fill = .data$field
+        )
+    ) +
     geom_vline(xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted") +
     geom_line(size = 6, alpha = 0.2, lineend = "round") +
     geom_point(aes(size = .data$n), shape = 21, color = "black", stroke = 0.5) +
@@ -105,7 +110,7 @@ variation_plot_single_obs <- function(df,
   avg <- eval(parse(text = avg_name))
 
   compare_values <-
-    calculate_factor_stats(
+    generate_estimate_details(
       df = df,
       dep_var = dep_var,
       avg_type = avg_name,
@@ -116,11 +121,11 @@ variation_plot_single_obs <- function(df,
 
   one_obs_profile <-
     compare_values %>%
-    filter(.data$datascanr_id == get_id) %>%
+    filter(.data$y_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
-      .data$group_avg, #.data$group_dist,
-      .data$group_avg_wt,
+      .data$factor_avg, #.data$group_dist,
+      .data$factor_avg_wt,
       .data$estimate
     )
 
@@ -157,3 +162,4 @@ variation_plot_single_obs <- function(df,
 
   plot_orig
 }
+
