@@ -2,7 +2,7 @@
 #'
 #' @inheritParams variation_plot
 #'
-#' @importFrom tibble tibble
+#' @importFrom tibble as_tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
 #' @importFrom lubridate is.Date is.POSIXct
 #'
@@ -30,19 +30,25 @@ refactor_columns <- function(df,
 
   suppressWarnings(
     keep_cols <-
-      df %>%
-      mutate(datascanr_outcome = eval(parse(text = dep_var))) %>%
-      select(-one_of(c(ignore_cols, dv_name))) %>%
-      mutate(datascanr_id = row_number())
+      as_tibble(df) %>%
+      mutate(
+        y_outcome = eval(parse(text = dep_var)),
+        y_id = row_number()
+      ) %>%
+      select(
+        .data$y_outcome,
+        .data$y_id,
+        everything(),
+        -one_of(c(ignore_cols, dv_name))
+      )
   )
 
   keep_cols %>%
-    select(-starts_with("datascanr")) %>%
-    # mutate(outcome = ifelse(max(outcome) == 1, outcome*100, outcome))
+    select(-c(1:2)) %>%
     mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
     mutate_if(~check_cut_numeric(., n_quantile), cut_custom, n_quantile) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat) %>%
-    bind_cols(keep_cols %>% select(starts_with("datascanr"))) %>%
+    bind_cols(select(keep_cols, c(1:2)), .) %>%
     mutate_if(is.logical, as.integer)
 }
