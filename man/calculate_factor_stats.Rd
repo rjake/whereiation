@@ -32,7 +32,7 @@ The dataset returned will be the length of the # of columns x # of rows
 }
 \seealso{
 Other manipulation functions: 
-\code{\link{refactor_columns}()},
-\code{\link{summarize_factors}()}
+\code{\link{analyze_data}()},
+\code{\link{refactor_columns}()}
 }
 \concept{manipulation functions}

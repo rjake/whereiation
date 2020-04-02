@@ -39,7 +39,7 @@ refactor_columns(df = iris, dep_var = "Sepal.Length")
 }
 \seealso{
 Other manipulation functions: 
-\code{\link{calculate_factor_stats}()},
-\code{\link{summarize_factors}()}
+\code{\link{analyze_data}()},
+\code{\link{calculate_factor_stats}()}
 }
 \concept{manipulation functions}
