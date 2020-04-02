@@ -8,6 +8,8 @@
 #'
 #' @export
 #' @family manipulation functions
+#' @examples
+#' refactor_columns(df = iris, dep_var = "Sepal.Length")
 refactor_columns <- function(df,
                              dep_var,
                              n_cat = 10,
