@@ -10,16 +10,17 @@
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
-#' @importFrom dplyr select starts_with select_if mutate group_by summarise n ungroup row_number filter do rename
+#' @importFrom dplyr select select_if mutate group_by summarise ungroup row_number filter
 #' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 #' @importFrom scales rescale_mid
-#' @importFrom stats sd lm
 #' @importFrom rlang .data
 #'
 #' @export
 #' @family manipulation functions
+#' @examples
+#' summarize_factors(iris, dep_var = "Sepal.Length")
 summarize_factors <- function(df,
                               ...,
                               avg_type = c("mean", "median"),
