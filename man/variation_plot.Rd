@@ -4,8 +4,14 @@
 \alias{variation_plot}
 \title{Visualize variation among all factor levels for all variables}
 \usage{
-variation_plot(df, dep_var, n_cat = 10, n_quantile = 10,
-  avg_type = c("mean", "median"), ignore_cols = NA_character_)
+variation_plot(
+  df,
+  dep_var,
+  n_cat = 10,
+  n_quantile = 10,
+  avg_type = c("mean", "median"),
+  ignore_cols = NA_character_
+)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -32,6 +38,7 @@ Visualize variation among all factor levels for all variables
 variation_plot(ggplot2::mpg, "hwy")
 }
 \seealso{
-Other visualization functions: \code{\link{variation_plot_single_obs}}
+Other visualization functions: 
+\code{\link{variation_plot_single_obs}()}
 }
 \concept{visualization functions}

@@ -35,14 +35,15 @@ ignore_cols <- NA_character_
 
 
 
-refactor_columns(
-  df = df,
-  dep_var = dep_var,
-  ignore_cols = ignore_cols
-)
+refactor_data <-
+  refactor_columns(
+    df = df,
+    dep_var = dep_var,
+    ignore_cols = ignore_cols
+  )
 
 summarize_factors(
-  df = df,
+  df = refactor_data,
   dep_var = dep_var,
   ignore_cols = ignore_cols
 )

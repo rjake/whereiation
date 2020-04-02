@@ -4,28 +4,32 @@
 \alias{variation_plot_single_obs}
 \title{Visualize variation and logic for a single observation}
 \usage{
-variation_plot_single_obs(df, dep_var, ..., avg_type = c("mean",
-  "median"), labels = FALSE, id = 1)
+variation_plot_single_obs(
+  df,
+  dep_var,
+  ...,
+  avg_type = c("mean", "median"),
+  labels = FALSE,
+  id = 1
+)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
 
 \item{dep_var}{dependent variable to use (column name)}
 
-\item{...}{Arguments passed on to \code{variation_plot}
-\describe{
-  \item{df}{dataframe to evaluate}
-  \item{dep_var}{dependent variable to use (column name)}
-  \item{avg_type}{mean or median}
-  \item{ignore_cols}{columns to ignore from analysis. Good candidates are
+\item{...}{
+  Arguments passed on to \code{\link[=variation_plot]{variation_plot}}
+  \describe{
+    \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
-  \item{n_cat}{for categorical variables, the max number of unique values
+    \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
-  \item{n_quantile}{for numeric/date fields, the number of quantiles used
+    \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.}
-}}
+  }}
 
 \item{avg_type}{mean or median}
 
@@ -40,6 +44,7 @@ Visualize variation and logic for a single observation
 variation_plot_single_obs(ggplot2::mpg, "hwy")
 }
 \seealso{
-Other visualization functions: \code{\link{variation_plot}}
+Other visualization functions: 
+\code{\link{variation_plot}()}
 }
 \concept{visualization functions}
