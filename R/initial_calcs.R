@@ -111,10 +111,11 @@ summarize_factors <- function(df,
 
 #' Title
 #'
-#' @param var
-#' @param avg_fn
+#' @param df refactored data
+#' @param var variable/field to group by
+#' @param avg_fn mean or median
 #'
-#' @return
+#' @import dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
 #' agg_fields("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
@@ -135,15 +136,11 @@ agg_fields <- function(var, df, avg_fn) {
 }
 
 
-get_stats <- function(i) {
-  base_data %>%
-    select(value = get_vars[i], .data$y_outcome) %>%
-    gather(field, value, -.data$y_outcome) %>%
-    rename(y = .data$y_outcome) %>%
-    group_by(.data$field) %>%
-    do(glance(lm(.data$y ~ .data$value, data = .))) %>%
-    ungroup() %>%
-    mutate(field = get_vars[i]) %>%
+get_stats <- function(df, var) {
+  df %>%
+    select(value = var, .data$y_outcome) %>%
+    do(glance(lm(.data$y_outcome ~ .data$value, data = .))) %>%
+    mutate(field = var) %>%
     select(
       .data$field,
       field_r_sq = .data$r.squared,
