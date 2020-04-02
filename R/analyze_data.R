@@ -21,6 +21,7 @@
 #' @family manipulation functions
 #' @examples
 #' analyze_data(iris, dep_var = "Sepal.Length")
+#' analyze_data(iris, dep_var = "Sepal.Length", return = "list")
 analyze_data <- function(df,
                               ...,
                               avg_type = c("mean", "median"),
