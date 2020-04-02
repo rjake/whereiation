@@ -15,6 +15,7 @@
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 #' @importFrom scales rescale_mid
+#' @importFrom stats quantile
 #' @importFrom rlang .data
 #'
 #' @export
@@ -117,7 +118,7 @@ analyze_data <- function(df,
 #' @importFrom dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
-#' generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
+#' generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
 generate_factor_stats <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
@@ -131,7 +132,7 @@ generate_factor_stats <- function(var, df, avg_fn) {
     ungroup() %>%
     mutate(field = var) %>%
     filter(.data$n > 5) %>%
-    select(field, everything())
+    select(.data$field, everything())
 }
 
 
@@ -142,6 +143,7 @@ generate_factor_stats <- function(var, df, avg_fn) {
 #'
 #' @importFrom dplyr select do mutate
 #' @importFrom broom glance
+#' @importFrom stats lm
 #'
 #' @examples
 #' generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))

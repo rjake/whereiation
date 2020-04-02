@@ -49,7 +49,7 @@ generate_estimate_details <- function(df, train_data, dep_var, ...) {
         rescale_estimate = rescale_mid(
           x = .data$estimate,
           to = c(orig_min, orig_max),
-          mid = grand_avg
+          mid = group_stats$grand_avg
         )
       )
   )
