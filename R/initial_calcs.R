@@ -23,7 +23,7 @@ summarize_factors <- function(df,
                               ...,
                               avg_type = c("mean", "median"),
                               return = c("data", "list")
-) {
+                              ) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
@@ -31,18 +31,18 @@ summarize_factors <- function(df,
   }
 
   base_data <-
-    df %>%
-    filter(!is.na(.data$datascanr_outcome))
+    refactor_columns(df, ...) %>%
+    filter(!is.na(.data$y_outcome))
 
   avg <- eval(parse(text = avg_name))
 
-  grand_avg <- avg(base_data$datascanr_outcome)
+  grand_avg <- avg(base_data$y_outcome)
 
-  orig_min <- boxplot.stats(base_data$datascanr_outcome)$stats[1]
-  orig_max <- boxplot.stats(base_data$datascanr_outcome)$stats[5]
+  orig_min <- boxplot.stats(base_data$y_outcome)$stats[1]
+  orig_max <- boxplot.stats(base_data$y_outcome)$stats[5]
 
   if (orig_min == orig_max && orig_min == 0) {
-    orig_max <- max(base_data$datascanr_outcome)
+    orig_max <- max(base_data$y_outcome)
   }
 
   get_vars <-
@@ -51,50 +51,7 @@ summarize_factors <- function(df,
     select_if(function(x) n_distinct(x) > 1) %>%
     names()
 
-  agg_fields <- function(i) {
-    # i = 1
-    base_data %>%
-      select(value = i, .data$datascanr_outcome) %>%
-      mutate(
-        field = names(base_data)[i],
-        value = as.character(.data$value)
-      ) %>%
-      group_by(.data$field, .data$value) %>%
-      mutate(
-        group_avg = avg(.data$datascanr_outcome)#,
-        #group_var = var(datascanr_outcome),
-        #group_sd = sd(.data$datascanr_outcome)
-      ) %>%
-      group_by(
-        .data$field, .data$value, .data$datascanr_outcome,
-        .data$group_avg#, .data$group_sd, .data$group_var
-      ) %>%
-      summarise(n = n()) %>%
-      group_by(
-        .data$field, .data$value,
-        .data$group_avg#, .data$group_sd, .data$group_var
-      ) %>%
-      summarise(n = sum(.data$n)) %>%
-      ungroup() %>%
-      filter(.data$n > 5)
-  }
 
-  get_stats <- function(i) {
-    base_data %>%
-      select(value = get_vars[i], .data$datascanr_outcome) %>%
-      gather(field, value, -.data$datascanr_outcome) %>%
-      rename(y = .data$datascanr_outcome) %>%
-      group_by(.data$field) %>%
-      do(glance(lm(.data$y ~ .data$value, data = .))) %>%
-      ungroup() %>%
-      mutate(field = get_vars[i]) %>%
-      select(
-        .data$field,
-        field_r_sq = .data$r.squared,
-        field_r_sq_adj = .data$adj.r.squared,
-        field_p_value = .data$p.value
-      )
-  }
 
   # map_dfr all fields
   get_fields <- map_dfr(seq_along(get_vars), agg_fields)
@@ -149,3 +106,48 @@ summarize_factors <- function(df,
 }
 
 
+agg_fields <- function(i) {
+  # i = 1
+  base_data %>%
+    select(value = i, .data$y_outcome) %>%
+    mutate(
+      field = names(base_data)[i],
+      value = as.character(.data$value)
+    ) %>%
+    group_by(.data$field, .data$value) %>%
+    mutate(
+      group_avg = avg(.data$y_outcome)#,
+      #group_var = var(y_outcome),
+      #group_sd = sd(.data$y_outcome)
+    ) %>%
+    group_by(
+      .data$field, .data$value, .data$y_outcome,
+      .data$group_avg#, .data$group_sd, .data$group_var
+    ) %>%
+    summarise(n = n()) %>%
+    group_by(
+      .data$field, .data$value,
+      .data$group_avg#, .data$group_sd, .data$group_var
+    ) %>%
+    summarise(n = sum(.data$n)) %>%
+    ungroup() %>%
+    filter(.data$n > 5)
+}
+
+
+get_stats <- function(i) {
+  base_data %>%
+    select(value = get_vars[i], .data$y_outcome) %>%
+    gather(field, value, -.data$y_outcome) %>%
+    rename(y = .data$y_outcome) %>%
+    group_by(.data$field) %>%
+    do(glance(lm(.data$y ~ .data$value, data = .))) %>%
+    ungroup() %>%
+    mutate(field = get_vars[i]) %>%
+    select(
+      .data$field,
+      field_r_sq = .data$r.squared,
+      field_r_sq_adj = .data$adj.r.squared,
+      field_p_value = .data$p.value
+    )
+}
