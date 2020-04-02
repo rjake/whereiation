@@ -23,7 +23,7 @@ generate_estimate_details <- function(df, train_data, dep_var, ...) {
     group_stats <- analyze_data(df, dep_var = dep_var, ..., return = "list")
   } else {
     base_data <- df
-    group_stats <- analyze_data(train_data, ..., return = "list")
+    group_stats <- analyze_data(train_data, dep_var = dep_var, ..., return = "list")
   }
 
   group_stats_data <- group_stats$data
