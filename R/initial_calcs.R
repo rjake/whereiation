@@ -20,8 +20,8 @@
 #' @export
 #' @family manipulation functions
 #' @examples
-#' summarize_factors(iris, dep_var = "Sepal.Length")
-summarize_factors <- function(df,
+#' analyze_data(iris, dep_var = "Sepal.Length")
+analyze_data <- function(df,
                               ...,
                               avg_type = c("mean", "median"),
                               return = c("data", "list")
@@ -96,7 +96,7 @@ summarize_factors <- function(df,
       list(
         data = agg_data,
         field_stats = field_stats,
-        value_stats = get_fields,
+        factor_stats = factor_stats,
         grand_avg = grand_avg,
         orig_min = orig_min,
         orig_max = orig_max
