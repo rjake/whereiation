@@ -24,20 +24,21 @@ summarize_factors <- function(df,
                               avg_type = c("mean", "median"),
                               return = c("data", "list")
                               ) {
+  base_data <-
+    refactor_columns(df, ...) %>%
+    filter(!is.na(.data$y_outcome))
+
+  # get average of DV
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
     avg_name <- match.arg(avg_type)
   }
 
-  base_data <-
-    refactor_columns(df, ...) %>%
-    filter(!is.na(.data$y_outcome))
-
   avg <- eval(parse(text = avg_name))
-
   grand_avg <- avg(base_data$y_outcome)
 
+  # range of original DV
   orig_min <- quantile(base_data$y_outcome, 0.02)
   orig_max <- quantile(base_data$y_outcome, 0.98)
 
@@ -45,16 +46,15 @@ summarize_factors <- function(df,
     orig_max <- max(base_data$y_outcome)
   }
 
+  # find fields to use
   get_vars <-
     base_data %>%
-    select(-starts_with("datascanr")) %>%
+    select(-c(1:2)) %>%
     select_if(function(x) n_distinct(x) > 1) %>%
     names()
 
-
-
   # map_dfr all fields
-  get_fields <- map_dfr(seq_along(get_vars), agg_fields)
+  get_fields <- map_dfr(get_vars, agg_fields, base_data, avg_fn = avg)
   field_stats <- map_dfr(seq_along(get_vars), get_stats)
 
   agg_data <-
@@ -106,32 +106,32 @@ summarize_factors <- function(df,
 }
 
 
-agg_fields <- function(i) {
-  # i = 1
-  base_data %>%
-    select(value = i, .data$y_outcome) %>%
-    mutate(
-      field = names(base_data)[i],
-      value = as.character(.data$value)
+
+
+
+#' Title
+#'
+#' @param var
+#' @param avg_fn
+#'
+#' @return
+#'
+#' @examples
+#' agg_fields("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
+agg_fields <- function(var, df, avg_fn) {
+  df %>%
+    select(value = var, .data$y_outcome) %>%
+    mutate(value = as.character(.data$value)) %>%
+    # factor avg
+    group_by(.data$value) %>%
+    summarise(
+      group_avg = avg_fn(.data$y_outcome),
+      n = n()
     ) %>%
-    group_by(.data$field, .data$value) %>%
-    mutate(
-      group_avg = avg(.data$y_outcome)#,
-      #group_var = var(y_outcome),
-      #group_sd = sd(.data$y_outcome)
-    ) %>%
-    group_by(
-      .data$field, .data$value, .data$y_outcome,
-      .data$group_avg#, .data$group_sd, .data$group_var
-    ) %>%
-    summarise(n = n()) %>%
-    group_by(
-      .data$field, .data$value,
-      .data$group_avg#, .data$group_sd, .data$group_var
-    ) %>%
-    summarise(n = sum(.data$n)) %>%
     ungroup() %>%
-    filter(.data$n > 5)
+    mutate(field = var) %>%
+    filter(.data$n > 5) %>%
+    select(field, everything())
 }
 
 
