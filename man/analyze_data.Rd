@@ -40,10 +40,11 @@ used for plotting
 }
 \examples{
 analyze_data(iris, dep_var = "Sepal.Length")
+analyze_data(iris, dep_var = "Sepal.Length", return = "list")
 }
 \seealso{
 Other manipulation functions: 
-\code{\link{calculate_factor_stats}()},
+\code{\link{generate_estimate_details}()},
 \code{\link{refactor_columns}()}
 }
 \concept{manipulation functions}

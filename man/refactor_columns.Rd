@@ -40,6 +40,6 @@ refactor_columns(df = iris, dep_var = "Sepal.Length")
 \seealso{
 Other manipulation functions: 
 \code{\link{analyze_data}()},
-\code{\link{calculate_factor_stats}()}
+\code{\link{generate_estimate_details}()}
 }
 \concept{manipulation functions}
