@@ -38,8 +38,8 @@ summarize_factors <- function(df,
 
   grand_avg <- avg(base_data$y_outcome)
 
-  orig_min <- boxplot.stats(base_data$y_outcome)$stats[1]
-  orig_max <- boxplot.stats(base_data$y_outcome)$stats[5]
+  orig_min <- quantile(base_data$y_outcome, 0.02)
+  orig_max <- quantile(base_data$y_outcome, 0.98)
 
   if (orig_min == orig_max && orig_min == 0) {
     orig_max <- max(base_data$y_outcome)
