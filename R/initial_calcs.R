@@ -54,8 +54,8 @@ summarize_factors <- function(df,
     names()
 
   # map_dfr all fields
-  get_fields <- map_dfr(get_vars, agg_fields, df = base_data, avg_fn = avg)
-  field_stats <- map_dfr(get_vars, get_stats, df = base_data)
+  get_fields <- map_dfr(get_vars, generate_factor_stats, df = base_data, avg_fn = avg)
+  field_stats <- map_dfr(get_vars, generate_field_stats, df = base_data)
 
   agg_data <-
     get_fields %>%
@@ -118,8 +118,8 @@ summarize_factors <- function(df,
 #' @import dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
-#' agg_fields("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
-agg_fields <- function(var, df, avg_fn) {
+#' generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), "mean")
+generate_factor_stats <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     mutate(value = as.character(.data$value)) %>%
@@ -145,8 +145,8 @@ agg_fields <- function(var, df, avg_fn) {
 #' @export
 #'
 #' @examples
-#' get_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
-get_stats <- function(var, df) {
+#' generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
+generate_field_stats <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     do(glance(lm(.data$y_outcome ~ .data$value, data = .))) %>%
