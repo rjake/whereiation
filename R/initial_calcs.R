@@ -14,6 +14,7 @@
 #' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
+#' @importFrom scales rescale_mid
 #' @importFrom stats sd lm
 #' @importFrom rlang .data
 #'
@@ -28,8 +29,8 @@ summarize_factors <- function(df,
     refactor_columns(df, ...) %>%
     filter(!is.na(.data$y_outcome))
 
-  # get average of DV
-  if(missing(avg_type)) {
+  # get average method to use for of DV
+  if (missing(avg_type)) {
     avg_name <- "mean"
   } else {
     avg_name <- match.arg(avg_type)
@@ -54,34 +55,33 @@ summarize_factors <- function(df,
     names()
 
   # map_dfr all fields
-  get_fields <- map_dfr(get_vars, generate_factor_stats, df = base_data, avg_fn = avg)
+  factor_stats <-
+    map_dfr(get_vars, generate_factor_stats, df = base_data, avg_fn = avg)
+
   field_stats <- map_dfr(get_vars, generate_field_stats, df = base_data)
 
+  # restretch group averages values
   agg_data <-
-    get_fields %>%
+    factor_stats %>%
     filter(!is.na(.data$value)) %>%
     left_join(field_stats) %>%
     mutate(
-      group_avg = change_range(.data$group_avg, orig_min, orig_max),
-      grand_avg = grand_avg#,
-      #group_dist = .data$group_avg - .data$grand_avg
-      # value_diff = group_avg - grand_avg,
-      # abs_value_diff = abs(value_diff)
+      rescale_factor_avg = rescale_mid(
+        x = .data$factor_avg,
+        to = c(orig_min, orig_max),
+        mid = grand_avg
+      ),
+      grand_avg = grand_avg
     ) %>%
     group_by(.data$field) %>%
     filter(max(row_number()) > 1) %>%
-    # mutate(
-      # field_variance = var(group_avg),
-      # extreme_group = max(abs(group_avg)),
-      # field_range = max(.data$group_avg) - min(.data$group_avg)
-    # ) %>%
     ungroup() %>%
     mutate(
       field_wt = abs(.data$field_r_sq_adj),
       field = fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
-      #field_wt_old = .data$field_range / max(.data$field_range),
     )
 
+  # return the either a dataframe or a list
   if (missing(return)) {
     x_is <- "data"
   } else {
@@ -123,7 +123,7 @@ generate_factor_stats <- function(var, df, avg_fn) {
     # factor avg
     group_by(.data$value) %>%
     summarise(
-      group_avg = avg_fn(.data$y_outcome),
+      factor_avg = avg_fn(.data$y_outcome),
       n = n()
     ) %>%
     ungroup() %>%

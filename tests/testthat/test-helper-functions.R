@@ -1,10 +1,3 @@
-test_that("change_range works", {
-  actual <- change_range(1:10, 10, 100)
-  expected <- 1:10*10
-  expect_equal(actual, expected)
-})
-
-
 test_that("check_cut_numeric works", {
   # x is numeric and the # of distinct vals > n_quantile
   expect_true(check_cut_numeric(x = 1:10, n_quantile = 3))

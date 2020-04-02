@@ -1,13 +1,3 @@
-#' Expand the range to a new min and max
-#' @param x numeric vector
-#' @param new_min new minimum value
-#' @param new_max new maxmim value
-#' @noRd
-change_range <- function(x, new_min, new_max) {
-  (x - min(x)) / (max(x) - min(x)) * (new_max - new_min) + new_min
-}
-
-
 #' Confirm if numeric should be cut
 #' @param x vector of data
 #' @param n_quantile (max) number of quantiles to break data
