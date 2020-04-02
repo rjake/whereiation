@@ -54,8 +54,8 @@ summarize_factors <- function(df,
     names()
 
   # map_dfr all fields
-  get_fields <- map_dfr(get_vars, agg_fields, base_data, avg_fn = avg)
-  field_stats <- map_dfr(seq_along(get_vars), get_stats)
+  get_fields <- map_dfr(get_vars, agg_fields, df = base_data, avg_fn = avg)
+  field_stats <- map_dfr(get_vars, get_stats, df = base_data)
 
   agg_data <-
     get_fields %>%
@@ -136,7 +136,7 @@ agg_fields <- function(var, df, avg_fn) {
 }
 
 
-get_stats <- function(df, var) {
+get_stats <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     do(glance(lm(.data$y_outcome ~ .data$value, data = .))) %>%
