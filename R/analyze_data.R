@@ -118,12 +118,11 @@ analyze_data <- function(df,
 #' @importFrom dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
-#' generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
+#' # generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
 generate_factor_stats <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     mutate(value = as.character(.data$value)) %>%
-    # factor avg
     group_by(.data$value) %>%
     summarise(
       factor_avg = avg_fn(.data$y_outcome),
@@ -146,7 +145,7 @@ generate_factor_stats <- function(var, df, avg_fn) {
 #' @importFrom stats lm
 #'
 #' @examples
-#' generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
+#' # generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
 generate_field_stats <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
