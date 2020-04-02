@@ -10,7 +10,7 @@
 #' @inheritDotParams variation_plot
 #' @inheritParams variation_plot
 #'
-#' @importFrom dplyr select select_if mutate group_by summarise ungroup row_number filter
+#' @importFrom dplyr filter n_distinct select select_if mutate group_by summarise ungroup row_number
 #' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
