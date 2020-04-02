@@ -15,8 +15,8 @@
 #' @export
 #' @family manipulation functions
 #' @examples
-#' calculate_factor_stats(df = iris, dep_var = "Sepal.Length")
-calculate_factor_stats <- function(df, train_data, dep_var, ...) {
+#' generate_estimate_details(df = iris, dep_var = "Sepal.Length")
+generate_estimate_details <- function(df, train_data, dep_var, ...) {
 
   if (missing(train_data)) {
     base_data <- refactor_columns(df, dep_var = dep_var, ...)

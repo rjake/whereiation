@@ -110,7 +110,7 @@ variation_plot_single_obs <- function(df,
   avg <- eval(parse(text = avg_name))
 
   compare_values <-
-    calculate_factor_stats(
+    generate_estimate_details(
       df = df,
       dep_var = dep_var,
       avg_type = avg_name,
