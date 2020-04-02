@@ -17,5 +17,5 @@ generate_factor_stats(var, df, avg_fn)
 Calculate the importance of the FACTOR in a given field
 }
 \examples{
-generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
+# generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
 }

@@ -15,5 +15,5 @@ generate_field_stats(var, df)
 Calculate the importance of the FIELD
 }
 \examples{
-generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
+# generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
 }
