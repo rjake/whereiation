@@ -5,6 +5,8 @@
 #' @param position whether to return the highest ("top") or lowest ("bottom")
 #'
 #' @inheritDotParams variation_plot
+#' @inheritParams variation_plot
+#' @importFrom utils head tail capture.output
 #' @importFrom dplyr distinct arrange left_join select mutate rename_all desc
 #' @importFrom scales percent
 #' @importFrom glue glue
