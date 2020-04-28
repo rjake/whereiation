@@ -39,6 +39,7 @@ variation_plot(ggplot2::mpg, "hwy")
 }
 \seealso{
 Other visualization functions: 
+\code{\link{profile_n}()},
 \code{\link{variation_plot_single_obs}()}
 }
 \concept{visualization functions}
