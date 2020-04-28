@@ -18,6 +18,8 @@ Imports:
   forcats,
   ggplot2,
   ggrepel,
+  glue,
+  kableExtra,
   lubridate,
   magrittr,
   purrr,
