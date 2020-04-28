@@ -17,9 +17,11 @@
 #' @family visualization functions
 
 #' @examples
-#' \dontrun {
+#' \dontrun{
 #' profile_n(df = iris, dep_var = "Sepal.Length")
+#' profile_n(df = iris, dep_var = "Species == 'virginica'")
 #' }
+#'
 profile_n <- function(df,
                       dep_var,
                       ...,
@@ -51,7 +53,7 @@ profile_n <- function(df,
       .data$value, .data$factor_avg, .data$estimate
     ) %>%
     mutate(
-      pct_group = percent(.data$factor_avg, accuracy = 1),
+      pct_group = round(.data$factor_avg, 3),
       est_obs = round(.data$estimate, 4),
       cell = glue("{.data$value}\n{.data$pct_group}"),
       id = glue("ID {.data$id}<br/>est: {.data$est_obs}")
@@ -71,16 +73,18 @@ profile_n <- function(df,
       )
     ) %>%
     select(.data$id, .data$field, .data$field_wt, .data$cell) %>%
-    spread(.data$id, .data$cell) %>%
+    spread(.data$id, .data$cell, fill = "small\nsample size") %>%
     arrange(desc(.data$field_wt)) %>%
     mutate(field_wt = percent(.data$field_wt, 3))
 
 
-  df_style %>%
+  x <-
+    df_style %>%
     kable(
       escape = FALSE, align = "c",
       format = "html",
       caption = glue("{dep_var}: {position} {n} observations")
     ) %>%
-    kable_styling(c("striped", "condensed"), full_width = TRUE)
+    kable_styling(c("striped", "condensed"), full_width = TRUE) %>%
+    capture.output()
 }
