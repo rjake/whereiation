@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Visualize variation and logic for a single observation — variation_plot_single_obs • datascanr</title>
+<title>Find drivers of variation — find_drivers • datascanr</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Visualize variation and logic for a single observation — variation_plot_single_obs" />
-<meta property="og:description" content="Visualize variation and logic for a single observation" />
+<meta property="og:title" content="Find drivers of variation — find_drivers" />
+<meta property="og:description" content="Find drivers of variation" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -100,38 +100,26 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Visualize variation and logic for a single observation</h1>
+    <h1>Find drivers of variation</h1>
     
-    <div class="hidden name"><code>variation_plot_single_obs.Rd</code></div>
+    <div class="hidden name"><code>find_drivers.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Visualize variation and logic for a single observation</p>
+    <p>Find drivers of variation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>variation_plot_single_obs</span>(
-  <span class='no'>df</span>,
-  <span class='no'>dep_var</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
-  <span class='kw'>labels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>id</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</pre>
+    <pre class="usage"><span class='fu'>find_drivers</span>(<span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>df</th>
-      <td><p>dataframe to evaluate</p></td>
-    </tr>
-    <tr>
-      <th>dep_var</th>
-      <td><p>dependent variable to use (column name)</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>Arguments passed on to <code><a href='variation_plot.html'>variation_plot</a></code></p><dl class='dl-horizontal'>
+    <dt><code>df</code></dt><dd><p>dataframe to evaluate</p></dd>
+    <dt><code>dep_var</code></dt><dd><p>dependent variable to use (column name)</p></dd>
+    <dt><code>avg_type</code></dt><dd><p>mean or median</p></dd>
     <dt><code>ignore_cols</code></dt><dd><p>columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values</p></dd>
@@ -143,34 +131,28 @@ will not be changed.</p></dd>
   
 </dl></td>
     </tr>
-    <tr>
-      <th>avg_type</th>
-      <td><p>mean or median</p></td>
-    </tr>
-    <tr>
-      <th>labels</th>
-      <td><p>when TRUE will show the labels of the factor levels outlined in the plot</p></td>
-    </tr>
-    <tr>
-      <th>id</th>
-      <td><p>is id (row number) from <code>base_data()</code> to use</p></td>
-    </tr>
     </table>
 
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Other visualization functions: 
-<code><a href='profile_n.html'>profile_n</a>()</code>,
-<code><a href='variation_plot.html'>variation_plot</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>variation_plot_single_obs</span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, <span class='st'>"hwy"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='img'><img src='variation_plot_single_obs-1.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>find_drivers</span>(<span class='kw'>df</span> <span class='kw'>=</span> <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"hwy"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 10 x 9</span><span>
+#&gt;    adj_r_sq   p_value n_low value_low  avg_low field  avg_high value_high n_high
+#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span>  0.906   1.11</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-112</span><span>    25 [8.974,11…    14.8 cty        31.2 [22,24.6)      12
+#&gt; </span><span style='color: #555555;'> 2</span><span>  0.680   1.26</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 54</span><span>    33 pickup        16.9 class      28.3 compact        47
+#&gt; </span><span style='color: #555555;'> 3</span><span>  0.669   7.60</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 51</span><span>    29 [4.3,4.84)    16.9 displ      30.8 [1.5946,2…     43
+#&gt; </span><span style='color: #555555;'> 4</span><span>  0.579   1.18</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 45</span><span>    70 8             17.6 cyl        28.8 4              81
+#&gt; </span><span style='color: #555555;'> 5</span><span>  0.527   1.13</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 38</span><span>   103 4             19.2 drv        28.2 f             106
+#&gt; </span><span style='color: #555555;'> 6</span><span>  0.478   1.22</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 28</span><span>    37 dodge         17.9 manuf…     32.6 honda           9
+#&gt; </span><span style='color: #555555;'> 7</span><span>  0.286   2.77</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 14</span><span>    10 ram 1500 …    15.3 model      32.6 civic           9
+#&gt; </span><span style='color: #555555;'> 8</span><span>  0.192   7.93</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 11</span><span>     8 e             13.2 fl         25.2 p              52
+#&gt; </span><span style='color: #555555;'> 9</span><span>  0.113   3.49</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-  5</span><span>     6 auto(l6)      20   trans      26.3 manual(m5)     58
+#&gt; </span><span style='color: #555555;'>10</span><span> -</span><span style='color: #BB0000;'>0.004</span><span style='color: #BB0000;text-decoration: underline;'>31</span><span> 9.74</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-  1</span><span>   117 1999          23.4 year       23.5 2008          117</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 
