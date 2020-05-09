@@ -1,4 +1,4 @@
 library(testthat)
-library(datascanr)
+library(whereiation)
 
-test_check("datascanr")
+test_check("whereiation")

@@ -1,5 +1,5 @@
 ---
-title: "datascanr: demo"
+title: "whereiation: demo"
 author: "jake riley"
 output: html_document
 ---
@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, cache = T, 
 
 ```{r}
 library(tidyverse)
-library(datascanr)
+library(whereiation)
 ```
 
 ```{r}
