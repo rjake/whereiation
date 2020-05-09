@@ -38,7 +38,7 @@ variation_plot(ggplot2::mpg, "cty")
 <img src="man/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
 
 The variation plot is likely to be unfamiliar. This image should help
-explain whatís going on (click to see a bigger pic):
+explain what‚Äôs going on (click to see a bigger pic):
 
 <img src="man/figures/mpg_variation_plot_reading.png" alt="mpg_variation_plot_reading" width="500"/>
 
@@ -59,7 +59,7 @@ contribution. As you work your way from highest to lowest, the
 expectation is that the impact of these different factors have less and
 less pull.
 
-Sometimes itís easier to see an example of where one observation may
+Sometimes it‚Äôs easier to see an example of where one observation may
 fall. For this you can use
 
 ``` r
@@ -82,7 +82,7 @@ field_scan(ggplot2::mpg, n_cat = 10, n_quantile = 4)
 ```
 
 Categorical data can be rolled-up into a limited number of categories,
-putting less freuquent factors in an ìOtherî category (defaults to
+putting less freuquent factors in an ‚ÄúOther‚Äù category (defaults to
 `n_cat = 15`). Numeric data is cut into a specified number of quantiles
 (defaults to `n_quantile = 10`).
 <img src="man/figures/mpg_field_scan.png" alt="field_scan" width="500"/>
