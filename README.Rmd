@@ -13,34 +13,34 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# datascanr
-
+# whereiation
 <!-- badges: start -->
 <!-- badges: end -->
+`where` _(is the var-)_ `iation` ?
 
-The goal of datascanr is to run a pre-analysis screen of your data. Before guessing which fields you should look at, these charts are designed to help you understand the fields of your data.
+The goal of `whereiation` is to run a pre-analysis screen of your data. Before guessing which fields you should look at, these charts are designed to help you understand variation for an oucome variable across all fields in your data.
 
 ## Installation
 
 
 ```{r, echo=FALSE, eval=FALSE}
-#You can install the released version of datascanr from [CRAN](https://CRAN.R-project.org) with:
+#You can install the released version of whereiation from [CRAN](https://CRAN.R-project.org) with:
 
-install.packages("datascanr")
+install.packages("whereiation")
 ```
 
 You can install the development version from [GitHub](https://github.com/) with:
 
 ```{r, eval=FALSE}
 # install.packages("devtools")
-devtools::install_github("rjake/datascanr")
+devtools::install_github("rjake/whereiation")
 ```
 ## Example
 
 There is a plotting function which is used to visualize the variation in the dependent variable across all factors in all fields.
 
 ```{r example, eval = FALSE}
-library(datascanr)
+library(whereiation)
 ## basic example code
 variation_plot(ggplot2::mpg, "cty")
 ```
@@ -77,6 +77,6 @@ field_scan(ggplot2::mpg, n_cat = 10, n_quantile = 4)
 Categorical data can be rolled-up into a limited number of categories, putting less freuquent factors in an "Other" category (defaults to `n_cat = 15`). Numeric data is cut into a specified number of quantiles (defaults to `n_quantile = 10`). 
 <img src="man/figures/mpg_field_scan.png" alt="field_scan" width="500"/>
 
-You can run a demo file [here](https://github.com/rjake/datascanr/blob/master/inst/demo_analysis.Rmd). At the bottom are a lot of `df <-...; dep_var <-...; ignore_cols <- ...;` for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the `AER::Fatalities` data set is `Fatalities` out of the `AER` package. To see what is on your machine, you can use the top of [this script](https://github.com/rjake/datascanr/blob/master/inst/find_datasets.R).
+You can run a demo file [here](https://github.com/rjake/whereiation/blob/master/inst/demo_analysis.Rmd). At the bottom are a lot of `df <-...; dep_var <-...; ignore_cols <- ...;` for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the `AER::Fatalities` data set is `Fatalities` out of the `AER` package. To see what is on your machine, you can use the top of [this script](https://github.com/rjake/whereiation/blob/master/inst/find_datasets.R).
 
 Please reach out with any questions rjake@sas.upenn.edu, [@yake_84](https://twitter.com/yake_84)
