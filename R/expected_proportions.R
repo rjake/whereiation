@@ -2,6 +2,8 @@
 #'
 #' @param field text field of column/condition
 #' @param df refactored dataframe to
+#' @noRd
+#' @importFrom dplyr group_by summarise n ungroup mutate case_when
 #' @examples
 #' over_under_rep(
 #'   df = refactor_columns(iris, dep_var = "Sepal.Length > 5"),
@@ -38,7 +40,10 @@ over_under_rep <- function(field, df) {
 #'
 #' @param df data frame to analyze
 #' @inheritDotParams variation_plot
-#'
+#' @noRd
+#' @importFrom dplyr select mutate
+#' @importFrom purrr map_dfr
+#' @importFrom forcats fct_reorder
 #' @examples
 #' expected_prop_prep(df = iris, dep_var = "Sepal.Length > 5")
 expected_prop_prep <- function(df, ...) {
@@ -165,25 +170,25 @@ expected_proportions <- function(df,
 
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
-      plot_data <- filter(plot_data, as.integer(field) <= n_field)
+      plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
     }
 
     # make plot
-    ggplot(plot_data, aes(y = value, color = category)) +
+    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
       geom_col(
-        aes(x = expected, fill = category),
+        aes(x = .data$expected, fill = .data$category),
         alpha = 0.2, color = NA
       ) +
       geom_segment(
         aes(
-          x = actual, xend = expected,
-          yend = value,
-          color = category,
-          group = value
+          x = .data$actual, xend = .data$expected,
+          yend = .data$value,
+          color = .data$category,
+          group = .data$value
         )
       ) +
-      geom_point(aes(x = expected, size = n), shape = "|") +
-      geom_point(aes(x = actual, size = n)) +
+      geom_point(aes(x = .data$expected, size = .data$n), shape = "|") +
+      geom_point(aes(x = .data$actual, size = .data$n)) +
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
       facet_wrap(~ field ,scales = "free_y") +
