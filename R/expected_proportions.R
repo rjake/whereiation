@@ -152,7 +152,7 @@ expected_proportions <- function(df,
 
   base_data <-
     expected_prop_prep(df, dep_var, ...) %>%
-    filter(abs_delta > threshold)
+    filter(.data$abs_delta > threshold)
 
   # return table or plot
   if (return_data) {# return data
@@ -160,7 +160,6 @@ expected_proportions <- function(df,
   } else {# return plot
     plot_data <-
       base_data %>%
-      filter(abs_delta > threshold) %>%
       mutate(
         value =
           str_trunc(.data$value, trunc_length) %>%
@@ -191,7 +190,7 @@ expected_proportions <- function(df,
       geom_point(aes(x = .data$actual, size = .data$n)) +
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
-      facet_wrap(~ field ,scales = "free_y") +
+      facet_wrap(~ .data$field ,scales = "free_y") +
       guides(color = FALSE) +
       labs(
         title = glue("Over/Under Representatin of '{dep_var}'"),
