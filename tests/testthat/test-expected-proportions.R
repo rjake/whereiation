@@ -71,9 +71,9 @@ test_that("has layers in right order", {
   # right layers
   geom_layers <-
     simple_p_build$plot$layers %>%
-    purrr::map(pluck, "geom") %>%
+    purrr::map(purrr::pluck, "geom") %>%
     purrr::map(class) %>%
-    purrr::map_chr(pluck, 1)
+    purrr::map_chr(purrr::pluck, 1)
 
   expect_equal(
     object = geom_layers,
