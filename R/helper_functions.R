@@ -60,4 +60,34 @@ collapse_cat <- function(x, n) {
   }
 }
 
+#' Test that x is a 0/1 binary variable
+#' @param x vector
+#'
+#' @noRd
+check_01_binary <- function(x) {
+  if (!typeof(x) %in% c("integer", "double", "logical")) {
+    stop(
+      "the 'dep_var' specified is not binary (0/1) or logical",
+      call. = FALSE
+    )
+  }
+
+  eval_x <- as.numeric(unique(x[!is.na(x)]))
+  is_binary <- all(range(eval_x) == c(0, 1))
+
+  if (!is_binary) {
+    rng <-
+      range(eval_x, na.rm = TRUE) %>%
+      paste(collapse = " to ")
+
+    warning(
+      glue(
+        "Expected 'dep_var' to be a binary field 0/1 or TRUE/FALSE \\
+        and data has values {rng}.
+        The result may not be meaningful."
+      ),
+      call. = FALSE
+    )
+  }
+}
 
