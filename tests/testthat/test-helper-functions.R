@@ -24,3 +24,20 @@ test_that("collapse_cat works", {
   expected <- c("a", "b", "c", "Other (23)")
   expect_equal(actual, expected)
 })
+
+
+test_that("check_01_binary throws warnings/error", {
+  # allowed
+  expect_invisible(check_01_binary(c(0, 1, NA)))
+  expect_invisible(check_01_binary(c(TRUE, TRUE, FALSE)))
+  # not allowed
+  # not 2 integers
+  expect_warning(check_01_binary(c(1, NA)))
+  expect_warning(check_01_binary(c(0, NA)))
+  expect_warning(check_01_binary(c(1, NA)))
+  # not integers
+  expect_warning(check_01_binary(runif(10)))
+  expect_warning(check_01_binary(as.Date("2020-01-01") + 1:10))
+  # no
+  expect_error(check_01_binary("a"))
+})
