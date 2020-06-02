@@ -24,10 +24,10 @@
 #' analyze_data(iris, dep_var = "Sepal.Length")
 #' analyze_data(iris, dep_var = "Sepal.Length", return = "list")
 analyze_data <- function(df,
-                              ...,
-                              avg_type = c("mean", "median"),
-                              return = c("data", "list")
-                              ) {
+                         ...,
+                         avg_type = c("mean", "median"),
+                         return = c("data", "list")
+                         ) {
   base_data <-
     refactor_columns(df, ...) %>%
     filter(!is.na(.data$y_outcome))
