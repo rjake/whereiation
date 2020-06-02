@@ -6,18 +6,11 @@ test_that("check_cut_numeric works", {
 
 
 test_that("cut_custom works", {
-  actual <- unique(cut_custom(10:20, 2))
-  vals <- c("[9.99,15)", "[15,20.01]")
-  expected <- factor(vals, levels = vals, ordered = TRUE)
+  actual <- unique(cut_custom(10:20, 2, n_digits = 1))
+  expected <- c("01 [9.9 to 15)", "02 [15 to 20.0]")
   expect_equal(actual, expected)
 })
 
-
-test_that("cut_custom adds order", {
-  actual <- unique(cut_custom(10:20, 2, order = TRUE))
-  expected <- c("(01) [9.99,15)", "(02) [15,20.01]")
-  expect_equal(actual, expected)
-})
 
 test_that("collapse_cat works", {
   actual <- unique(collapse_cat(letters, 3))
