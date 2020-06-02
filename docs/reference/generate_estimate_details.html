@@ -128,7 +128,7 @@
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed on to <code>variation_plot</code></p><dl class='dl-horizontal'>
+      <td><p>Arguments passed on to <code><a href='variation_plot.html'>variation_plot</a></code></p><dl class='dl-horizontal'>
     <dt><code>avg_type</code></dt><dd><p>mean or median</p></dd>
     <dt><code>ignore_cols</code></dt><dd><p>columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
@@ -138,6 +138,8 @@ to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/refer
     <dt><code>n_quantile</code></dt><dd><p>for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.</p></dd>
+    <dt><code>n_digits</code></dt><dd><p>for numeric fields, the number of digits to keep in the breaks
+ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if <code>n_digits = 2</code></p></dd>
   
 </dl></td>
     </tr>
@@ -146,24 +148,24 @@ will not be changed.</p></dd>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other manipulation functions: 
-<code>analyze_data()</code>,
-<code>refactor_columns()</code></p></div>
+<code><a href='analyze_data.html'>analyze_data</a>()</code>,
+<code><a href='refactor_columns.html'>refactor_columns</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>generate_estimate_details</span>(<span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 583 x 16</span><span>
 #&gt;    y_outcome  y_id field value factor_avg     n field_r_sq field_r_sq_adj
 #&gt;        </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span>       5.1     1 Sepa… [3.4…       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 2</span><span>       4.9     2 Sepa… [2.9…       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 3</span><span>       4.7     3 Sepa… [3.2…       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span>       4.6     4 Sepa… [2.9…       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 5</span><span>       5       5 Sepa… [3.4…       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 6</span><span>       5.4     6 Sepa… [3.6…       5.75    11      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 7</span><span>       4.6     7 Sepa… [3.2…       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 8</span><span>       5       8 Sepa… [3.2…       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'> 9</span><span>       4.4     9 Sepa… [2.7…       6.22    24      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'>10</span><span>       4.9    10 Sepa… [2.9…       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
-#&gt; </span><span style='color: #555555;'># … with 573 more rows, and 8 more variables: field_p_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
+#&gt; </span><span style='color: #555555;'> 1</span><span>       5.1     1 Sepa~ 07 [~       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 2</span><span>       4.9     2 Sepa~ 05 [~       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 3</span><span>       4.7     3 Sepa~ 06 [~       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 4</span><span>       4.6     4 Sepa~ 05 [~       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 5</span><span>       5       5 Sepa~ 07 [~       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 6</span><span>       5.4     6 Sepa~ 08 [~       5.75    11      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 7</span><span>       4.6     7 Sepa~ 06 [~       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 8</span><span>       5       8 Sepa~ 06 [~       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'> 9</span><span>       4.4     9 Sepa~ 04 [~       6.22    24      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'>10</span><span>       4.9    10 Sepa~ 05 [~       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>
+#&gt; </span><span style='color: #555555;'># ... with 573 more rows, and 8 more variables: field_p_value </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>,
 #&gt; #   rescale_factor_avg </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, grand_avg </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, field_wt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, complete </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span style='color: #555555;'>,
 #&gt; #   factor_avg_wt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, estimate </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, rescale_estimate </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span></div></span></pre>
   </div>

@@ -145,6 +145,8 @@ to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/refer
     <dt><code>n_quantile</code></dt><dd><p>for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.</p></dd>
+    <dt><code>n_digits</code></dt><dd><p>for numeric fields, the number of digits to keep in the breaks
+ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if <code>n_digits = 2</code></p></dd>
   
 </dl></td>
     </tr>
@@ -184,24 +186,37 @@ column).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>expected_proportions</span>(<span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length &gt; 5"</span>, <span class='kw'>sort_by</span> <span class='kw'>=</span> <span class='st'>"a"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in case_when(.data$delta &gt; 0 ~ "over", .data$delta &lt; 0 ~ "under",     TRUE ~ "same"): could not find function "case_when"</span></div><div class='input'>
+    <pre class="examples"><div class='input'><span class='fu'>expected_proportions</span>(<span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>iris</span>, <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"Sepal.Length &gt; 5"</span>, <span class='kw'>sort_by</span> <span class='kw'>=</span> <span class='st'>"a"</span>)</div><div class='img'><img src='expected_proportions-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># sorted by the expected representation (default)</span>
 <span class='fu'>expected_proportions</span>(
   <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
   <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"mpg &gt; 15"</span>,
-)</div><div class='output co'>#&gt; <span class='error'>Error in case_when(.data$delta &gt; 0 ~ "over", .data$delta &lt; 0 ~ "under",     TRUE ~ "same"): could not find function "case_when"</span></div><div class='input'>
+)</div><div class='img'><img src='expected_proportions-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># sorted by the actual representation</span>
 <span class='fu'>expected_proportions</span>(
   <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
   <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"mpg &gt; 15"</span>,
   <span class='kw'>sort_by</span> <span class='kw'>=</span> <span class='st'>"actual"</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in case_when(.data$delta &gt; 0 ~ "over", .data$delta &lt; 0 ~ "under",     TRUE ~ "same"): could not find function "case_when"</span></div><div class='input'>
+)</div><div class='img'><img src='expected_proportions-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># you can return the dataframe if you want</span>
 <span class='fu'>expected_proportions</span>(
   <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,
   <span class='kw'>dep_var</span> <span class='kw'>=</span> <span class='st'>"mpg &gt; 15"</span>,
   <span class='kw'>return_data</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in case_when(.data$delta &gt; 0 ~ "over", .data$delta &lt; 0 ~ "under",     TRUE ~ "same"): could not find function "case_when"</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 42 x 10</span><span>
+#&gt;    field value     n total expected actual  delta abs_delta field_delta category
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>    </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>  </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>   
+#&gt; </span><span style='color: #555555;'> 1</span><span> cyl   4        11    11    34.4   42.3    7.93      7.93        26.0 over    
+#&gt; </span><span style='color: #555555;'> 2</span><span> cyl   6         7     7    21.9   26.9    5.05      5.05        26.0 over    
+#&gt; </span><span style='color: #555555;'> 3</span><span> cyl   8        14     8    43.8   30.8  -</span><span style='color: #BB0000;'>13.0</span><span>      13.0         26.0 under   
+#&gt; </span><span style='color: #555555;'> 4</span><span> disp  01 [~     6     6    18.8   23.1    4.33      4.33        27.4 over    
+#&gt; </span><span style='color: #555555;'> 5</span><span> disp  02 [~     6     6    18.8   23.1    4.33      4.33        27.4 over    
+#&gt; </span><span style='color: #555555;'> 6</span><span> disp  03 [~     4     4    12.5   15.4    2.88      2.88        27.4 over    
+#&gt; </span><span style='color: #555555;'> 7</span><span> disp  08 [~     2     1     6.25   3.85  -</span><span style='color: #BB0000;'>2.40</span><span>      2.40        27.4 under   
+#&gt; </span><span style='color: #555555;'> 8</span><span> disp  10 [~     3     0     9.38   0     -</span><span style='color: #BB0000;'>9.38</span><span>      9.38        27.4 under   
+#&gt; </span><span style='color: #555555;'> 9</span><span> hp    01 [~     5     5    15.6   19.2    3.61      3.61        37.5 over    
+#&gt; </span><span style='color: #555555;'>10</span><span> hp    02 [~     5     5    15.6   19.2    3.61      3.61        37.5 over    
+#&gt; </span><span style='color: #555555;'># ... with 32 more rows</span><span></div><div class='input'>
 <span class='co'># an example with more parameters</span>
 <span class='fu'>expected_proportions</span>(
   <span class='kw'>df</span> <span class='kw'>=</span> <span class='no'>mtcars</span>,          <span class='co'># data to use</span>
@@ -209,7 +224,7 @@ column).</p></td>
   <span class='kw'>n_cat</span> <span class='kw'>=</span> <span class='fl'>5</span>,            <span class='co'># collapse field values into 5 categories</span>
   <span class='kw'>n_field</span> <span class='kw'>=</span> <span class='fl'>3</span>,          <span class='co'># keep the frist 3 facets</span>
   <span class='kw'>threshold</span> <span class='kw'>=</span> <span class='kw'>NULL</span>      <span class='co'># keep all values</span>
-)</div><div class='output co'>#&gt; <span class='error'>Error in case_when(.data$delta &gt; 0 ~ "over", .data$delta &lt; 0 ~ "under",     TRUE ~ "same"): could not find function "case_when"</span></div></pre>
+)</div><div class='img'><img src='expected_proportions-4.png' alt='' width='700' height='433' /></div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

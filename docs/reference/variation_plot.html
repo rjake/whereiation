@@ -114,6 +114,7 @@
   <span class='no'>dep_var</span>,
   <span class='kw'>n_cat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
   <span class='kw'>n_quantile</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+  <span class='kw'>n_digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
   <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
   <span class='kw'>ignore_cols</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>
 )</pre>
@@ -141,6 +142,11 @@ to split the data into a factor. Fields that have less than this amount
 will not be changed.</p></td>
     </tr>
     <tr>
+      <th>n_digits</th>
+      <td><p>for numeric fields, the number of digits to keep in the breaks
+ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if <code>n_digits = 2</code></p></td>
+    </tr>
+    <tr>
       <th>avg_type</th>
       <td><p>mean or median</p></td>
     </tr>
@@ -155,8 +161,8 @@ a large proportion of null values</p></td>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other visualization functions: 
-<code>profile_n()</code>,
-<code>variation_plot_single_obs()</code></p></div>
+<code><a href='profile_n.html'>profile_n</a>()</code>,
+<code><a href='variation_plot_single_obs.html'>variation_plot_single_obs</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>variation_plot</span>(<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='no'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, <span class='st'>"hwy"</span>)</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='img'><img src='variation_plot-1.png' alt='' width='700' height='433' /></div></pre>
