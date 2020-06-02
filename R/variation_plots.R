@@ -11,6 +11,8 @@
 #' @param n_quantile for numeric/date fields, the number of quantiles used
 #' to split the data into a factor. Fields that have less than this amount
 #' will not be changed.
+#' @param n_digits for numeric fields, the number of digits to keep in the breaks
+#' ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}
 #'
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
@@ -26,6 +28,7 @@ variation_plot <- function(df,
                            dep_var,
                            n_cat = 10,
                            n_quantile = 10,
+                           n_digits = 2,
                            avg_type = c("mean", "median"),
                            ignore_cols = NA_character_) {
   if(missing(avg_type)) {

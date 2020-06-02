@@ -12,9 +12,9 @@ check_cut_numeric <- function(x, n_quantile) {
 #' @param x vector of data
 #' @param n_quantile (max) number of quantiles to break data
 #' @param order when TRUE, add rank to result ex: "(01) [1,3)", "(02) [4,10]"
-#' @importFrom stringr str_pad
+#' @importFrom stringr str_pad str_replace_all
 #' @noRd
-cut_custom <- function(x, n_quantile, order = FALSE) {
+cut_custom <- function(x, n_quantile, n_digits) {
   label <- # create cut labels ex: "[0-4)" "[5-9)"
     cut(
       x,
@@ -25,20 +25,13 @@ cut_custom <- function(x, n_quantile, order = FALSE) {
       ordered_result = TRUE
     )
 
-  if (order) {
-    ord <- # will create order ex: "(02)"
-      paste0("(", str_pad(as.integer(label), 2, pad = "0"), ") ")
+  # will create order ex: "(02)"
+  ord <- str_pad(as.integer(label), 2, pad = "0")
 
-    # if cut returns brackets, add order ex: "(02) [5-9)"
-    label <-
-      ifelse(
-        grepl("\\[", label),
-        paste0(ord, label),
-        as.character(label)
-      )
-  }
 
-  label
+  paste(ord, label) %>%
+    str_replace_all("(\\,)(?=\\d)", " to ") %>%
+    str_replace_all(paste0("(\\.\\d{", n_digits, "})\\d*"), "\\1")
 }
 
 
