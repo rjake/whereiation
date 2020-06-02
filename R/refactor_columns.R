@@ -14,6 +14,7 @@ refactor_columns <- function(df,
                              dep_var,
                              n_cat = 10,
                              n_quantile = 10,
+                             n_digits = 2,
                              avg_type = c("mean", "median"),
                              ignore_cols = NA_character_) {
   if(missing(avg_type)) {
@@ -48,7 +49,10 @@ refactor_columns <- function(df,
   keep_cols %>%
     select(-c(1:2)) %>%
     mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
-    mutate_if(~check_cut_numeric(., n_quantile), cut_custom, n_quantile) %>%
+    mutate_if(
+      ~check_cut_numeric(., n_quantile),
+      cut_custom, n_quantile, n_digits
+    ) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat) %>%
     bind_cols(select(keep_cols, c(1:2)), .) %>%
