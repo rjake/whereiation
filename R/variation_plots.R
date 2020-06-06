@@ -30,7 +30,8 @@ variation_plot <- function(df,
                            n_quantile = 10,
                            n_digits = 2,
                            avg_type = c("mean", "median"),
-                           ignore_cols = NA_character_) {
+                           ignore_cols = NA_character_
+                           ) {
   if(missing(avg_type)) {
     avg_name <- "mean"
   } else {
@@ -54,19 +55,32 @@ variation_plot <- function(df,
     # left_join(field_ranks) %>%
     mutate(
       field = fct_reorder(.data$field, .data$field_wt, .fun = max),
-      label = paste(.data$field, ": \n", .data$value)
+      label = paste0(
+        toupper(.data$value),
+        "\n----------------------------",
+        "\n", avg_name, ": ", round(.data$factor_avg, 3),
+        "\nN: ", .data$n,
+        "\nAdj. R2: ", round(.data$field_r_sq_adj, 3)
+      )
     )
 
+#p<-
   group_value_ranks %>%
     ggplot(
       aes(
-        .data$factor_avg, .data$field,
-        color = .data$field, fill = .data$field
+        x = .data$factor_avg, y = .data$field,
+        color = .data$field, fill = .data$field,
+        label = .data$label
         )
     ) +
-    geom_vline(xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted") +
+    geom_vline(
+      xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted"
+    ) +
     geom_line(size = 6, alpha = 0.2, lineend = "round") +
-    geom_point(aes(size = .data$n), shape = 21, color = "black", stroke = 0.5) +
+    geom_point(
+      aes(size = .data$n),
+      shape = 21, color = "black", stroke = 0.5
+    ) +
     guides(color = FALSE, fill = FALSE) +
     theme(panel.background = element_rect(fill = "white", color = "grey60")) +
     labs(
@@ -130,7 +144,8 @@ variation_plot_single_obs <- function(df,
       .data$factor_avg, #.data$group_dist,
       .data$factor_avg_wt,
       .data$estimate
-    )
+    ) %>%
+    mutate(label = "")
 
 
   obs_estimate <- one_obs_profile$estimate[1]
@@ -166,3 +181,15 @@ variation_plot_single_obs <- function(df,
   plot_orig
 }
 
+
+
+#' @export
+#' @inheritDotParams variation_plot
+#' @describeIn variation_plot an utilizing ggplotly
+#' @importFrom plotly ggplotly
+#' @examples
+#' variation_plot_interactive(ggplot2::mpg, "hwy")
+variation_plot_interactive <- function(...) {
+  p <- variation_plot(...)
+  ggplotly(p, tooltip = c("label"))
+}
