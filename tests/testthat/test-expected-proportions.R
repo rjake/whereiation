@@ -48,7 +48,16 @@ test_that("expected_prop_prep throws warning for non-binary DV", {
   expect_warning(expected_prop_prep(df = iris, dep_var = "Sepal.Length"))
 })
 
-
+test_that("over_under_rep omits NA values", {
+  iris_na <- iris
+  iris_na$missing <- c(1, 2, NA)
+  df <-
+    over_under_rep(
+      df = refactor_columns(iris_na, dep_var = "Sepal.Length > 5"),
+      "missing"
+    )
+  expect_true(sum(is.na(df)) == 0)
+})
 
 test_that("returns data", {
   df <-

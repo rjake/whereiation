@@ -60,7 +60,7 @@ column).}
 Compare representation of proportions (over/under)
 }
 \examples{
-expected_proportions(df = iris, dep_var = "Sepal.Length > 5", sort_by = "a")
+expected_proportions(df = iris, dep_var = "Sepal.Length > 5")
 
 # sorted by the expected representation (default)
 expected_proportions(
