@@ -2,6 +2,7 @@
 % Please edit documentation in R/variation_plots.R
 \name{variation_plot}
 \alias{variation_plot}
+\alias{variation_plot_interactive}
 \title{Visualize variation among all factor levels for all variables}
 \usage{
 variation_plot(
@@ -13,6 +14,8 @@ variation_plot(
   avg_type = c("mean", "median"),
   ignore_cols = NA_character_
 )
+
+variation_plot_interactive(...)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -34,12 +37,24 @@ ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
 \item{ignore_cols}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
+
+\item{...}{
+  Arguments passed on to \code{\link[=variation_plot]{variation_plot}}
+  \describe{
+    \item{\code{}}{}
+  }}
 }
 \description{
 Visualize variation among all factor levels for all variables
 }
+\section{Functions}{
+\itemize{
+\item \code{variation_plot_interactive}: an utilizing ggplotly
+}}
+
 \examples{
 variation_plot(ggplot2::mpg, "hwy")
+variation_plot_interactive(ggplot2::mpg, "hwy")
 }
 \seealso{
 Other visualization functions: 
