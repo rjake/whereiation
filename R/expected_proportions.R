@@ -4,6 +4,7 @@
 #' @param df refactored dataframe to
 #' @noRd
 #' @importFrom dplyr group_by summarise n ungroup mutate case_when
+#' @importFrom tidyr replace_na
 #' @examples
 #' over_under_rep(
 #'   df = refactor_columns(iris, dep_var = "Sepal.Length > 5"),
@@ -13,11 +14,13 @@ over_under_rep <- function(field, df) {
   df %>%
     group_by(
       field = field,
-      value = as.character(get(field))
+      value =
+        as.character(get(field)) %>%
+        replace_na("NA")
     ) %>%
     summarise(
       n = n(),
-      total = sum(.data$y_outcome)
+      total = sum(.data$y_outcome, na.rm = TRUE)
     ) %>%
     ungroup() %>%
     mutate(
@@ -87,7 +90,7 @@ expected_prop_prep <- function(df, ...) {
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
-#' expected_proportions(df = iris, dep_var = "Sepal.Length > 5", sort_by = "a")
+#' expected_proportions(df = iris, dep_var = "Sepal.Length > 5")
 #'
 #' # sorted by the expected representation (default)
 #' expected_proportions(
