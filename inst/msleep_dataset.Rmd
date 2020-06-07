@@ -1,0 +1,125 @@
+---
+title: "Animals who sleep > 12 hours a day"
+author: "Jake Riley"
+date: "6/7/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+```{r echo=FALSE}
+library(glue)
+library(kableExtra)
+library(scales)
+
+find_drivers <- function(...) {
+  whereiation::find_drivers(...) %>%
+  mutate_if(is.double, round, 2) %>%
+  DT::datatable()
+}
+
+profile_n <- function(df, dep_var, ..., n = 5, position = c(
+                        "top",
+                        "bottom"
+                      )) {
+  df_prep <- generate_estimate_details(
+    df = df, dep_var = dep_var,
+    ...
+  )
+  position <- match.arg(position)
+  if (position == "top") {
+    choose_end <- tail
+  }
+  else {
+    choose_end <- head
+  }
+  slice_ids <- df_prep %>%
+    distinct(.data$y_id, .data$estimate) %>%
+    arrange(.data$estimate) %>%
+    choose_end(n = n) %>%
+    left_join(df_prep,
+      by = c("y_id", "estimate")
+    ) %>%
+    select(
+      id = .data$y_id,
+      .data$field, .data$field_wt, .data$value, .data$factor_avg,
+      .data$estimate
+    ) %>%
+    mutate(
+      pct_group = round(
+        .data$factor_avg,
+        3
+      ), est_obs = round(.data$estimate, 4), cell = glue("{.data$value}\n{.data$pct_group}"),
+      id = glue("ID {.data$id}<br/>est: {.data$est_obs}")
+    ) %>%
+    mutate(id = fct_reorder(.data$id, .data$estimate, .desc = TRUE))
+  df_style <- slice_ids %>%
+    mutate(cell = cell_spec(.data$cell,
+      bold = TRUE, color = spec_color(.data$factor_avg,
+        option = "C",
+        end = 0.7, direction = -1
+      )
+    )) %>%
+    select(
+      .data$id,
+      .data$field, .data$field_wt, .data$cell
+    ) %>%
+    spread(.data$id,
+      .data$cell,
+      fill = "small\nsample size"
+    ) %>%
+    arrange(desc(.data$field_wt)) %>%
+    mutate(field_wt = percent(.data$field_wt, 3))
+  
+  x <- df_style %>%
+    kable(
+      escape = FALSE, 
+      align = "c",
+      format = "html", 
+      caption = glue("{dep_var}: {position} {n} observations")
+    ) %>%
+    kable_styling(
+      c("striped", "condensed"),
+      full_width = TRUE
+    )
+  x
+}
+```
+
+
+```{r}
+library(tidyverse)
+library(whereiation)
+
+df <- msleep %>% select(-awake)
+dep_var <- 'sleep_total > 12'
+
+# df <- mpg
+# dep_var <- "hwy > 25"
+```
+
+```{r}
+variation_plot_interactive(df, dep_var)
+```
+
+```{r}
+variation_plot_single_obs(df, dep_var, id = 72) #%>% plotly::ggplotly(tooltip = "label")
+```
+
+```{r}
+profile_n(df, dep_var)
+```
+
+```{r}
+find_drivers(df, dep_var)
+```
+
+```{r fig.width=12, fig.height=9}
+expected_proportions(df, dep_var, sort_by = "actual")
+```
