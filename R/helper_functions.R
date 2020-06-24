@@ -55,6 +55,7 @@ collapse_cat <- function(x, n) {
 
 #' Test that x is a 0/1 binary variable
 #' @param x vector
+#' @importFrom glue glue
 #'
 #' @noRd
 check_01_binary <- function(x) {
@@ -84,3 +85,38 @@ check_01_binary <- function(x) {
   }
 }
 
+#' Test that x is binary variable
+#' @param x vector
+#' @importFrom stringr str_trunc
+#' @importFrom glue glue
+#' @noRd
+check_binary <- function(x) {
+  unique_vals <- sort(unique(x[!is.na(x)]))
+  is_binary <- length(unique_vals) == 2
+
+  ex_inputs <-
+    paste0(unique_vals, collapse = ", ") %>%
+    str_trunc(80)
+
+  if (!is_binary) {
+    stop(
+      glue(
+        'Expecting a binary result.
+        Found: {ex_inputs}
+        Use a field with only two values or \\
+        a logical test.
+        Ex. \'date_field < "2020-01-01"\''
+      ),
+      call. = FALSE
+    )
+  }
+}
+
+
+#' Extract field name from expression, ex: "Year == 2008" -> "Year"
+#' @noRd
+extract_field_name <- function(x) {
+  x %>%
+    gsub(pattern = " .*", replacement = "") %>%
+    gsub(pattern = "\\(", replacement = "")
+}
