@@ -42,16 +42,24 @@ cut_custom <- function(x, n_quantile, n_digits) {
 #' @importFrom forcats fct_lump
 #' @importFrom stringr str_replace
 #' @noRd
-collapse_cat <- function(x, n) {
-  get_n <- length(unique(x)) - n
+collapse_cat <- function(x,
+                         n,
+                         w = NULL) {
+    get_n <- length(unique(x)) - n
 
-  if (get_n > 0 & class(x) == "character") {
-    fct_lump(x, n, ties.method = "first") %>%
-      str_replace("^Other$", paste0("Other (", get_n, ")"))
-  } else {
-    x
-  }
+    if (is.null(w)) {
+      w <- as.integer(ave(x, x, FUN = length))
+    }
+
+    if (get_n > 0 & class(x) == "character") {
+      f_x <- fct_reorder(.f = x, .x = w, .fun = mean, .desc = TRUE)
+      x[(as.integer(f_x) > n)] <- paste0("Other (", get_n, ")")
+      x
+    } else {
+      x
+    }
 }
+
 
 #' Test that x is a 0/1 binary variable
 #' @param x vector
