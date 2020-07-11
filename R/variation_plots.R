@@ -8,6 +8,9 @@
 #' a large proportion of null values
 #' @param n_cat for categorical variables, the max number of unique values
 #' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
+#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
+#' @param collapse_by when using n_cat, should the values collapse by the
+#' dependent variable (\code{'dv'}) or size (\code{'n'})
 #' @param n_quantile for numeric/date fields, the number of quantiles used
 #' to split the data into a factor. Fields that have less than this amount
 #' will not be changed.
@@ -30,13 +33,12 @@ variation_plot <- function(df,
                            n_quantile = 10,
                            n_digits = 2,
                            avg_type = c("mean", "median"),
+                           collapse_by = c("dv", "n"),
                            ignore_cols = NA_character_
                            ) {
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+
+  avg_name <- match.arg(avg_type)
+  collapse_by <- match.arg(collapse_by)
 
   factor_stats <-
     analyze_data(
@@ -45,6 +47,7 @@ variation_plot <- function(df,
       n_cat = n_cat,
       n_quantile = n_quantile,
       avg_type = avg_name,
+      collapse_by = collapse_by,
       ignore_cols = ignore_cols
     )
 
@@ -118,11 +121,7 @@ variation_plot_single_obs <- function(df,
                                       labels = FALSE,
                                       id = 1) {
 
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+  avg_name <- match.arg(avg_type)
 
   avg <- eval(parse(text = avg_name))
 
