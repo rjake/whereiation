@@ -4,6 +4,8 @@
 #' @param df refactored data frame
 #' @param field field to evaluate
 #' @param type dv, count, or proportion
+#' @importFrom dplyr group_by dense_rank replace_na summarise n mutate case_when
+#' @importFrom tidyr pivot_wider
 #' @noRd
 #' @examples
 #' over_under_split(df = refactor_columns(mpg, "hwy", split = "year"), field = "class", type = "dv")
@@ -78,6 +80,9 @@ over_under_split <- function(df,
 #' @param dep_var dependent variable
 #' @param ... inherited from \code{variation_plot()}
 #' @inheritDotParams variation_plot
+#' @importFrom purrr map_dfr
+#' @importFrom dplyr mutate
+#' @importFrom forcats fct_reorder
 #' @noRd
 #' @examples
 #' group_split_prep(mpg, dep_var = "hwy", split = "year", type = "dv")
@@ -132,6 +137,9 @@ group_split_prep <- function(df,
 #' @param color_under Color to use when point is lower than bar
 #' @param color_missing Color to use when either a point or bar is missing
 #' @inheritDotParams variation_plot
+#' @importFrom glue glue
+#' @importFrom dplyr case_when filter select
+#' @importFrom ggplot ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element text element_rect
 #' @export
 #'
 #' @examples
@@ -264,6 +272,9 @@ group_split <- function(df,
 
 #' Aggregate data for group_split labels
 #' @param base_data data frame
+#' @importFrom dplyr filter select everythiong count mutate arrange
+#' @importFrom tidyr pivot_longer
+#' @importFrom glue glue
 #' @noRd
 #' @examples
 #' group_split_counts(
@@ -297,6 +308,8 @@ group_split_counts <- function(base_data, ref_group, split_on) {
 
 #' Prep data for group_split plotting
 #' @param base_data data frame
+#' @importFrom dplyr filter mutate coalesce arrange
+#' @import forcats fct_inorder
 #' @noRd
 #' @examples
 #' group_split_plot_data(
