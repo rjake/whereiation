@@ -4,7 +4,7 @@
 #' @param df refactored data frame
 #' @param field field to evaluate
 #' @param type dv, count, or proportion
-#' @importFrom dplyr group_by dense_rank replace_na summarise n mutate case_when
+#' @importFrom dplyr group_by dense_rank replace_na summarise n ungroup mutate case_when
 #' @importFrom tidyr pivot_wider
 #' @noRd
 #' @examples
@@ -18,8 +18,8 @@ over_under_split <- function(df,
     df %>%
     group_by(
       field = field,
-      split = y_split,
-      split_ord = paste0("group_", dense_rank(split)),
+      split = .data$y_split,
+      split_ord = paste0("group_", dense_rank(.data$split)),
       value =
         as.character(get(field)) %>%
           replace_na("NA")
@@ -31,7 +31,7 @@ over_under_split <- function(df,
       group_df %>%
       summarise(
         n = n(),
-        x = mean(y_outcome)
+        x = mean(.data$y_outcome)
       )
   } else if (type == "count") {
     calc_df <-
@@ -47,24 +47,24 @@ over_under_split <- function(df,
         n = n(),
         x = n()
       ) %>%
-      group_by(split_ord) %>%
-      mutate(x = x / sum(x) * 100)
+      group_by(.data$split_ord) %>%
+      mutate(x = .data$x / sum(.data$x) * 100)
   }
 
   calc_df %>%
     ungroup() %>%
     pivot_wider(
-      names_from = split_ord,
-      values_from = c(split, x, n),
+      names_from = .data$split_ord,
+      values_from = c(.data$split, .data$x, .data$n),
       values_fill = list(n = 0)
     ) %>%
     mutate(
-      delta = x_group_2 - x_group_1,
-      abs_delta = abs(delta),
-      field_delta = sum(abs_delta, na.rm = TRUE),
+      delta = .data$x_group_2 - .data$x_group_1,
+      abs_delta = abs(.data$delta),
+      field_delta = sum(.data$abs_delta, na.rm = TRUE),
       category =
         case_when(
-          is.na(x_group_1) | is.na(x_group_2) ~ "missing",
+          is.na(.data$x_group_1) | is.na(.data$x_group_2) ~ "missing",
           delta > 0 ~ "higher",
           delta < 0 ~ "lower",
           TRUE ~ "same"
@@ -144,13 +144,13 @@ group_split_prep <- function(df,
 #'
 #' @examples
 #' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty")
-#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = 2)
+#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 #' group_split(mpg, split_on = "year", type = "count", threshold = 10)
 #' group_split(mpg, split_on = "year", type = "percent")
 #' group_split(
 #'   mpg %>% select(year, cty, trans),
 #'   split_on = "year",
-#'   type = "count",
+#'   type = "dv",
 #'   dep_var = "cty",
 #'   base_group = "1", #return_data = TRUE,
 #'   color_missing = "violet"
@@ -220,7 +220,11 @@ group_split <- function(df,
 
   # return table or plot
   if (return_data) {# return data
-    select(plot_data, -c(abs_delta, ref_group_1, plot_bar, plot_point))
+    select(
+      plot_data,
+      -c(.data$abs_delta, .data$ref_group_1, .data$plot_bar, .data$plot_point)
+    )
+
   } else {# return plot
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
@@ -233,24 +237,26 @@ group_split <- function(df,
 
     group_counts <- group_split_counts(base_data, ref_group, split_on)
 
-    ggplot(plot_data, aes(y = value, color = category)) +
+    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
       geom_col(
-        aes(x = plot_bar, fill = category), alpha = 0.2, color = NA) +
+        aes(x = .data$plot_bar, fill = .data$category),
+        alpha = 0.2, color = NA
+      ) +
       geom_segment(
-        data = filter(plot_data, !is.na(point)),
+        data = filter(plot_data, !is.na(.data$point)),
         aes(
-          x = plot_bar, xend = plot_point, yend = value,
-          color = category, group = value
+          x = .data$plot_bar, xend = .data$plot_point, yend = .data$value,
+          color = .data$category, group = .data$value
         )
       ) +
       geom_point(
-        aes(x = plot_point),
+        aes(x = .data$plot_point),
         size = 3
       ) +
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
       guides(color = FALSE) +
-      facet_wrap(~field, scales = "free_y") +
+      facet_wrap(~.data$field, scales = "free_y") +
       labs(
         title = title,
         subtitle = paste(group_counts$text, collapse = "\n"),
@@ -288,8 +294,8 @@ group_split <- function(df,
 #' )
 group_split_counts <- function(base_data, ref_group, split_on) {
   base_data %>%
-  filter(as.integer(field) == min(as.integer(field))) %>%
-  select(split_group_1, split_group_2, n_group_1, n_group_2) %>%
+  filter(as.integer(.data$field) == min(as.integer(.data$field))) %>%
+  select(.data$split_group_1, .data$split_group_2, .data$n_group_1, .data$n_group_2) %>%
   pivot_longer(
     everything(),
     names_to = c(".value", "group"),
@@ -297,10 +303,10 @@ group_split_counts <- function(base_data, ref_group, split_on) {
     values_drop_na = TRUE
   ) %>%
   filter(n != 0) %>%
-  count(group, split, wt = n, name = "n") %>%
-  arrange(group) %>%
+  count(.data$group, .data$split, wt = .data$n, name = "n") %>%
+  arrange(.data$group) %>%
   mutate(
-    shape = ifelse(ref_group == group, "bar", "point"),
+    shape = ifelse(ref_group == .data$group, "bar", "point"),
     label = glue("{split_on} is {split}"),
     text = glue("Group {group} ({shape}): {label}, n = {n}")
   )
@@ -326,13 +332,13 @@ group_split_plot_data <- function(base_data, threshold, ref_group, trunc_length)
     filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
     mutate(
       ref_group_1 = ref_group == "1",
-      bar = ifelse(ref_group_1, x_group_1, x_group_2),
-      point = ifelse(ref_group_1, x_group_2, x_group_1),
-      plot_bar = coalesce(as.numeric(bar), 0),
-      plot_point = coalesce(as.numeric(point), 0)
+      bar = ifelse(.data$ref_group_1, .data$x_group_1, .data$x_group_2),
+      point = ifelse(.data$ref_group_1, .data$x_group_2, .data$x_group_1),
+      plot_bar = coalesce(as.numeric(.data$bar), 0),
+      plot_point = coalesce(as.numeric(.data$point), 0)
     ) %>%
-    arrange(plot_bar, plot_point) %>%
-    mutate(value = fct_inorder(str_trunc(.data$value, trunc_length)))
+    arrange(.data$plot_bar, .data$plot_point) %>%
+    mutate(.data$value = fct_inorder(str_trunc(.data$value, trunc_length)))
 }
 
 
