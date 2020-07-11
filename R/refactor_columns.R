@@ -17,12 +17,12 @@ refactor_columns <- function(df,
                              n_quantile = 10,
                              n_digits = 2,
                              avg_type = c("mean", "median"),
+                             collapse_by = c("dv", "n"),
                              ignore_cols = NA_character_) {
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+
+  avg_name <- match.arg(avg_type)
+
+  collapse_by <- match.arg(collapse_by)
 
   if (missing(dep_var)) {
     dep_var <- "1"
@@ -56,6 +56,12 @@ refactor_columns <- function(df,
       )
   )
 
+  if (collapse_by == "dv") {
+    wt <- abs(keep_cols$y_outcome - avg(keep_cols$y_outcome))
+  } else (
+    wt <- NULL
+  )
+
   keep_cols %>%
     select(-c(1:3)) %>%
     mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
@@ -64,7 +70,7 @@ refactor_columns <- function(df,
       cut_custom, n_quantile, n_digits
     ) %>%
     mutate_if(is.factor, as.character) %>%
-    mutate_if(is.character, collapse_cat, n = n_cat) %>%
+    mutate_if(is.character, collapse_cat, n = n_cat, w = wt) %>%
     bind_cols(select(keep_cols, c(1:3)), .) %>%
     mutate_if(is.logical, as.integer)
 }
