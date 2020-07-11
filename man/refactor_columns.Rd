@@ -7,10 +7,12 @@
 refactor_columns(
   df,
   dep_var,
+  split_on = NA_character_,
   n_cat = 10,
   n_quantile = 10,
   n_digits = 2,
   avg_type = c("mean", "median"),
+  collapse_by = c("dv", "n"),
   ignore_cols = NA_character_
 )
 }
@@ -19,7 +21,10 @@ refactor_columns(
 
 \item{dep_var}{dependent variable to use (column name)}
 
+\item{split_on}{variable to split data / group by}
+
 \item{n_cat}{for categorical variables, the max number of unique values
+to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
 
 \item{n_quantile}{for numeric/date fields, the number of quantiles used
@@ -30,6 +35,9 @@ will not be changed.}
 ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
 
 \item{avg_type}{mean or median}
+
+\item{collapse_by}{when using n_cat, should the values collapse by the
+dependent variable (\code{'dv'}) or size (\code{'n'})}
 
 \item{ignore_cols}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with

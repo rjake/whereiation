@@ -19,7 +19,10 @@ profile_n(df, dep_var, ..., n = 5, position = c("top", "bottom"))
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
+to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
+    \item{\code{collapse_by}}{when using n_cat, should the values collapse by the
+dependent variable (\code{'dv'}) or size (\code{'n'})}
     \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.}
