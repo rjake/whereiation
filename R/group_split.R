@@ -1,9 +1,10 @@
+#' Prep to find over/under values for group split
 #'
 #'
-#'
-#' @param df
-#' @param field
-#' @param type
+#' @param df refactored data frame
+#' @param field field to evaluate
+#' @param type dv, count, or proportion
+#' @noRd
 #' @examples
 #' over_under_split(df = refactor_columns(mpg, "hwy", split = "year"), field = "class", type = "dv")
 over_under_split <- function(df,
@@ -70,24 +71,26 @@ over_under_split <- function(df,
 }
 
 
-#'
-#' @param df
-#' @param split_on
-#' @param type
-#' @param dep_var
-#' @param ...
+#' Prep for group_split by iterating over_under_split()
+#' @param df normal data frame
+#' @param split_on value to split on
+#' @param type dv,count, or proportion
+#' @param dep_var dependent variable
+#' @param ... inherited from \code{variation_plot()}
+#' @inheritDotParams variation_plot
+#' @noRd
 #' @examples
-group_split_prep(mpg, dep_var = "hwy", split = "year", type = "dv")
+#' group_split_prep(mpg, dep_var = "hwy", split = "year", type = "dv")
 group_split_prep <- function(df,
                              split_on = NULL,
                              type,
-                             dep_var = NULL,
+                             dep_var,
                              ...
                              ) {
 
   calc_type <- type
 
-  if (calc_type != "dv") {dep_var <- "1"}
+  dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
 
   refactor_df <-
     refactor_columns(
@@ -108,22 +111,27 @@ group_split_prep <- function(df,
 
 
 
-#' Title
+#' Evaluate difference between two groups based on value of a field
 #'
-#' @param df
-#' @param split_on
-#' @param type
-#' @param ...
-#' @param trunc_length
-#' @param threshold
-#' @param base_group
-#' @param return_data
-#' @param n_field
-#' @param color_over
-#' @param color_under
-#' @param color_missing
-#'
-#' @return
+#' @param df data frame to evaluate
+#' @param split_on field that differentiates the two groups
+#' @param type the outcome or dependent variable ("dv"), the percent of obs.
+#' ("percent"), or the number of obs. ("count")
+#' @param ... inherited from \code{variation_plot()}
+#' @param trunc_length number of charcters to print on y-axis
+#' @param threshold threshold for excluding nominal differences. The value
+#' should reflect the type, if the count is in the hundreds you might use 20,
+#' meaning when viewing count differences, values where the difference is <20
+#' will be excluded. For proportion/percent and the dv type, the default is 0.02
+#' or 2%
+#' @param base_group Should group 1 or group 2 be the base. This group will be
+#' the bar and the other will be the point.
+#' @param return_data When TRUE will return data frame instead of a plot.
+#' @param n_field How many fields/facets should the plot return.
+#' @param color_over Color to use when point is higher than bar
+#' @param color_under Color to use when point is lower than bar
+#' @param color_missing Color to use when either a point or bar is missing
+#' @inheritDotParams variation_plot
 #' @export
 #'
 #' @examples
@@ -137,16 +145,15 @@ group_split_prep <- function(df,
 #'   type = "count",
 #'   dep_var = "cty",
 #'   base_group = "1", #return_data = TRUE,
-#'   color_missing = "orange"
+#'   color_missing = "violet"
 #' )
 #'
-#' #group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-#' #debugonce(group_split)
-#' #group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
+#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 group_split <- function(df,
                         split_on,
                         type = c("dv", "percent", "count"),
-                        dep_var = NULL,
+                        dep_var,
                         ...,
                         trunc_length = 100,
                         threshold = 0.02,
@@ -167,11 +174,12 @@ group_split <- function(df,
   calc_type <- match.arg(type)
   ref_group <- match.arg(base_group)
 
+  dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
+
   # get values/captions for threshold if not specified
   if (is.null(threshold)) {
     threshold_value <- 0
     threshold_caption <- ""
-    threshold_astrisk <- ""
   } else {
     threshold_value <-
       ifelse(
@@ -182,7 +190,6 @@ group_split <- function(df,
 
     threshold_caption <-
       glue("* Values are excluded if difference is < {threshold_value}")
-    threshold_astrisk <- "*"
   }
 
   x_axis <- case_when(
@@ -193,79 +200,30 @@ group_split <- function(df,
 
   title <- case_when(
     calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
-    calc_type == "percent" ~ "Change in volume",
+    calc_type == "percent" ~ "Change in Proportion of Population",
     TRUE ~ "Change in # of Obs."
   )
-
 
   base_data <-
     group_split_prep(df, split_on, type = calc_type, dep_var)
 
-#browser()
-
-
   plot_data <-
-    base_data %>%
-    filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
-#      filter(field == "trans") %>% # DELETE DELETE DELETE
-    mutate(
-      ref_group_1 = ref_group == "1",
-      bar = ifelse(ref_group_1, x_group_1, x_group_2),
-      point = ifelse(ref_group_1, x_group_2, x_group_1),
-      plot_bar = coalesce(as.numeric(bar), 0),
-      plot_point = coalesce(as.numeric(point), 0)
-    ) %>%
-    arrange(plot_bar, plot_point) %>%
-    mutate(
-      value =
-        str_trunc(.data$value, trunc_length) %>%
-        fct_inorder()
-    )
+    group_split_plot_data(base_data, threshold, ref_group, trunc_length)
 
-  # ggplot(plot_data, aes(y = value, color = category)) +
-  #   geom_col(aes(x = bar, fill = category),alpha = 0.2, color = NA) +
-  #   geom_point(aes(x = plot_point)) + facet_wrap(~field, scales = "free")
-  #  #plot_data %>% select(1:5,6,13:17) %>% arrange(value) %>% mutate(i = as.integer(value))
-  #
-  # }
-  # }
   # return table or plot
-  if (return_data) { # return data
-    plot_data %>%
-      select(-c(abs_delta, ref_group_1, plot_bar, plot_point))
-  } else { # return plot
-
-
+  if (return_data) {# return data
+    select(plot_data, -c(abs_delta, ref_group_1, plot_bar, plot_point))
+  } else {# return plot
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
     }
 
-    group_counts <-
-      base_data %>%
-      filter(as.integer(field) == min(as.integer(field))) %>%
-      select(split_group_1, split_group_2, n_group_1, n_group_2) %>%
-      pivot_longer(
-        everything(),
-        names_to = c(".value", "group"),
-        names_pattern = "(.*)_group_(.*)",
-        values_drop_na = TRUE
-      ) %>%
-      filter(n != 0) %>%
-      group_by(group, split) %>%
-      summarise(n = sum(n)) %>%
-      ungroup() %>%
-      arrange(group) %>%
-      mutate(
-        shape = ifelse(ref_group == as.character(group), "bar", "point"),
-        label = glue("{split_on} is {split}"),
-        text = glue("Group {group} ({shape}): {label}, n = {n}")
-      )
-# group_counts
-
     if (!is.null(n_field)) {
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
     }
+
+    group_counts <- group_split_counts(base_data, ref_group, split_on)
 
     ggplot(plot_data, aes(y = value, color = category)) +
       geom_col(
@@ -299,5 +257,85 @@ group_split <- function(df,
         panel.background = element_rect(color = "grey70", fill = "white"),
         legend.position = "left"
       )
+  }
+}
+
+
+
+#' Aggregate data for group_split labels
+#' @param base_data data frame
+#' @noRd
+#' @examples
+#' group_split_counts(
+#'   base_data =
+#'     group_split_prep(
+#'       df = ggplot2::mpg,
+#'       split_on = "year",
+#'       type = "dv",
+#'       dep_var = "hwy"
+#'       )
+#' )
+group_split_counts <- function(base_data, ref_group, split_on) {
+  base_data %>%
+  filter(as.integer(field) == min(as.integer(field))) %>%
+  select(split_group_1, split_group_2, n_group_1, n_group_2) %>%
+  pivot_longer(
+    everything(),
+    names_to = c(".value", "group"),
+    names_pattern = "(.*)_group_(.*)",
+    values_drop_na = TRUE
+  ) %>%
+  filter(n != 0) %>%
+  count(group, split, wt = n, name = "n") %>%
+  arrange(group) %>%
+  mutate(
+    shape = ifelse(ref_group == group, "bar", "point"),
+    label = glue("{split_on} is {split}"),
+    text = glue("Group {group} ({shape}): {label}, n = {n}")
+  )
+}
+
+#' Prep data for group_split plotting
+#' @param base_data data frame
+#' @noRd
+#' @examples
+#' group_split_plot_data(
+#'   base_data =
+#'     group_split_prep(
+#'       df = ggplot2::mpg,
+#'       split_on = "year",
+#'       type = "dv",
+#'       dep_var = "hwy"
+#'       )
+#' )
+group_split_plot_data <- function(base_data, threshold, ref_group, trunc_length) {
+  base_data %>%
+    filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
+    mutate(
+      ref_group_1 = ref_group == "1",
+      bar = ifelse(ref_group_1, x_group_1, x_group_2),
+      point = ifelse(ref_group_1, x_group_2, x_group_1),
+      plot_bar = coalesce(as.numeric(bar), 0),
+      plot_point = coalesce(as.numeric(point), 0)
+    ) %>%
+    arrange(plot_bar, plot_point) %>%
+    mutate(value = fct_inorder(str_trunc(.data$value, trunc_length)))
+}
+
+
+#' Assign default value to dep_var or throw error depending on type
+#'
+#' @param type evaluation type to use
+#' @param cond condition for evaluation \code{missing(dep_var)}
+#' @param dep_var dependent variable
+#'
+#' @noRd
+check_dv_has_value <- function(type, cond, dep_var) {
+  if (type != "dv") {
+    "1"
+  } else if (cond) {
+    stop("'dep_var' required when type = 'dv'")
+  } else {
+    dep_var
   }
 }
