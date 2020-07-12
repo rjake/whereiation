@@ -9,6 +9,7 @@ refactor_columns(
   dep_var,
   id = NULL,
   n_cat = 10,
+  collapse_by = c("dv", "n"),
   n_quantile = 10,
   n_digits = 2,
   avg_type = c("mean", "median"),
@@ -24,6 +25,10 @@ refactor_columns(
 
 \item{n_cat}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
+
+\item{collapse_by}{should \code{n_cat} collapse by the distance to the grand
+mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
+grand mean as "other" or should it use size \code{"n"}}
 
 \item{n_quantile}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
