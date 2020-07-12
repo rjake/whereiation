@@ -52,7 +52,7 @@ df_prep <-
   df_estimate  %>% 
   filter(estimate > 0.72) %>%
   select(
-    id = y_id, #orig = y_outcome, 
+    id = unique_id, #orig = y_outcome, 
     field, field_wt, value, group_avg, estimate
   ) %>% 
   mutate(
