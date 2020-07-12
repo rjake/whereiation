@@ -42,12 +42,27 @@ cut_custom <- function(x, n_quantile, n_digits) {
 #' @importFrom forcats fct_lump
 #' @importFrom stringr str_replace
 #' @noRd
-collapse_cat <- function(x, n) {
+#' @examples
+#' collapse_cat(x = letters[c(1, 2, 2, 2, 3, 4, 5, 5)], n = 2)
+#' collapse_cat(x = letters[c(1, 2, 2, 2, 3, 4, 5, 5)], n = NULL)
+collapse_cat <- function(x,
+                         n = NULL,
+                         w = NULL) {
+  if (is.null(n)) {
+    n <- length(x)
+  }
+
+  if (is.null(w)) {
+    w <- as.integer(ave(x, x, FUN = length))
+  }
+
   get_n <- length(unique(x)) - n
 
+
   if (get_n > 0 & class(x) == "character") {
-    fct_lump(x, n, ties.method = "first") %>%
-      str_replace("^Other$", paste0("Other (", get_n, ")"))
+    f_x <- fct_reorder(.f = x, .x = w, .fun = mean, .desc = TRUE)
+    x[(as.integer(f_x) > n)] <- paste0("Other (", get_n, ")")
+    x
   } else {
     x
   }
