@@ -4,8 +4,8 @@
 #' @param n number of observations to retrieve
 #' @param position whether to return the highest ("top") or lowest ("bottom")
 #'
-#' @inheritDotParams variation_plot
-#' @inheritParams variation_plot
+#' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #' @importFrom utils head tail capture.output
 #' @importFrom dplyr distinct arrange left_join select mutate rename_all desc
 #' @importFrom scales percent

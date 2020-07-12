@@ -42,7 +42,7 @@ over_under_rep <- function(field, df) {
 #' Prep for expected_proportions() function
 #'
 #' @param df data frame to analyze
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #' @noRd
 #' @importFrom dplyr select mutate
 #' @importFrom purrr map_dfr
@@ -80,7 +80,7 @@ expected_prop_prep <- function(df, ...) {
 #' @param color_under color name/hex code for values that are under-represented
 #'
 #' @export
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #' @importFrom glue glue
 #' @importFrom dplyr filter mutate
 #' @importFrom stringr str_trunc
