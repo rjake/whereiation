@@ -16,5 +16,26 @@ test_that("refactor_columns uses id", {
     object = c(234, 12),
     expected = dim(with_id)
   )
+})
 
+
+test_that("refactor_columns uses weights correctly", {
+  df <-
+    ggplot2::mpg %>%
+    select(cty, manufacturer)
+
+  use_dv <- refactor_columns(df, dep_var = "cty", n_cat = 3, collapse_by = "dv")
+  use_n <-  refactor_columns(df, dep_var = "cty", n_cat = 3, collapse_by = "n")
+
+  table(df$manufacturer) %>% sort()
+
+  expect_equal(
+    object = unique(use_dv$manufacturer),
+    expected = c("Other (12)", "honda", "land rover", "lincoln")
+  )
+
+  expect_equal(
+    object = unique(use_n$manufacturer),
+    expected = c("Other (12)", "dodge", "toyota", "volkswagen")
+  )
 })
