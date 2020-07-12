@@ -12,6 +12,7 @@ find_drivers(...)
   \describe{
     \item{\code{df}}{dataframe to evaluate}
     \item{\code{dep_var}}{dependent variable to use (column name)}
+    \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
     \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
