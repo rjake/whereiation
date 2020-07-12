@@ -17,11 +17,7 @@ variation_plot <- function(df,
                            ...,
                            avg_type = c("mean", "median")
                            ) {
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+  avg_name <- match.arg(avg_type)
 
   factor_stats <-
     analyze_data(
@@ -100,11 +96,7 @@ variation_plot_single_obs <- function(df,
                                       labels = FALSE,
                                       id = 1) {
 
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+  avg_name <- match.arg(avg_type)
 
   avg <- eval(parse(text = avg_name))
 
