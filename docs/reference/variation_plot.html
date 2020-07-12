@@ -109,15 +109,7 @@
     <p>Visualize variation among all factor levels for all variables</p>
     </div>
 
-    <pre class="usage"><span class='fu'>variation_plot</span>(
-  <span class='no'>df</span>,
-  <span class='no'>dep_var</span>,
-  <span class='kw'>n_cat</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>n_quantile</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-  <span class='kw'>n_digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>),
-  <span class='kw'>ignore_cols</span> <span class='kw'>=</span> <span class='fl'>NA_character_</span>
-)
+    <pre class="usage"><span class='fu'>variation_plot</span>(<span class='no'>df</span>, <span class='no'>dep_var</span>, <span class='no'>...</span>, <span class='kw'>avg_type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"mean"</span>, <span class='st'>"median"</span>))
 
 <span class='fu'>variation_plot_interactive</span>(<span class='no'>...</span>)</pre>
 
@@ -133,37 +125,24 @@
       <td><p>dependent variable to use (column name)</p></td>
     </tr>
     <tr>
-      <th>n_cat</th>
-      <td><p>for categorical variables, the max number of unique values
-to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></td>
-    </tr>
-    <tr>
-      <th>n_quantile</th>
-      <td><p>for numeric/date fields, the number of quantiles used
+      <th>...</th>
+      <td><p>Arguments passed on to <code><a href='refactor_columns.html'>refactor_columns</a></code>, <code><a href='refactor_columns.html'>refactor_columns</a></code></p><dl class='dl-horizontal'>
+    <dt><code>n_cat</code></dt><dd><p>for categorical variables, the max number of unique values
+to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
+    <dt><code>n_quantile</code></dt><dd><p>for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
-will not be changed.</p></td>
-    </tr>
-    <tr>
-      <th>n_digits</th>
-      <td><p>for numeric fields, the number of digits to keep in the breaks
-ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if <code>n_digits = 2</code></p></td>
+will not be changed.</p></dd>
+    <dt><code>n_digits</code></dt><dd><p>for numeric fields, the number of digits to keep in the breaks
+ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if <code>n_digits = 2</code></p></dd>
+    <dt><code>ignore_cols</code></dt><dd><p>columns to ignore from analysis. Good candidates are
+fields that have have no duplicate values (primary keys) or fields with
+a large proportion of null values</p></dd>
+  
+</dl></td>
     </tr>
     <tr>
       <th>avg_type</th>
       <td><p>mean or median</p></td>
-    </tr>
-    <tr>
-      <th>ignore_cols</th>
-      <td><p>columns to ignore from analysis. Good candidates are
-fields that have have no duplicate values (primary keys) or fields with
-a large proportion of null values</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Arguments passed on to <code>variation_plot</code></p><dl class='dl-horizontal'>
-    <dt><code></code></dt><dd><p></p></dd>
-  
-</dl></td>
     </tr>
     </table>
 
