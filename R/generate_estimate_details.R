@@ -36,13 +36,13 @@ generate_estimate_details <- function(df, train_data, dep_var, ...) {
       gather(key = field, value = value, -c(1, 2)) %>%
       mutate(value = as.character(.data$value)) %>%
       left_join(group_stats_data, by = c("field", "value")) %>%
-      group_by(.data$y_id) %>%
+      group_by(.data$unique_id) %>%
       mutate(complete = sum(!is.na(.data$factor_avg))) %>%
       ungroup() %>%
       drop_na(.data$factor_avg:.data$field_wt) %>%
       #arrange(desc(.data$field_wt)) %>%
       mutate(factor_avg_wt = .data$factor_avg * .data$field_wt) %>%
-      group_by(.data$y_id) %>%
+      group_by(.data$unique_id) %>%
       mutate(estimate = weighted.mean(.data$factor_avg, .data$field_wt)) %>%
       ungroup() %>%
       mutate(

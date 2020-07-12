@@ -7,7 +7,7 @@ test_that("generate_estimate_details works", {
 
   actual_names <- names(df)
   expected_names <-
-    c("y_outcome", "y_id", "field", "value",
+    c("y_outcome", "unique_id", "field", "value",
       "factor_avg", "n",
       "field_r_sq", "field_r_sq_adj", "field_p_value",
       "rescale_factor_avg",
