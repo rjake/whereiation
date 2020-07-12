@@ -11,6 +11,43 @@ test_that("variation_plot works", {
 })
 
 
+test_that("variation_plot uses weights", {
+  p_dv <- variation_plot(iris, "Petal.Length", n_cat = 4, collapse_by = "dv")
+  p_n <- variation_plot(iris, "Petal.Length", n_cat = 4, collapse_by = "n")
+
+  # tables are different
+  expect_false(identical(p_dv, p_n))
+
+  # fields closest to grand mean are grouped
+  min_dv <-
+    p_dv$data %>%
+    dplyr::filter(
+      field == "Sepal.Length",
+      abs(factor_avg - grand_avg) == min(abs(factor_avg - grand_avg))
+    )
+  expect_true(grepl("Other", min_dv$value))
+
+  # the oter field has the least frequent values
+  min_n <-
+    p_n$data %>%
+    dplyr::filter(
+      field == "Sepal.Length",
+      grepl("Other", value)
+    )
+
+  ref_n <-
+    refactor_columns(iris, "Petal.Length", n_cat = NULL) %>%
+    dplyr::count(Sepal.Length, sort = TRUE) %>%
+    dplyr::slice(-c(1:4))
+
+
+  expect_equal(
+    object = min_n$n[1],
+    expected = sum(ref_n$n)
+  )
+})
+
+
 test_that("variation_plot_single_obs works", {
   p1 <- variation_plot_single_obs(df = iris, dep_var = "Petal.Length", avg_type = "mean")
   p2 <- variation_plot_single_obs(iris, "Petal.Length", labels = TRUE)
