@@ -17,6 +17,7 @@ variation_plot_interactive(...)
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
+    \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
     \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used

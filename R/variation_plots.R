@@ -112,7 +112,7 @@ variation_plot_single_obs <- function(df,
 
   one_obs_profile <-
     compare_values %>%
-    filter(.data$y_id == get_id) %>%
+    filter(.data$unique_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
       .data$factor_avg, #.data$group_dist,

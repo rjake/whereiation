@@ -45,12 +45,12 @@ profile_n <- function(df,
 
   slice_ids <-
     df_prep %>%
-    distinct(.data$y_id, .data$estimate) %>%
+    distinct(.data$unique_id, .data$estimate) %>%
     arrange(.data$estimate) %>%
     choose_end(n = n) %>%
-    left_join(df_prep, by = c("y_id", "estimate")) %>%
+    left_join(df_prep, by = c("unique_id", "estimate")) %>%
     select(
-      id = .data$y_id,
+      id = .data$unique_id,
       .data$field, .data$field_wt,
       .data$value, .data$factor_avg, .data$estimate
     ) %>%

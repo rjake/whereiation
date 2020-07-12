@@ -7,6 +7,7 @@
 refactor_columns(
   df,
   dep_var,
+  id = NULL,
   n_cat = 10,
   n_quantile = 10,
   n_digits = 2,
@@ -18,6 +19,8 @@ refactor_columns(
 \item{df}{dataframe to evaluate}
 
 \item{dep_var}{dependent variable to use (column name)}
+
+\item{id}{field to use as ID}
 
 \item{n_cat}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}

@@ -15,7 +15,7 @@ df_test <- setdiff(base_data, df_train)
 df_estimate <-
   generate_estimate_details(df, dep_var = dep_var) %>%
   distinct(
-    y_id,
+    unique_id,
     complete,
     y_outcome,
     estimate,

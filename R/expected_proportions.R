@@ -52,7 +52,7 @@ over_under_rep <- function(field, df) {
 expected_prop_prep <- function(df, ...) {
   refactor_df <-
     refactor_columns(df, ...) %>%
-    select(-.data$y_id)
+    select(-.data$unique_id)
 
   # give warning if dep_var isn't 0/1 or T/F
   check_01_binary(refactor_df$y_outcome)
