@@ -28,6 +28,9 @@ expected_proportions(
     \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
+    \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
+mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
+grand mean as "other" or should it use size \code{"n"}}
     \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.}

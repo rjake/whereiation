@@ -132,6 +132,9 @@ used for plotting</p>
     <dt><code>id</code></dt><dd><p>field to use as ID</p></dd>
     <dt><code>n_cat</code></dt><dd><p>for categorical variables, the max number of unique values
 to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
+    <dt><code>collapse_by</code></dt><dd><p>should <code>n_cat</code> collapse by the distance to the grand
+mean <code>"dv"</code> leaving the extremes as is and grouping factors closer to the
+grand mean as "other" or should it use size <code>"n"</code></p></dd>
     <dt><code>n_quantile</code></dt><dd><p>for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.</p></dd>
