@@ -2,6 +2,7 @@
 #'
 #' @param df dataframe to evaluate
 #' @param dep_var dependent variable to use (column name)
+#' @param id field to use as ID
 #' @param n_cat for categorical variables, the max number of unique values
 #' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
 #' @param n_quantile for numeric/date fields, the number of quantiles used
@@ -16,8 +17,9 @@
 #'
 #'
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols
+#' @importFrom dplyr rename_at vars filter pull mutate select one_of row_number mutate_if bind_cols
 #' @importFrom lubridate is.Date is.POSIXct
+#' @importFrom glue glue
 #'
 #' @export
 #' @family manipulation functions
@@ -25,6 +27,7 @@
 #' refactor_columns(df = iris, dep_var = "Sepal.Length")
 refactor_columns <- function(df,
                              dep_var,
+                             id = NULL,
                              n_cat = 10,
                              n_quantile = 10,
                              n_digits = 2,
@@ -39,17 +42,26 @@ refactor_columns <- function(df,
     gsub(pattern = " .*", replacement = "") %>%
     gsub(pattern = "\\(", replacement = "")
 
+  # add ID
+  if (is.null(id)) {
+    df$unique_id <- seq_len(nrow(df))
+  } else {
+    if (any(duplicated(df[[id]]))) {
+      stop(glue("the id field '{id}' is not unique"))
+    }
+    if (!"unique_id" %in% names(df)) {
+      df <- df %>% rename_at(vars(id), ~"unique_id")
+    }
+  }
 
+  # create standard cols
   suppressWarnings(
     keep_cols <-
       as_tibble(df) %>%
-      mutate(
-        y_outcome = eval(parse(text = dep_var)),
-        y_id = row_number()
-      ) %>%
+      mutate(y_outcome = eval(parse(text = dep_var))) %>%
       select(
         .data$y_outcome,
-        .data$y_id,
+        .data$unique_id,
         everything(),
         -one_of(c(ignore_cols, dv_name))
       )
