@@ -33,11 +33,7 @@ analyze_data <- function(df,
     filter(!is.na(.data$y_outcome))
 
   # get average method to use for of DV
-  if (missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+  avg_name <- match.arg(avg_type)
 
   avg <- eval(parse(text = avg_name))
   grand_avg <- avg(base_data$y_outcome)
@@ -85,11 +81,7 @@ analyze_data <- function(df,
     )
 
   # return the either a dataframe or a list
-  if (missing(return)) {
-    x_is <- "data"
-  } else {
-    x_is <- match.arg(return)
-  }
+  x_is <- match.arg(return)
 
   if (x_is == "data") {
     x <- agg_data

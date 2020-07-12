@@ -30,11 +30,7 @@ refactor_columns <- function(df,
                              n_digits = 2,
                              avg_type = c("mean", "median"),
                              ignore_cols = NA_character_) {
-  if(missing(avg_type)) {
-    avg_name <- "mean"
-  } else {
-    avg_name <- match.arg(avg_type)
-  }
+  avg_name <- match.arg(avg_type)
 
   avg <- eval(parse(text = avg_name))
 
