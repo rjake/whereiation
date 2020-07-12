@@ -38,6 +38,7 @@ refactor_columns <- function(df,
                              avg_type = c("mean", "median"),
                              ignore_cols = NA_character_) {
   avg_name <- match.arg(avg_type)
+  collapse_by <- match.arg(collapse_by)
 
   avg <- eval(parse(text = avg_name))
 
@@ -58,13 +59,6 @@ refactor_columns <- function(df,
     }
   }
 
-  # wt for collapsing
-  if (collapse_by == "dv") {
-    wt <- abs(keep_cols$y_outcome - avg(keep_cols$y_outcome))
-  } else (
-    wt <- NULL
-  )
-
   # create standard cols
   suppressWarnings(
     keep_cols <-
@@ -78,6 +72,13 @@ refactor_columns <- function(df,
       )
   )
 
+  # wt for collapsing
+  if (collapse_by == "dv") {
+    wt <- abs(keep_cols$y_outcome - avg(keep_cols$y_outcome))
+  } else (
+    wt <- NULL
+  )
+
   keep_cols %>%
     select(-c(1:2)) %>%
     mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
@@ -86,7 +87,7 @@ refactor_columns <- function(df,
       cut_custom, n_quantile, n_digits
     ) %>%
     mutate_if(is.factor, as.character) %>%
-    mutate_if(is.character, collapse_cat, n = n_cat, w = wt)
+    mutate_if(is.character, collapse_cat, n = n_cat, w = wt) %>%
     bind_cols(select(keep_cols, c(1:2)), .) %>%
     mutate_if(is.logical, as.integer)
 }
