@@ -1,6 +1,19 @@
 #' Convert data to a table of factors
 #'
-#' @inheritParams variation_plot
+#' @param df dataframe to evaluate
+#' @param dep_var dependent variable to use (column name)
+#' @param n_cat for categorical variables, the max number of unique values
+#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
+#' @param n_quantile for numeric/date fields, the number of quantiles used
+#' to split the data into a factor. Fields that have less than this amount
+#' will not be changed.
+#' @param n_digits for numeric fields, the number of digits to keep in the breaks
+#' ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}
+#' @param avg_type mean or median
+#' @param ignore_cols columns to ignore from analysis. Good candidates are
+#' fields that have have no duplicate values (primary keys) or fields with
+#' a large proportion of null values
+#'
 #'
 #' @importFrom tibble as_tibble
 #' @importFrom dplyr filter pull mutate select one_of row_number mutate_if bind_cols

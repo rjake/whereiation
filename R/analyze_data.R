@@ -7,8 +7,8 @@
 #' The list option includes the original min/max of the data and the
 #' grand average.
 #'
-#' @inheritDotParams variation_plot
-#' @inheritParams variation_plot
+#' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #'
 #' @importFrom dplyr filter n_distinct select select_if mutate group_by summarise ungroup row_number
 #' @importFrom broom glance
