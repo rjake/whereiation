@@ -8,12 +8,12 @@ test_that("refactor_columns uses id", {
   with_id <-  refactor_columns(df, dep_var = "cty", id = "id2")
 
   expect_equal(
-    object = c(234, 13),
+    object = c(234, 14),
     expected = dim(no_id)
   )
 
   expect_equal(
-    object = c(234, 12),
+    object = c(234, 13),
     expected = dim(with_id)
   )
 })

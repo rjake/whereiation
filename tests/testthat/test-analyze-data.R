@@ -6,7 +6,7 @@ test_that("refactor_columns works", {
   expect_equal(actual_dim, expected_dim)
 
   actual_names <- names(df)
-  expected_names <- c("y_outcome", "y_id", "y_split", names(iris)[c(1:2, 4:5)])
+  expected_names <- c("y_outcome", "y_split", "unique_id", names(iris)[c(1:2, 4:5)])
 
   expect_equal(actual_names, expected_names)
 
