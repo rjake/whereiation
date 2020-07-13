@@ -1,6 +1,6 @@
 #' Find drivers of variation
 #'
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #'
 #' @export
 #'

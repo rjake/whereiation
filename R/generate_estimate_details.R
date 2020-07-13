@@ -2,8 +2,8 @@
 #'
 #' The dataset returned will be the length of the # of columns x # of rows
 #' @param train_data training dataset generated from summarize_factors
-#' @inheritDotParams variation_plot
-#' @inheritParams variation_plot
+#' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #'
 #' @importFrom tidyr gather drop_na
 #' @importFrom dplyr mutate left_join filter arrange desc group_by ungroup
@@ -36,13 +36,13 @@ generate_estimate_details <- function(df, train_data, dep_var, ...) {
       gather(key = field, value = value, -c(1, 2)) %>%
       mutate(value = as.character(.data$value)) %>%
       left_join(group_stats_data, by = c("field", "value")) %>%
-      group_by(.data$y_id) %>%
+      group_by(.data$unique_id) %>%
       mutate(complete = sum(!is.na(.data$factor_avg))) %>%
       ungroup() %>%
       drop_na(.data$factor_avg:.data$field_wt) %>%
       #arrange(desc(.data$field_wt)) %>%
       mutate(factor_avg_wt = .data$factor_avg * .data$field_wt) %>%
-      group_by(.data$y_id) %>%
+      group_by(.data$unique_id) %>%
       mutate(estimate = weighted.mean(.data$factor_avg, .data$field_wt)) %>%
       ungroup() %>%
       mutate(

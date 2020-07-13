@@ -1,22 +1,7 @@
 #' Visualize variation among all factor levels for all variables
 #'
-#' @param df dataframe to evaluate
-#' @param dep_var dependent variable to use (column name)
-#' @param avg_type mean or median
-#' @param ignore_cols columns to ignore from analysis. Good candidates are
-#' fields that have have no duplicate values (primary keys) or fields with
-#' a large proportion of null values
-#' @param n_cat for categorical variables, the max number of unique values
-#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
-#' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
-#' @param collapse_by when using n_cat, should the values collapse by the
-#' dependent variable (\code{'dv'}) or size (\code{'n'})
-#' @param n_quantile for numeric/date fields, the number of quantiles used
-#' to split the data into a factor. Fields that have less than this amount
-#' will not be changed.
-#' @param n_digits for numeric fields, the number of digits to keep in the breaks
-#' ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}
-#'
+#' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
 #' @importFrom ggplot2 ggplot aes geom_vline geom_line geom_point guides theme element_rect labs
@@ -29,14 +14,9 @@
 #' variation_plot(ggplot2::mpg, "hwy")
 variation_plot <- function(df,
                            dep_var,
-                           n_cat = 10,
-                           n_quantile = 10,
-                           n_digits = 2,
-                           avg_type = c("mean", "median"),
-                           collapse_by = c("dv", "n"),
-                           ignore_cols = NA_character_
+                           ...,
+                           avg_type = c("mean", "median")
                            ) {
-
   avg_name <- match.arg(avg_type)
   collapse_by <- match.arg(collapse_by)
 
@@ -44,11 +24,7 @@ variation_plot <- function(df,
     analyze_data(
       df = df,
       dep_var = dep_var,
-      n_cat = n_cat,
-      n_quantile = n_quantile,
-      avg_type = avg_name,
-      collapse_by = collapse_by,
-      ignore_cols = ignore_cols
+      ...
     )
 
   grand_avg <- factor_stats$grand_avg[1]
@@ -101,8 +77,8 @@ variation_plot <- function(df,
 #' @param labels when TRUE will show the labels of the factor levels outlined in the plot
 #' @param id is id (row number) from \code{base_data()} to use
 #'
-#' @inheritDotParams variation_plot
-#' @inheritParams variation_plot
+#' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #'
 #' @importFrom dplyr filter select
 #' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs
@@ -137,7 +113,7 @@ variation_plot_single_obs <- function(df,
 
   one_obs_profile <-
     compare_values %>%
-    filter(.data$y_id == get_id) %>%
+    filter(.data$unique_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
       .data$factor_avg, #.data$group_dist,
@@ -183,7 +159,7 @@ variation_plot_single_obs <- function(df,
 
 
 #' @export
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #' @describeIn variation_plot an utilizing ggplotly
 #' @importFrom plotly ggplotly
 #' @examples
