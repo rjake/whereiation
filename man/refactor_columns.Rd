@@ -7,6 +7,7 @@
 refactor_columns(
   df,
   dep_var,
+  split_on = NA_character_,
   id = NULL,
   n_cat = 10,
   collapse_by = c("dv", "n"),
@@ -20,6 +21,8 @@ refactor_columns(
 \item{df}{dataframe to evaluate}
 
 \item{dep_var}{dependent variable to use (column name)}
+
+\item{split_on}{variable to split data / group by}
 
 \item{id}{field to use as ID}
 

@@ -129,6 +129,7 @@ used for plotting</p>
       <th>...</th>
       <td><p>Arguments passed on to <code><a href='refactor_columns.html'>refactor_columns</a></code></p><dl class='dl-horizontal'>
     <dt><code>dep_var</code></dt><dd><p>dependent variable to use (column name)</p></dd>
+    <dt><code>split_on</code></dt><dd><p>variable to split data / group by</p></dd>
     <dt><code>id</code></dt><dd><p>field to use as ID</p></dd>
     <dt><code>n_cat</code></dt><dd><p>for categorical variables, the max number of unique values
 to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
@@ -197,13 +198,14 @@ grand average.</p></td>
 #&gt; #   grand_avg </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #555555;'>, field_wt </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; 
 #&gt; $field_stats
-#&gt; </span><span style='color: #555555;'># A tibble: 4 x 4</span><span>
+#&gt; </span><span style='color: #555555;'># A tibble: 5 x 4</span><span>
 #&gt;   field        field_r_sq field_r_sq_adj field_p_value
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Sepal.Width       0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #555555;'>2</span><span> Petal.Length      0.827         0.817       7.18</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #555555;'>3</span><span> Petal.Width       0.685         0.665       5.95</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-31</span><span>
-#&gt; </span><span style='color: #555555;'>4</span><span> Species           0.619         0.614       1.67</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-31</span><span>
+#&gt; </span><span style='color: #555555;'>1</span><span> unique_id         0.514         0.510       6.22</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-25</span><span>
+#&gt; </span><span style='color: #555555;'>2</span><span> Sepal.Width       0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>- 2</span><span>
+#&gt; </span><span style='color: #555555;'>3</span><span> Petal.Length      0.827         0.817       7.18</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-50</span><span>
+#&gt; </span><span style='color: #555555;'>4</span><span> Petal.Width       0.685         0.665       5.95</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-31</span><span>
+#&gt; </span><span style='color: #555555;'>5</span><span> Species           0.619         0.614       1.67</span><span style='color: #555555;'>e</span><span style='color: #BB0000;'>-31</span><span>
 #&gt; 
 #&gt; $factor_stats
 #&gt; </span><span style='color: #555555;'># A tibble: 26 x 4</span><span>

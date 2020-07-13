@@ -2,11 +2,11 @@ test_that("refactor_columns works", {
   df <- refactor_columns(iris, "Petal.Length")
 
   actual_dim <- dim(df)
-  expected_dim <- c(150, 6)
+  expected_dim <- c(150, 7)
   expect_equal(actual_dim, expected_dim)
 
   actual_names <- names(df)
-  expected_names <- c("y_outcome", "unique_id", names(iris)[c(1:2, 4:5)])
+  expected_names <- c("y_outcome", "y_split", "unique_id", names(iris)[c(1:2, 4:5)])
 
   expect_equal(actual_names, expected_names)
 

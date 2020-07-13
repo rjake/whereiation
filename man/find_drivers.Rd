@@ -12,6 +12,7 @@ find_drivers(...)
   \describe{
     \item{\code{df}}{dataframe to evaluate}
     \item{\code{dep_var}}{dependent variable to use (column name)}
+    \item{\code{split_on}}{variable to split data / group by}
     \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}

@@ -2,6 +2,7 @@
 #'
 #' @param df dataframe to evaluate
 #' @param dep_var dependent variable to use (column name)
+#' @param split_on variable to split data / group by
 #' @param id field to use as ID
 #' @param n_cat for categorical variables, the max number of unique values
 #' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
@@ -30,6 +31,7 @@
 #' refactor_columns(df = iris, dep_var = "Sepal.Length")
 refactor_columns <- function(df,
                              dep_var,
+                             split_on = NA_character_,
                              id = NULL,
                              n_cat = 10,
                              collapse_by = c("dv", "n"),
@@ -37,15 +39,23 @@ refactor_columns <- function(df,
                              n_digits = 2,
                              avg_type = c("mean", "median"),
                              ignore_cols = NA_character_) {
+
   avg_name <- match.arg(avg_type)
   collapse_by <- match.arg(collapse_by)
 
   avg <- eval(parse(text = avg_name))
+  if (missing(dep_var)) {
+    dep_var <- "1"
+  }
 
-  dv_name <-
-    dep_var %>%
-    gsub(pattern = " .*", replacement = "") %>%
-    gsub(pattern = "\\(", replacement = "")
+  if (missing(split_on)) {
+    split_on <- "1"
+    split_name <- ""
+  } else {
+    split_name <- extract_field_name(split_on)
+  }
+
+  dv_name <- extract_field_name(dep_var)
 
   # add ID
   if (is.null(id)) {
@@ -59,16 +69,21 @@ refactor_columns <- function(df,
     }
   }
 
+
   # create standard cols
   suppressWarnings(
     keep_cols <-
       as_tibble(df) %>%
-      mutate(y_outcome = eval(parse(text = dep_var))) %>%
+      mutate(
+        y_outcome = eval(parse(text = dep_var)),
+        y_split = eval(parse(text = split_on))
+      ) %>%
       select(
         .data$y_outcome,
+        .data$y_split,
         .data$unique_id,
         everything(),
-        -one_of(c(ignore_cols, dv_name))
+        -one_of(c(ignore_cols, dv_name, split_name))
       )
   )
 
@@ -80,7 +95,7 @@ refactor_columns <- function(df,
   )
 
   keep_cols %>%
-    select(-c(1:2)) %>%
+    select(-c(1:3)) %>%
     mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
     mutate_if(
       ~check_cut_numeric(., n_quantile),
@@ -88,6 +103,6 @@ refactor_columns <- function(df,
     ) %>%
     mutate_if(is.factor, as.character) %>%
     mutate_if(is.character, collapse_cat, n = n_cat, w = wt) %>%
-    bind_cols(select(keep_cols, c(1:2)), .) %>%
+    bind_cols(select(keep_cols, c(1:3)), .) %>%
     mutate_if(is.logical, as.integer)
 }

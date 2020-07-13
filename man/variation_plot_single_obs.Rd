@@ -21,6 +21,7 @@ variation_plot_single_obs(
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
+    \item{\code{split_on}}{variable to split data / group by}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
     \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
