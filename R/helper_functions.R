@@ -1,13 +1,3 @@
-#' Expand the range to a new min and max
-#' @param x numeric vector
-#' @param new_min new minimum value
-#' @param new_max new maxmim value
-#' @noRd
-change_range <- function(x, new_min, new_max) {
-  (x - min(x)) / (max(x) - min(x)) * (new_max - new_min) + new_min
-}
-
-
 #' Confirm if numeric should be cut
 #' @param x vector of data
 #' @param n_quantile (max) number of quantiles to break data
@@ -22,9 +12,9 @@ check_cut_numeric <- function(x, n_quantile) {
 #' @param x vector of data
 #' @param n_quantile (max) number of quantiles to break data
 #' @param order when TRUE, add rank to result ex: "(01) [1,3)", "(02) [4,10]"
-#' @importFrom stringr str_pad
+#' @importFrom stringr str_pad str_replace_all
 #' @noRd
-cut_custom <- function(x, n_quantile, order = FALSE) {
+cut_custom <- function(x, n_quantile, n_digits) {
   label <- # create cut labels ex: "[0-4)" "[5-9)"
     cut(
       x,
@@ -35,20 +25,13 @@ cut_custom <- function(x, n_quantile, order = FALSE) {
       ordered_result = TRUE
     )
 
-  if (order) {
-    ord <- # will create order ex: "(02)"
-      paste0("(", str_pad(as.integer(label), 2, pad = "0"), ") ")
+  # will create order ex: "(02)"
+  ord <- str_pad(as.integer(label), 2, pad = "0")
 
-    # if cut returns brackets, add order ex: "(02) [5-9)"
-    label <-
-      ifelse(
-        grepl("\\[", label),
-        paste0(ord, label),
-        as.character(label)
-      )
-  }
 
-  label
+  paste(ord, label) %>%
+    str_replace_all("(\\,)(?=\\d)", " to ") %>%
+    str_replace_all(paste0("(\\.\\d{", n_digits, "})\\d*"), "\\1")
 }
 
 
@@ -59,15 +42,60 @@ cut_custom <- function(x, n_quantile, order = FALSE) {
 #' @importFrom forcats fct_lump
 #' @importFrom stringr str_replace
 #' @noRd
-collapse_cat <- function(x, n) {
+#' @examples
+#' collapse_cat(x = letters[c(1, 2, 2, 2, 3, 4, 5, 5)], n = 2)
+#' collapse_cat(x = letters[c(1, 2, 2, 2, 3, 4, 5, 5)], n = NULL)
+collapse_cat <- function(x,
+                         n = NULL,
+                         w = NULL) {
+  if (is.null(n)) {
+    n <- length(x)
+  }
+
+  if (is.null(w)) {
+    w <- as.integer(ave(x, x, FUN = length))
+  }
+
   get_n <- length(unique(x)) - n
 
+
   if (get_n > 0 & class(x) == "character") {
-    fct_lump(x, n, ties.method = "first") %>%
-      str_replace("^Other$", paste0("Other (", get_n, ")"))
+    f_x <- fct_reorder(.f = x, .x = w, .fun = mean, .desc = TRUE)
+    x[(as.integer(f_x) > n)] <- paste0("Other (", get_n, ")")
+    x
   } else {
     x
   }
 }
 
+#' Test that x is a 0/1 binary variable
+#' @param x vector
+#'
+#' @noRd
+check_01_binary <- function(x) {
+  if (!typeof(x) %in% c("integer", "double", "logical")) {
+    stop(
+      "the 'dep_var' specified is not binary (0/1) or logical",
+      call. = FALSE
+    )
+  }
+
+  eval_x <- as.numeric(unique(x[!is.na(x)]))
+  is_binary <- all(range(eval_x) == c(0, 1))
+
+  if (!is_binary) {
+    rng <-
+      range(eval_x, na.rm = TRUE) %>%
+      paste(collapse = " to ")
+
+    warning(
+      glue(
+        "Expected 'dep_var' to be a binary field 0/1 or TRUE/FALSE \\
+        and data has values {rng}.
+        The result may not be meaningful."
+      ),
+      call. = FALSE
+    )
+  }
+}
 

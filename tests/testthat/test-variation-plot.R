@@ -2,12 +2,49 @@ test_that("variation_plot works", {
   p <- variation_plot(iris, "Petal.Length")
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(28, 8)
+  expected_dim <- c(28, 11)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)
   expected_layers <- 3
   expect_equal(actual_layers, expected_layers)
+})
+
+
+test_that("variation_plot uses weights", {
+  p_dv <- variation_plot(iris, "Petal.Length", n_cat = 4, collapse_by = "dv")
+  p_n <- variation_plot(iris, "Petal.Length", n_cat = 4, collapse_by = "n")
+
+  # tables are different
+  expect_false(identical(p_dv, p_n))
+
+  # fields closest to grand mean are grouped
+  min_dv <-
+    p_dv$data %>%
+    dplyr::filter(
+      field == "Sepal.Length",
+      abs(factor_avg - grand_avg) == min(abs(factor_avg - grand_avg))
+    )
+  expect_true(grepl("Other", min_dv$value))
+
+  # the oter field has the least frequent values
+  min_n <-
+    p_n$data %>%
+    dplyr::filter(
+      field == "Sepal.Length",
+      grepl("Other", value)
+    )
+
+  ref_n <-
+    refactor_columns(iris, "Petal.Length", n_cat = NULL) %>%
+    dplyr::count(Sepal.Length, sort = TRUE) %>%
+    dplyr::slice(-c(1:4))
+
+
+  expect_equal(
+    object = min_n$n[1],
+    expected = sum(ref_n$n)
+  )
 })
 
 

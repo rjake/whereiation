@@ -2,36 +2,54 @@
 % Please edit documentation in R/variation_plots.R
 \name{variation_plot}
 \alias{variation_plot}
+\alias{variation_plot_interactive}
 \title{Visualize variation among all factor levels for all variables}
 \usage{
-variation_plot(df, dep_var, n_cat = 10, n_quantile = 10,
-  avg_type = c("mean", "median"), ignore_cols = NA_character_)
+variation_plot(df, dep_var, ..., avg_type = c("mean", "median"))
+
+variation_plot_interactive(...)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
 
 \item{dep_var}{dependent variable to use (column name)}
 
-\item{n_cat}{for categorical variables, the max number of unique values
+\item{...}{
+  Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}
+  \describe{
+    \item{\code{id}}{field to use as ID}
+    \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
-
-\item{n_quantile}{for numeric/date fields, the number of quantiles used
+    \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
+mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
+grand mean as "other" or should it use size \code{"n"}}
+    \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.}
-
-\item{avg_type}{mean or median}
-
-\item{ignore_cols}{columns to ignore from analysis. Good candidates are
+    \item{\code{n_digits}}{for numeric fields, the number of digits to keep in the breaks
+ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
+    \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
+  }}
+
+\item{avg_type}{mean or median}
 }
 \description{
 Visualize variation among all factor levels for all variables
 }
+\section{Functions}{
+\itemize{
+\item \code{variation_plot_interactive}: an utilizing ggplotly
+}}
+
 \examples{
 variation_plot(ggplot2::mpg, "hwy")
+variation_plot_interactive(ggplot2::mpg, "hwy")
 }
 \seealso{
-Other visualization functions: \code{\link{variation_plot_single_obs}}
+Other visualization functions: 
+\code{\link{profile_n}()},
+\code{\link{variation_plot_single_obs}()}
 }
 \concept{visualization functions}
