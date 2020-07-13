@@ -4,8 +4,8 @@
 #' @param df refactored data frame
 #' @param field field to evaluate
 #' @param type dv, count, or proportion
-#' @importFrom dplyr group_by dense_rank replace_na summarise n ungroup mutate case_when
-#' @importFrom tidyr pivot_wider
+#' @importFrom dplyr group_by dense_rank summarise n ungroup mutate case_when
+#' @importFrom tidyr pivot_wider replace_na
 #' @noRd
 #' @examples
 #' over_under_split(df = refactor_columns(mpg, "hwy", split = "year"), field = "class", type = "dv")
@@ -78,8 +78,7 @@ over_under_split <- function(df,
 #' @param split_on value to split on
 #' @param type dv,count, or proportion
 #' @param dep_var dependent variable
-#' @param ... inherited from \code{variation_plot()}
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
@@ -122,13 +121,12 @@ group_split_prep <- function(df,
 #' @param split_on field that differentiates the two groups
 #' @param type the outcome or dependent variable ("dv"), the percent of obs.
 #' ("percent"), or the number of obs. ("count")
-#' @param ... inherited from \code{variation_plot()}
 #' @param trunc_length number of charcters to print on y-axis
 #' @param threshold threshold for excluding nominal differences. The value
 #' should reflect the type, if the count is in the hundreds you might use 20,
 #' meaning when viewing count differences, values where the difference is <20
 #' will be excluded. For proportion/percent and the dv type, the default is 0.02
-#' or 2%
+#' or 2 percept
 #' @param base_group Should group 1 or group 2 be the base. This group will be
 #' the bar and the other will be the point.
 #' @param return_data When TRUE will return data frame instead of a plot.
@@ -136,10 +134,10 @@ group_split_prep <- function(df,
 #' @param color_over Color to use when point is higher than bar
 #' @param color_under Color to use when point is lower than bar
 #' @param color_missing Color to use when either a point or bar is missing
-#' @inheritDotParams variation_plot
+#' @inheritDotParams refactor_columns
 #' @importFrom glue glue
 #' @importFrom dplyr case_when filter select
-#' @importFrom ggplot ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element text element_rect
+#' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element_text element_rect
 #' @export
 #'
 #' @examples
@@ -278,7 +276,7 @@ group_split <- function(df,
 
 #' Aggregate data for group_split labels
 #' @param base_data data frame
-#' @importFrom dplyr filter select everythiong count mutate arrange
+#' @importFrom dplyr filter select everything count mutate arrange
 #' @importFrom tidyr pivot_longer
 #' @importFrom glue glue
 #' @noRd
@@ -315,7 +313,7 @@ group_split_counts <- function(base_data, ref_group, split_on) {
 #' Prep data for group_split plotting
 #' @param base_data data frame
 #' @importFrom dplyr filter mutate coalesce arrange
-#' @import forcats fct_inorder
+#' @importFrom forcats fct_inorder
 #' @noRd
 #' @examples
 #' group_split_plot_data(
@@ -338,7 +336,7 @@ group_split_plot_data <- function(base_data, threshold, ref_group, trunc_length)
       plot_point = coalesce(as.numeric(.data$point), 0)
     ) %>%
     arrange(.data$plot_bar, .data$plot_point) %>%
-    mutate(.data$value = fct_inorder(str_trunc(.data$value, trunc_length)))
+    mutate(value = fct_inorder(str_trunc(.data$value, trunc_length)))
 }
 
 
