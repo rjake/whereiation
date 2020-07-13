@@ -18,7 +18,6 @@ variation_plot <- function(df,
                            avg_type = c("mean", "median")
                            ) {
   avg_name <- match.arg(avg_type)
-  collapse_by <- match.arg(collapse_by)
 
   factor_stats <-
     analyze_data(
