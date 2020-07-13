@@ -38,7 +38,6 @@ refactor_columns <- function(df,
                              n_quantile = 10,
                              n_digits = 2,
                              avg_type = c("mean", "median"),
-                             collapse_by = c("dv", "n"),
                              ignore_cols = NA_character_) {
 
   avg_name <- match.arg(avg_type)
