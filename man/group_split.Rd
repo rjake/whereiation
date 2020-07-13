@@ -10,6 +10,7 @@ group_split(
   type = c("dv", "percent", "count"),
   dep_var,
   ...,
+  n_cat = 10,
   trunc_length = 100,
   threshold = 0.02,
   base_group = c("1", "2"),
@@ -17,24 +18,23 @@ group_split(
   n_field = 9,
   color_over = "navyblue",
   color_under = "red",
-  color_missing = "grey20"
+  color_missing = "grey50"
 )
 }
 \arguments{
-\item{df}{data frame to evaluate}
+\item{df}{dataframe to evaluate}
 
-\item{split_on}{field that differentiates the two groups}
+\item{split_on}{variable to split data / group by}
 
 \item{type}{the outcome or dependent variable ("dv"), the percent of obs.
 ("percent"), or the number of obs. ("count")}
 
+\item{dep_var}{dependent variable to use (column name)}
+
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
-    \item{\code{dep_var}}{dependent variable to use (column name)}
     \item{\code{id}}{field to use as ID}
-    \item{\code{n_cat}}{for categorical variables, the max number of unique values
-to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
     \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
 mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
 grand mean as "other" or should it use size \code{"n"}}
@@ -48,6 +48,10 @@ ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
   }}
+
+\item{n_cat}{the number of factors to keep in the y-axis. Factors will be
+prioritized by the size of the difference and may not match the way
+categories are collapsed in \code{refactor_columns()}}
 
 \item{trunc_length}{number of charcters to print on y-axis}
 
@@ -74,12 +78,12 @@ the bar and the other will be the point.}
 Evaluate difference between two groups based on value of a field
 }
 \examples{
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-group_split(mpg, split_on = "year", type = "count", threshold = 10)
-group_split(mpg, split_on = "year", type = "percent")
+group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")
+group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
+group_split(ggplot2::mpg, split_on = "year", type = "percent")
 group_split(
-  mpg \%>\% select(year, cty, trans),
+  ggplot2::mpg \%>\% dplyr::select(year, cty, trans),
   split_on = "year",
   type = "dv",
   dep_var = "cty",
@@ -87,6 +91,6 @@ group_split(
   color_missing = "violet"
 )
 
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
+group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 }
