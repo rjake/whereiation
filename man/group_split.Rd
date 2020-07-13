@@ -29,23 +29,24 @@ group_split(
 ("percent"), or the number of obs. ("count")}
 
 \item{...}{
-  Arguments passed on to \code{\link[=variation_plot]{variation_plot}}
+  Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
     \item{\code{dep_var}}{dependent variable to use (column name)}
-    \item{\code{avg_type}}{mean or median}
-    \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
-fields that have have no duplicate values (primary keys) or fields with
-a large proportion of null values}
+    \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
-to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
-    \item{\code{collapse_by}}{when using n_cat, should the values collapse by the
-dependent variable (\code{'dv'}) or size (\code{'n'})}
+    \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
+mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
+grand mean as "other" or should it use size \code{"n"}}
     \item{\code{n_quantile}}{for numeric/date fields, the number of quantiles used
 to split the data into a factor. Fields that have less than this amount
 will not be changed.}
     \item{\code{n_digits}}{for numeric fields, the number of digits to keep in the breaks
 ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
+    \item{\code{avg_type}}{mean or median}
+    \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
+fields that have have no duplicate values (primary keys) or fields with
+a large proportion of null values}
   }}
 
 \item{trunc_length}{number of charcters to print on y-axis}
@@ -54,7 +55,7 @@ ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
 should reflect the type, if the count is in the hundreds you might use 20,
 meaning when viewing count differences, values where the difference is <20
 will be excluded. For proportion/percent and the dv type, the default is 0.02
-or 2%}
+or 2 percept}
 
 \item{base_group}{Should group 1 or group 2 be the base. This group will be
 the bar and the other will be the point.}
@@ -74,13 +75,13 @@ Evaluate difference between two groups based on value of a field
 }
 \examples{
 group_split(mpg, split_on = "year", type = "dv", dep_var = "cty")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = 2)
+group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 group_split(mpg, split_on = "year", type = "count", threshold = 10)
 group_split(mpg, split_on = "year", type = "percent")
 group_split(
   mpg \%>\% select(year, cty, trans),
   split_on = "year",
-  type = "count",
+  type = "dv",
   dep_var = "cty",
   base_group = "1", #return_data = TRUE,
   color_missing = "violet"
