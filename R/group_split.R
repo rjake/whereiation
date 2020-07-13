@@ -3,15 +3,17 @@
 #'
 #' @param df refactored data frame
 #' @param field field to evaluate
-#' @param type dv, count, or proportion
+#' @inheritParams group_split
 #' @importFrom dplyr group_by dense_rank summarise n ungroup mutate case_when
 #' @importFrom tidyr pivot_wider replace_na
+#' @importFrom stats na.omit
 #' @noRd
 #' @examples
-#' over_under_split(df = refactor_columns(ggplot2::mpg, "hwy", split = "year"), field = "class", type = "dv")
+#' over_under_split(df = refactor_columns(ggplot2::mpg, "hwy", split = "year", n_cat = NULL), field = "model", type = "dv", n_cat = 5)
 over_under_split <- function(df,
                              field,
-                             type
+                             type,
+                             n_cat
                              ) {
   # df <- ggplot2::mpg; split <- "year"; field <- "model"
   group_df <-
@@ -27,6 +29,7 @@ over_under_split <- function(df,
 
 
   if (type == "dv") {
+    agg_fn <- mean
     calc_df <-
       group_df %>%
       summarise(
@@ -34,6 +37,7 @@ over_under_split <- function(df,
         x = mean(.data$y_outcome)
       )
   } else if (type == "count") {
+    agg_fn <- sum
     calc_df <-
       group_df %>%
       summarise(
@@ -41,6 +45,7 @@ over_under_split <- function(df,
         x = n()
       )
   } else if (type == "percent") {
+    agg_fn <- sum
     calc_df <-
       group_df %>%
       summarise(
@@ -51,20 +56,48 @@ over_under_split <- function(df,
       mutate(x = .data$x / sum(.data$x) * 100)
   }
 
+
   calc_df %>%
     ungroup() %>%
     pivot_wider(
       names_from = .data$split_ord,
       values_from = c(.data$split, .data$x, .data$n),
-      values_fill = list(n = 0)
+      values_fill = list(n = 0, x = 0)
     ) %>%
     mutate(
+      delta = .data$x_group_2 - .data$x_group_1,
+      abs_delta = abs(.data$delta),
+      value = collapse_cat(.data$value, n = n_cat, w = .data$abs_delta)
+    ) %>%
+    group_by(.data$field, .data$value) %>%
+    mutate(
+      has_group_1 = max(!is.na(.data$split_group_1)),
+      has_group_2 = max(!is.na(.data$split_group_2))
+    ) %>%
+    ungroup() %>%
+    mutate(
+      split_group_1 = unique(na.omit(.data$split_group_1)),
+      split_group_2 = unique(na.omit(.data$split_group_2))
+    ) %>%
+    group_by(
+      .data$field, .data$value,
+      .data$has_group_1, .data$has_group_2,
+      .data$split_group_1, .data$split_group_2
+    ) %>%
+    summarise(
+      x_group_1 = agg_fn(.data$x_group_1, na.rm = TRUE),
+      x_group_2 = agg_fn(.data$x_group_2, na.rm = TRUE),
+      n_group_1 = sum(.data$n_group_1, na.rm = TRUE),
+      n_group_2 = sum(.data$n_group_2, na.rm = TRUE)
+    ) %>%
+   ungroup() %>%
+   mutate(
       delta = .data$x_group_2 - .data$x_group_1,
       abs_delta = abs(.data$delta),
       field_delta = sum(.data$abs_delta, na.rm = TRUE),
       category =
         case_when(
-          is.na(.data$x_group_1) | is.na(.data$x_group_2) ~ "missing",
+          .data$has_group_1 == 0 | .data$has_group_2 == 0 ~ "missing",
           delta > 0 ~ "higher",
           delta < 0 ~ "lower",
           TRUE ~ "same"
@@ -74,19 +107,20 @@ over_under_split <- function(df,
 
 
 #' Prep for group_split by iterating over_under_split()
-#' @param type dv,count, or proportion
 #' @inheritDotParams refactor_columns
+#' @inheritParams group_split
 #' @inheritParams refactor_columns
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
 #' @noRd
 #' @examples
-#' group_split_prep(ggplot2::mpg, dep_var = "hwy", split = "year", type = "dv")
+#' group_split_prep(ggplot2::mpg, dep_var = "hwy", split_on = "year", type = "dv", n_cat = 5)
 group_split_prep <- function(df,
                              split_on = NULL,
                              type,
                              dep_var,
+                             n_cat,
                              ...
                              ) {
 
@@ -107,7 +141,7 @@ group_split_prep <- function(df,
   check_binary(refactor_df$y_split)
 
   names(refactor_df)[4:length(refactor_df)] %>%
-    map_dfr(over_under_split, df = refactor_df, type = type) %>%
+    map_dfr(over_under_split, df = refactor_df, type = type, n_cat = n_cat) %>%
     mutate(field = fct_reorder(.data$field, .data$field_delta, .desc = TRUE))
 }
 
@@ -118,6 +152,9 @@ group_split_prep <- function(df,
 #'
 #' @param type the outcome or dependent variable ("dv"), the percent of obs.
 #' ("percent"), or the number of obs. ("count")
+#' @param n_cat the number of factors to keep in the y-axis. Factors will be
+#' prioritized by the size of the difference and may not match the way
+#' categories are collapsed in \code{refactor_columns()}
 #' @param trunc_length number of charcters to print on y-axis
 #' @param threshold threshold for excluding nominal differences. The value
 #' should reflect the type, if the count is in the hundreds you might use 20,
@@ -144,7 +181,7 @@ group_split_prep <- function(df,
 #' group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
 #' group_split(ggplot2::mpg, split_on = "year", type = "percent")
 #' group_split(
-#'   ggplot2::mpg %>% select(year, cty, trans),
+#'   ggplot2::mpg %>% dplyr::select(year, cty, trans),
 #'   split_on = "year",
 #'   type = "dv",
 #'   dep_var = "cty",
@@ -159,6 +196,7 @@ group_split <- function(df,
                         type = c("dv", "percent", "count"),
                         dep_var,
                         ...,
+                        n_cat = 10,
                         trunc_length = 100,
                         threshold = 0.02,
                         base_group = c("1", "2"),
@@ -209,11 +247,17 @@ group_split <- function(df,
   )
 
   base_data <-
-    group_split_prep(df, split_on, type = calc_type, dep_var, ...)
+    group_split_prep(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
+    mutate(
+      split_group_1 = ifelse(.data$has_group_1 == 0, NA, .data$split_group_1),
+      split_group_2 = ifelse(.data$has_group_2 == 0, NA, .data$split_group_2),
+      x_group_1 = ifelse(.data$has_group_1 == 0, NA, .data$x_group_1),
+      x_group_2 = ifelse(.data$has_group_2 == 0, NA, .data$x_group_2)
+    )
+
 
   plot_data <-
     group_split_plot_data(base_data, threshold, ref_group, trunc_length)
-
   # return table or plot
   if (return_data) {# return data
     select(
@@ -320,8 +364,12 @@ group_split_counts <- function(base_data, ref_group, split_on) {
 #'       df = ggplot2::mpg,
 #'       split_on = "year",
 #'       type = "dv",
-#'       dep_var = "hwy"
-#'       )
+#'       dep_var = "hwy",
+#'       n_cat = 5
+#'       ),
+#'  ref_group = "1",
+#'  threshold = 0.02,
+#'  trunc_length = 20
 #' )
 group_split_plot_data <- function(base_data, threshold, ref_group, trunc_length) {
   base_data %>%
