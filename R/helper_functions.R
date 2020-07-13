@@ -41,6 +41,7 @@ cut_custom <- function(x, n_quantile, n_digits) {
 #'
 #' @importFrom forcats fct_lump
 #' @importFrom stringr str_replace
+#' @importFrom stats ave
 #' @noRd
 #' @examples
 #' collapse_cat(x = letters[c(1, 2, 2, 2, 3, 4, 5, 5)], n = 2)
@@ -52,7 +53,7 @@ collapse_cat <- function(x,
     n <- length(x)
   }
 
-  if (is.null(w)) {
+  if (is.null(w)) { # aggregate counts
     w <- as.integer(ave(x, x, FUN = length))
   }
 
