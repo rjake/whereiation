@@ -8,7 +8,7 @@
 #' @importFrom tidyr pivot_wider replace_na
 #' @noRd
 #' @examples
-#' over_under_split(df = refactor_columns(mpg, "hwy", split = "year"), field = "class", type = "dv")
+#' over_under_split(df = refactor_columns(ggplot2::mpg, "hwy", split = "year"), field = "class", type = "dv")
 over_under_split <- function(df,
                              field,
                              type
@@ -74,17 +74,15 @@ over_under_split <- function(df,
 
 
 #' Prep for group_split by iterating over_under_split()
-#' @param df normal data frame
-#' @param split_on value to split on
 #' @param type dv,count, or proportion
-#' @param dep_var dependent variable
 #' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #' @importFrom purrr map_dfr
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
 #' @noRd
 #' @examples
-#' group_split_prep(mpg, dep_var = "hwy", split = "year", type = "dv")
+#' group_split_prep(ggplot2::mpg, dep_var = "hwy", split = "year", type = "dv")
 group_split_prep <- function(df,
                              split_on = NULL,
                              type,
@@ -118,8 +116,6 @@ group_split_prep <- function(df,
 
 #' Evaluate difference between two groups based on value of a field
 #'
-#' @param df data frame to evaluate
-#' @param split_on field that differentiates the two groups
 #' @param type the outcome or dependent variable ("dv"), the percent of obs.
 #' ("percent"), or the number of obs. ("count")
 #' @param trunc_length number of charcters to print on y-axis
@@ -136,18 +132,19 @@ group_split_prep <- function(df,
 #' @param color_under Color to use when point is lower than bar
 #' @param color_missing Color to use when either a point or bar is missing
 #' @inheritDotParams refactor_columns
+#' @inheritParams refactor_columns
 #' @importFrom glue glue
 #' @importFrom dplyr case_when filter select
 #' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element_text element_rect
 #' @export
 #'
 #' @examples
-#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty")
-#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-#' group_split(mpg, split_on = "year", type = "count", threshold = 10)
-#' group_split(mpg, split_on = "year", type = "percent")
+#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")
+#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+#' group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
+#' group_split(ggplot2::mpg, split_on = "year", type = "percent")
 #' group_split(
-#'   mpg %>% select(year, cty, trans),
+#'   ggplot2::mpg %>% select(year, cty, trans),
 #'   split_on = "year",
 #'   type = "dv",
 #'   dep_var = "cty",
@@ -155,8 +152,8 @@ group_split_prep <- function(df,
 #'   color_missing = "violet"
 #' )
 #'
-#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-#' group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
+#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 group_split <- function(df,
                         split_on,
                         type = c("dv", "percent", "count"),
