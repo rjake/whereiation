@@ -1,15 +1,13 @@
-group_split
-
-
 test_that("over_under_split", {
   df <-
     over_under_split(
       df = refactor_columns(ggplot2::mpg, "hwy", split = "year"),
       field = "class",
+      n_cat = 5,
       type = "dv"
     )
 
-  expected_dim <- c(7, 12)
+  expected_dim <- c(6, 14)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })
@@ -17,9 +15,15 @@ test_that("over_under_split", {
 
 test_that("group_split_prep", {
   df <-
-    group_split_prep(ggplot2::mpg, dep_var = "hwy", split = "year", type = "dv")
+    group_split_prep(
+      ggplot2::mpg,
+      dep_var = "hwy",
+      split = "year",
+      n_cat = 5,
+      type = "dv"
+    )
 
-  expected_dim <- c(70, 12)
+  expected_dim <- c(48, 14)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })
@@ -33,6 +37,7 @@ test_that("group_split_plot_data", {
           df = ggplot2::mpg,
           split_on = "year",
           type = "dv",
+          n_cat = 5,
           dep_var = "hwy"
         ),
       threshold = 1,
@@ -40,7 +45,7 @@ test_that("group_split_plot_data", {
       trunc_length = 20
     )
 
-  expected_dim <- c(41, 17)
+  expected_dim <- c(33, 19)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 
@@ -59,6 +64,7 @@ test_that("group_split_counts", {
           df = ggplot2::mpg,
           split_on = "year",
           type = "dv",
+          n_cat = 5,
           dep_var = "hwy"
         ),
       ref_group = "1",

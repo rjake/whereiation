@@ -1,28 +1,18 @@
-group_split(mpg %>% select(year, trans), split_on = "year", type = "percent")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-group_split(mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-group_split(mpg, split_on = "year", type = "count", threshold = 10)
-group_split(
-  mpg %>% select(year, cty, trans),
-  split_on = "year",
-  type = "dv",
-  dep_var = "cty",
-  base_group = "1", #return_data = TRUE,
-  color_missing = "violet"
-)
-#'
-
 test_that("group_split works", {
-  p <- variation_plot(ggplot2::mpg, "cty")
+  p <- group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(28, 11)
+  expected_dim <- c(26, 19)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)
   expected_layers <- 3
   expect_equal(actual_layers, expected_layers)
+
+  # no more than 1 pt per facet + y
+  gg_build <- ggplot2::ggplot_build(p)$data[[3]]
+  n_points <- ave(gg_build$y, paste(gg_build$PANEL, gg_build$y), FUN = length)
+  expect_true(max(n_points) == 1)
 })
 
 
@@ -42,3 +32,4 @@ test_that("variation_plot_single_obs works", {
   expected_layers_p2 <- 7
   expect_equal(actual_layers_p2, expected_layers_p2)
 })
+
