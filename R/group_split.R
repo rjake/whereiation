@@ -101,6 +101,7 @@ group_split_prep <- function(df,
       df,
       dep_var = dep_var,
       ...,
+      n_cat = NULL,
       split_on = split_on
     )
 
@@ -168,7 +169,7 @@ group_split <- function(df,
                         n_field = 9,
                         color_over = "navyblue",
                         color_under = "red",
-                        color_missing = "grey20") {
+                        color_missing = "grey50") {
   # to be used with scale_color... and scale_fill...
   fill_colors <- c(
     "higher" = color_over,
@@ -211,7 +212,7 @@ group_split <- function(df,
   )
 
   base_data <-
-    group_split_prep(df, split_on, type = calc_type, dep_var)
+    group_split_prep(df, split_on, type = calc_type, dep_var, ...)
 
   plot_data <-
     group_split_plot_data(base_data, threshold, ref_group, trunc_length)
