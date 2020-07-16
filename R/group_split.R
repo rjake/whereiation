@@ -339,7 +339,8 @@ group_split <- function(df,
       theme(
         axis.text.y = element_text(size = 9),
         panel.background = element_rect(color = "grey70", fill = "white"),
-        legend.position = "left"
+        plot.title.position = "plot",
+        legend.position = "bottom"
       )
   }
 }
