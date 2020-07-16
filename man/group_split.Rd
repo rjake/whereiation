@@ -18,7 +18,10 @@ group_split(
   n_field = 9,
   color_over = "navyblue",
   color_under = "red",
-  color_missing = "grey50"
+  color_missing = "grey50",
+  title = NULL,
+  subtitle = NULL,
+  caption = NULL
 )
 }
 \arguments{
@@ -73,6 +76,12 @@ the bar and the other will be the point.}
 \item{color_under}{Color to use when point is lower than bar}
 
 \item{color_missing}{Color to use when either a point or bar is missing}
+
+\item{title}{title for chart}
+
+\item{subtitle}{subtitle for chart}
+
+\item{caption}{caption for chart}
 }
 \description{
 Evaluate difference between two groups based on value of a field

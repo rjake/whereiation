@@ -16,20 +16,37 @@ test_that("group_split works", {
 })
 
 
-test_that("variation_plot_single_obs works", {
-  p1 <- variation_plot_single_obs(df = iris, dep_var = "Petal.Length", avg_type = "mean")
-  p2 <- variation_plot_single_obs(iris, "Petal.Length", labels = TRUE)
-  actual_dim_p1 <- dim(p1$data)
-  actual_dim_p2 <- dim(p2$data)
-  expected_dim <- c(28, 10)
-  expect_equal(actual_dim_p1, actual_dim_p2, expected_dim)
+test_that("group_split uses labels", {
+  p1 <-
+    group_split(
+      ggplot2::mpg,
+      split_on = "year",
+      dep_var = "hwy",
+      n_field = 5,
+      n_cat = 5,
+      title = "test title",
+      subtitle = "test subtitle",
+      caption = 'test_caption'
+    )
 
-  actual_layers_p1 <- length(p1$layers)
-  expected_layers_p1 <- 6
-  expect_equal(actual_layers_p1, expected_layers_p1)
+  p2 <- group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
 
-  actual_layers_p2 <- length(p2$layers)
-  expected_layers_p2 <- 7
-  expect_equal(actual_layers_p2, expected_layers_p2)
+  p1_labs <- p1$labels
+  p2_labs <- p2$labels
+
+
+  expect_true(p1_labs$title != p2_labs$title)
+  expect_true(p1_labs$subtitle != p2_labs$subtitle)
+  expect_true(p1_labs$caption != p2_labs$caption)
+
+  # subtitle becomes 3 lines
+  expect_true(
+    length(stringr::str_extract_all(p1_labs$subtitle, "\\n")[[1]]) == 2
+  )
+
+  # caption becomes 2 lines
+  expect_true(
+    length(stringr::str_extract_all(p1_labs$caption, "\\n")[[1]]) == 1
+  )
 })
 

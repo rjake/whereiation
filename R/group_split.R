@@ -168,6 +168,9 @@ group_split_prep <- function(df,
 #' @param color_over Color to use when point is higher than bar
 #' @param color_under Color to use when point is lower than bar
 #' @param color_missing Color to use when either a point or bar is missing
+#' @param title title for chart
+#' @param subtitle subtitle for chart
+#' @param caption caption for chart
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
 #' @importFrom glue glue
@@ -204,7 +207,10 @@ group_split <- function(df,
                         n_field = 9,
                         color_over = "navyblue",
                         color_under = "red",
-                        color_missing = "grey50") {
+                        color_missing = "grey50",
+                        title = NULL,
+                        subtitle = NULL,
+                        caption = NULL) {
   # to be used with scale_color... and scale_fill...
   fill_colors <- c(
     "higher" = color_over,
@@ -217,34 +223,6 @@ group_split <- function(df,
   ref_group <- match.arg(base_group)
 
   dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
-
-  # get values/captions for threshold if not specified
-  if (is.null(threshold)) {
-    threshold_value <- 0
-    threshold_caption <- ""
-  } else {
-    threshold_value <-
-      ifelse(
-        type == "percent",
-        round(threshold * 100, 1),
-        threshold
-      )
-
-    threshold_caption <-
-      glue("* Values are excluded if difference is < {threshold_value}")
-  }
-
-  x_axis <- case_when(
-    calc_type == "dv" ~ dep_var,
-    calc_type == "percent" ~ "Represenation %",
-    TRUE ~ "# of Obs."
-  )
-
-  title <- case_when(
-    calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
-    calc_type == "percent" ~ "Change in Proportion of Population",
-    TRUE ~ "Change in # of Obs."
-  )
 
   base_data <-
     group_split_prep(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
@@ -277,6 +255,58 @@ group_split <- function(df,
 
     group_counts <- group_split_counts(base_data, ref_group, split_on)
 
+    # labels
+    # get values/captions for threshold if not specified
+    if (is.null(threshold)) {
+      threshold_value <- 0
+      threshold_caption <- ""
+    } else {
+      threshold_value <-
+        ifelse(
+          type == "percent",
+          round(threshold * 100, 1),
+          threshold
+        )
+
+      threshold_caption <-
+        glue("* Values are excluded if difference is < {threshold_value}")
+    }
+
+    # x-axis
+    x_axis <- case_when(
+      calc_type == "dv" ~ dep_var,
+      calc_type == "percent" ~ "Represenation %",
+      TRUE ~ "# of Obs."
+    )
+
+    # title
+    if (!is.null(title)) {
+      title_text <-  title
+    } else {
+      title_text <-
+        case_when(
+          calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
+          calc_type == "percent" ~ "Change in Proportion of Population",
+          TRUE ~ "Change in # of Obs."
+        )
+    }
+
+    # subtitle
+    subtitle_text <- paste(group_counts$text, collapse = "\n")
+
+    if (!is.null(subtitle)) {
+      subtitle_text <- paste(subtitle, subtitle_text, sep = "\n")
+    }
+
+    # caption
+    caption_text <-
+      ifelse(
+        !is.null(caption),
+        paste(threshold_caption, caption, sep = "\n"),
+        threshold_caption
+      )
+
+    # plot
     ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
       geom_col(
         aes(x = .data$plot_bar, fill = .data$category),
@@ -298,9 +328,9 @@ group_split <- function(df,
       guides(color = FALSE) +
       facet_wrap(~.data$field, scales = "free_y") +
       labs(
-        title = title,
-        subtitle = paste(group_counts$text, collapse = "\n"),
-        caption = threshold_caption,
+        title = title_text,
+        subtitle = subtitle_text,
+        caption = caption_text,
         x = x_axis,
         y = "",
         size = paste0("# of obs. when\n", group_counts$label[2]),
