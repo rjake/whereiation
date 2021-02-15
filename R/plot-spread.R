@@ -1,4 +1,4 @@
-#' Visualize variation among all factors for all variables
+#' Visualize spread of avg. values among all factors for all variables
 #'
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
