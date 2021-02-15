@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Visualizes variation of a dependent variable among all factors in all fields • whereiation</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Visualizes variation of a dependent variable among all factors in all fields">
 <meta property="og:description" content="Troubleshooting reactive data in flexdashboard can be difficult. The goal of this package is to convert reactive data frames into functions that will read from your raw data. It is recommended that an dummy input list be available to simulate the reactive inputs your users will manipulate.">
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -47,7 +47,14 @@
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/rjake/whereiation/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -70,42 +77,42 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"rjake/whereiation"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"rjake/whereiation"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>There is a plotting function which is used to visualize the variation in the dependent variable across all factors in all fields.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(whereiation)</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">## basic example code</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="reference/variation_plot.html">variation_plot</a></span>(ggplot2<span class="op">::</span>mpg, <span class="st">"cty"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">whereiation</span><span class="op">)</span>
+<span class="co">## basic example code</span>
+<span class="fu"><a href="reference/plot_funnel.html">plot_funnel</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/mpg.html">mpg</a></span>, <span class="st">"cty"</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"></p>
 <p>The variation plot is likely to be unfamiliar. This image should help explain what’s going on (click to see a bigger pic):</p>
 <p><img src="reference/figures/mpg_variation_plot_reading.png" alt="mpg_variation_plot_reading" width="500"></p>
 <p>The idea is that categories matter. I like to think of it as a tug-of-war between different identities a single observation holds in comparison with the grand mean (dotted line below). In this example, being a Toyota (<code>manufacturer == "toyota"</code>) linked it to having a higher city mpg than the grand mean (19 mpg vs 17 mpg). Because the factors in <code>manufacturer</code> have more variation, this field pulls more strongly on the estimated mpg than the <code>year</code>. In this case, there is very little difference between cars from 1998 and 2008. Although this observation has <code>year == 2008</code> and observations with this year are lower than in 1998, the low variation leads to less pull on the estimate.</p>
 <p>for has a group mean well below the grand mean (across all manufacturers/observations). The 8 cyl (V8) engine has a similar contribution. As you work your way from highest to lowest, the expectation is that the impact of these different factors have less and less pull.</p>
 <p>Sometimes it’s easier to see an example of where one observation may fall. For this you can use</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="reference/variation_plot_single_obs.html">variation_plot_single_obs</a></span>(</a>
-<a class="sourceLine" id="cb3-2" title="2">  <span class="dt">df =</span> ggplot2<span class="op">::</span>mpg, </a>
-<a class="sourceLine" id="cb3-3" title="3">  <span class="dt">dep_var =</span> <span class="st">"cty"</span>, </a>
-<a class="sourceLine" id="cb3-4" title="4">  <span class="dt">id =</span> <span class="dv">182</span>, <span class="co"># essentially the row number</span></a>
-<a class="sourceLine" id="cb3-5" title="5">  <span class="dt">labels =</span> <span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb3-6" title="6">)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="reference/plot_funnel.html">plot_funnel_single_obs</a></span><span class="op">(</span>
+  df <span class="op">=</span> <span class="fu">ggplot2</span><span class="fu">::</span><span class="va"><a href="https://ggplot2.tidyverse.org/reference/mpg.html">mpg</a></span>, 
+  dep_var <span class="op">=</span> <span class="st">"cty"</span>, 
+  id <span class="op">=</span> <span class="fl">182</span>, <span class="co"># essentially the row number</span>
+  labels <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/mpg_variation_plot_single_obs.png" alt="mpg_variation_plot_single_obs" width="500"></p>
-<p>There is also a function to view the frequency of fields across all variables. This can help in choosing columns to use in the <code>ignore_cols</code> argument when visualizing the data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw">field_scan</span>(ggplot2<span class="op">::</span>mpg, <span class="dt">n_cat =</span> <span class="dv">10</span>, <span class="dt">n_quantile =</span> <span class="dv">4</span>)</a></code></pre></div>
-<p>Categorical data can be rolled-up into a limited number of categories, putting less freuquent factors in an “Other” category (defaults to <code>n_cat = 15</code>). Numeric data is cut into a specified number of quantiles (defaults to <code>n_quantile = 10</code>). <img src="reference/figures/mpg_field_scan.png" alt="field_scan" width="500"></p>
-<p>You can run a demo file <a href="https://github.com/rjake/whereiation/blob/master/inst/demo_analysis.Rmd">here</a>. At the bottom are a lot of <code>df &lt;-...; dep_var &lt;-...; ignore_cols &lt;- ...;</code> for examples that can be run within R. You will have to install some of the packages in order to use them. For example, the <code>AER::Fatalities</code> data set is <code>Fatalities</code> out of the <code>AER</code> package. To see what is on your machine, you can use the top of <a href="https://github.com/rjake/whereiation/blob/master/inst/find_datasets.R">this script</a>.</p>
-<p>Please reach out with any questions <a href="mailto:rjake@sas.upenn.edu" class="email">rjake@sas.upenn.edu</a>, [@yake_84](<a href="https://twitter.com/yake_84" class="uri">https://twitter.com/yake_84</a>)</p>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/rjake/whereiation/">https://​github.com/​rjake/​whereiation/​</a>
+</li>
 <li>Report a bug at <br><a href="https://github.com/rjake/whereiation/issues">https://​github.com/​rjake/​whereiation/​issues</a>
 </li>
 </ul>
@@ -133,7 +140,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
