@@ -1,0 +1,26 @@
+reference:
+
+- title: Plots
+  desc: >
+    Visualize variation in the dependent variable or representation
+  contents:
+  - plot_expected_proportions
+  - plot_group_split
+  - plot_spread
+- title: Data Summaries
+  desc: >
+    There are some helper functions to prepare data frames for use
+    with plots
+  contents:
+  - summarize_factor_extremes
+  - summarize_factors_all_fields
+  - summarize_factors_one_field
+  - summarize_one_field
+- title: Other
+  desc: >
+    Functions that do something else or in-progress
+  contents:
+  - profile_n
+  - refactor_columns
+
+

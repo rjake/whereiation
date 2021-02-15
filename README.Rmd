@@ -42,7 +42,7 @@ There is a plotting function which is used to visualize the variation in the dep
 ```{r example, eval = FALSE}
 library(whereiation)
 ## basic example code
-variation_plot(ggplot2::mpg, "cty")
+plot_spread(ggplot2::mpg, "cty")
 ```
 <img src="man/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
 
@@ -57,7 +57,7 @@ for  has a group mean well below the grand mean (across all manufacturers/observ
 Sometimes it's easier to see an example of where one observation may fall. For this you can use 
 
 ```{r eval=FALSE}
-variation_plot_single_obs(
+plot_spread_single_obs(
   df = ggplot2::mpg, 
   dep_var = "cty", 
   id = 182, # essentially the row number
@@ -66,6 +66,10 @@ variation_plot_single_obs(
 ```
 
 <img src="man/figures/mpg_variation_plot_single_obs.png" alt="mpg_variation_plot_single_obs" width="500"/>
+
+```{r echo=FALSE, eval=TRUE}
+knitr::knit_exit()
+```
 
 
 There is also a function to view the frequency of fields across all variables. This can help in choosing columns to use in the `ignore_cols` argument when visualizing the data.

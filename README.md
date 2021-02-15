@@ -32,7 +32,7 @@ the dependent variable across all factors in all fields.
 ``` r
 library(whereiation)
 ## basic example code
-variation_plot(ggplot2::mpg, "cty")
+plot_spread(ggplot2::mpg, "cty")
 ```
 
 <img src="man/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
@@ -63,7 +63,7 @@ Sometimes it’s easier to see an example of where one observation may
 fall. For this you can use
 
 ``` r
-variation_plot_single_obs(
+plot_spread_single_obs(
   df = ggplot2::mpg, 
   dep_var = "cty", 
   id = 182, # essentially the row number
@@ -72,29 +72,3 @@ variation_plot_single_obs(
 ```
 
 <img src="man/figures/mpg_variation_plot_single_obs.png" alt="mpg_variation_plot_single_obs" width="500"/>
-
-There is also a function to view the frequency of fields across all
-variables. This can help in choosing columns to use in the `ignore_cols`
-argument when visualizing the data.
-
-``` r
-field_scan(ggplot2::mpg, n_cat = 10, n_quantile = 4)
-```
-
-Categorical data can be rolled-up into a limited number of categories,
-putting less freuquent factors in an “Other” category (defaults to
-`n_cat = 15`). Numeric data is cut into a specified number of quantiles
-(defaults to `n_quantile = 10`).
-<img src="man/figures/mpg_field_scan.png" alt="field_scan" width="500"/>
-
-You can run a demo file
-[here](https://github.com/rjake/whereiation/blob/master/inst/demo_analysis.Rmd).
-At the bottom are a lot of `df <-...; dep_var <-...; ignore_cols <-
-...;` for examples that can be run within R. You will have to install
-some of the packages in order to use them. For example, the
-`AER::Fatalities` data set is `Fatalities` out of the `AER` package. To
-see what is on your machine, you can use the top of [this
-script](https://github.com/rjake/whereiation/blob/master/inst/find_datasets.R).
-
-Please reach out with any questions <rjake@sas.upenn.edu>,
-\[@yake\_84\](<https://twitter.com/yake_84>)
