@@ -1,4 +1,4 @@
-#' Convert data to a table of factors
+#' Convert all fields to factors (same method as under plots)
 #'
 #' @param df dataframe to evaluate
 #' @param dep_var dependent variable to use (column name)

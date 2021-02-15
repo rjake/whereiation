@@ -1,4 +1,4 @@
-#' Profile examles at top / bottom of estimate
+#' Profile observations with the most extreme values
 #'
 #' @param ... variables passed on to \code{generate_estimate_details}
 #' @param n number of observations to retrieve

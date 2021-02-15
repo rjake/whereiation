@@ -62,8 +62,9 @@ map_over_under_proportions <- function(df, ...) {
     mutate(field = fct_reorder(.data$field, .data$field_delta, .desc = TRUE))
 }
 
-
-#' Compare representation of proportions (over/under)
+#' Visualize variation between the expected & actual percentages
+#'
+#' Ideal for a 0/1 dichotomous variable.
 #'
 #' @param df data to be analyzed
 #' @param dep_var dependent variable

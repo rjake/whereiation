@@ -157,7 +157,7 @@ map_over_under_split <- function(df,
 
 
 
-#' Evaluate difference between two groups based on value of a field
+#' Visualize variation between two groups
 #'
 #' @param type the outcome or dependent variable ("dv"), the percent of obs.
 #' ("percent"), or the number of obs. ("count")
