@@ -5,8 +5,8 @@ reference:
     Visualize variation in the dependent variable or representation
   contents:
   - plot_expected_proportions
-  - plot_funnel
-  - plot_funnel_single_obs
+  - plot_spread
+  - plot_spread_single_obs
   - plot_group_split
 - title: Data Summaries
   desc: >

@@ -32,7 +32,7 @@ the dependent variable across all factors in all fields.
 ``` r
 library(whereiation)
 ## basic example code
-plot_funnel(ggplot2::mpg, "cty")
+plot_spread(ggplot2::mpg, "cty")
 ```
 
 <img src="man/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
@@ -63,7 +63,7 @@ Sometimes it’s easier to see an example of where one observation may
 fall. For this you can use
 
 ``` r
-plot_funnel_single_obs(
+plot_spread_single_obs(
   df = ggplot2::mpg, 
   dep_var = "cty", 
   id = 182, # essentially the row number

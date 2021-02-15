@@ -10,8 +10,8 @@
 #' @export
 #'
 #' @examples
-#' plot_funnel(ggplot2::mpg, "hwy")
-plot_funnel <- function(df,
+#' plot_spread(ggplot2::mpg, "hwy")
+plot_spread <- function(df,
                         dep_var,
                         ...,
                         avg_type = c("mean", "median")
@@ -84,11 +84,11 @@ plot_funnel <- function(df,
 #' @importFrom rlang .data
 #'
 #' @export
-#' @describeIn plot_funnel highlight a single observation
+#' @describeIn plot_spread highlight a single observation
 #'
 #' @examples
-#' plot_funnel_single_obs(ggplot2::mpg, "hwy")
-plot_funnel_single_obs <- function(df,
+#' plot_spread_single_obs(ggplot2::mpg, "hwy")
+plot_spread_single_obs <- function(df,
                                    dep_var,
                                    ...,
                                    avg_type = c("mean", "median"),
@@ -124,7 +124,7 @@ plot_funnel_single_obs <- function(df,
   obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
-    plot_funnel(df = df, dep_var = dep_var, ...) +
+    plot_spread(df = df, dep_var = dep_var, ...) +
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
@@ -158,11 +158,11 @@ plot_funnel_single_obs <- function(df,
 
 #' @export
 #' @inheritDotParams refactor_columns
-#' @describeIn plot_funnel utilizing ggplotly
+#' @describeIn plot_spread utilizing ggplotly
 #' @importFrom plotly ggplotly
 #' @examples
-#' plot_funnel_interactive(ggplot2::mpg, "hwy")
-plot_funnel_interactive <- function(...) {
-  p <- plot_funnel(...)
+#' plot_spread_interactive(ggplot2::mpg, "hwy")
+plot_spread_interactive <- function(...) {
+  p <- plot_spread(...)
   ggplotly(p, tooltip = c("label"))
 }
