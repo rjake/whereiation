@@ -2,10 +2,10 @@
 
 export("%>%")
 export(plot_expected_proportions)
-export(plot_funnel)
-export(plot_funnel_interactive)
-export(plot_funnel_single_obs)
 export(plot_group_split)
+export(plot_spread)
+export(plot_spread_interactive)
+export(plot_spread_single_obs)
 export(profile_n)
 export(refactor_columns)
 export(summarize_factor_extremes)
