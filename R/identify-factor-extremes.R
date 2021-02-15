@@ -1,4 +1,4 @@
-#' Find drivers of variation
+#' Identify the factors with the most extreme averages for each field
 #'
 #' @inheritDotParams refactor_columns
 #'
@@ -8,8 +8,8 @@
 #' @importFrom tidyr pivot_wider
 #'
 #' @examples
-#' identify_factor_extremes(df = ggplot2::mpg, dep_var = "hwy")
-identify_factor_extremes <- function(...) {
+#' summarize_factor_extremes(df = ggplot2::mpg, dep_var = "hwy")
+summarize_factor_extremes <- function(...) {
   # prep_df <- summarize_factors_all_fields(df = mpg, dep_var = "hwy")
 
   prep_df <- summarize_factors_all_fields(...)
