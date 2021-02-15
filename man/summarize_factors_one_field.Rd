@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize-factors.R
 \name{summarize_factors_one_field}
 \alias{summarize_factors_one_field}
-\title{Calculate the importance of the FACTOR in a given field}
+\title{Calculate the importance of each FACTOR in a given field}
 \usage{
 summarize_factors_one_field(var, df, avg_fn)
 }
@@ -14,7 +14,7 @@ summarize_factors_one_field(var, df, avg_fn)
 \item{avg_fn}{mean or median}
 }
 \description{
-Calculate the importance of the FACTOR in a given field
+Calculate the importance of each FACTOR in a given field
 }
 \examples{
 # summarize_factors_one_field("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)

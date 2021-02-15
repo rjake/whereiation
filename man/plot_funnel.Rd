@@ -4,7 +4,7 @@
 \alias{plot_funnel}
 \alias{plot_funnel_single_obs}
 \alias{plot_funnel_interactive}
-\title{Visualize variation among all factor levels for all variables}
+\title{Visualize variation among all factors for all variables}
 \usage{
 plot_funnel(df, dep_var, ..., avg_type = c("mean", "median"))
 
@@ -50,7 +50,7 @@ a large proportion of null values}
 \item{id}{is id (row number) from \code{base_data()} to use}
 }
 \description{
-Visualize variation among all factor levels for all variables
+Visualize variation among all factors for all variables
 
 Visualize variation and logic for a single observation
 }

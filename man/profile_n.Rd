@@ -2,7 +2,7 @@
 % Please edit documentation in R/profile-n.R
 \name{profile_n}
 \alias{profile_n}
-\title{Profile examles at top / bottom of estimate}
+\title{Profile observations with the most extreme values}
 \usage{
 profile_n(df, dep_var, ..., n = 5, position = c("top", "bottom"))
 }
@@ -37,7 +37,7 @@ a large proportion of null values}
 \item{position}{whether to return the highest ("top") or lowest ("bottom")}
 }
 \description{
-Profile examles at top / bottom of estimate
+Profile observations with the most extreme values
 }
 \examples{
 \dontrun{

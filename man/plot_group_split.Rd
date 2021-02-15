@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-group-split.R
 \name{plot_group_split}
 \alias{plot_group_split}
-\title{Evaluate difference between two groups based on value of a field}
+\title{Visualize variation between two groups}
 \usage{
 plot_group_split(
   df,
@@ -84,7 +84,7 @@ the bar and the other will be the point.}
 \item{caption}{caption for chart}
 }
 \description{
-Evaluate difference between two groups based on value of a field
+Visualize variation between two groups
 }
 \examples{
 plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")

@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot-expected-proportions.R
 \name{plot_expected_proportions}
 \alias{plot_expected_proportions}
-\title{Compare representation of proportions (over/under)}
+\title{Visualize variation between the expected & actual percentages}
 \usage{
 plot_expected_proportions(
   df,
@@ -62,7 +62,7 @@ column).}
 \item{color_under}{color name/hex code for values that are under-represented}
 }
 \description{
-Compare representation of proportions (over/under)
+Ideal for a 0/1 dichotomous variable.
 }
 \examples{
 plot_expected_proportions(df = iris, dep_var = "Sepal.Length > 5")

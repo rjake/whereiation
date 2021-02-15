@@ -2,7 +2,7 @@
 % Please edit documentation in R/summarize-factors.R
 \name{summarize_factors_all_fields}
 \alias{summarize_factors_all_fields}
-\title{Summarize fields}
+\title{Calculate the importance of ALL factors in a ALL fields}
 \usage{
 summarize_factors_all_fields(
   df,

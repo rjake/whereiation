@@ -2,7 +2,7 @@
 % Please edit documentation in R/refactor-columns.R
 \name{refactor_columns}
 \alias{refactor_columns}
-\title{Convert data to a table of factors}
+\title{Convert all fields to factors (same method as under plots)}
 \usage{
 refactor_columns(
   df,
@@ -47,7 +47,7 @@ fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
 }
 \description{
-Convert data to a table of factors
+Convert all fields to factors (same method as under plots)
 }
 \examples{
 refactor_columns(df = iris, dep_var = "Sepal.Length")

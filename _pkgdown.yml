@@ -13,7 +13,7 @@ reference:
     There are some helper functions to prepare data frames for use
     with plots
   contents:
-  - identify_factor_extremes
+  - summarize_factor_extremes
   - summarize_factors_all_fields
   - summarize_factors_one_field
   - summarize_one_field
