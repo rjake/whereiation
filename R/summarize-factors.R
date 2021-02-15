@@ -1,4 +1,4 @@
-#' Summarize fields
+#' Calculate the importance of ALL factors in a ALL fields
 #'
 #' Pivots data and summarizes factor frequencies by field and generates stats
 #' used for plotting
@@ -100,7 +100,7 @@ summarize_factors_all_fields <- function(df,
 }
 
 
-#' Calculate the importance of the FACTOR in a given field
+#' Calculate the importance of each FACTOR in a given field
 #'
 #' @param var variable/field to group by
 #' @param df refactored data
