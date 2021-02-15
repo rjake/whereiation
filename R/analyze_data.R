@@ -19,11 +19,10 @@
 #' @importFrom rlang .data
 #'
 #' @export
-#' @family manipulation functions
 #' @examples
-#' analyze_data(iris, dep_var = "Sepal.Length")
-#' analyze_data(iris, dep_var = "Sepal.Length", return = "list")
-analyze_data <- function(df,
+#' summarize_factors_all_fields(iris, dep_var = "Sepal.Length")
+#' summarize_factors_all_fields(iris, dep_var = "Sepal.Length", return = "list")
+summarize_factors_all_fields <- function(df,
                          ...,
                          avg_type = c("mean", "median"),
                          return = c("data", "list")
@@ -55,9 +54,9 @@ analyze_data <- function(df,
 
   # map_dfr all fields
   factor_stats <-
-    map_dfr(get_vars, generate_factor_stats, df = base_data, avg_fn = avg)
+    map_dfr(get_vars, summarize_factors_one_field, df = base_data, avg_fn = avg)
 
-  field_stats <- map_dfr(get_vars, generate_field_stats, df = base_data)
+  field_stats <- map_dfr(get_vars, summarize_one_field, df = base_data)
 
   # restretch group averages values
   agg_data <-
@@ -110,8 +109,8 @@ analyze_data <- function(df,
 #' @importFrom dplyr select mutate group_by summarise n ungroup filter everything
 #'
 #' @examples
-#' # generate_factor_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
-generate_factor_stats <- function(var, df, avg_fn) {
+#' # summarize_factors_one_field("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
+summarize_factors_one_field <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     mutate(value = as.character(.data$value)) %>%
@@ -137,8 +136,8 @@ generate_factor_stats <- function(var, df, avg_fn) {
 #' @importFrom stats lm
 #'
 #' @examples
-#' # generate_field_stats("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
-generate_field_stats <- function(var, df) {
+#' # summarize_one_field("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
+summarize_one_field <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
     do(glance(lm(.data$y_outcome ~ .data$value, data = .))) %>%

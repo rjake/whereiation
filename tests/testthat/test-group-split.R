@@ -1,5 +1,5 @@
 test_that("group_split works", {
-  p <- group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
+  p <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
 
   actual_dim <- dim(p$data)
   expected_dim <- c(26, 19)
@@ -18,7 +18,7 @@ test_that("group_split works", {
 
 test_that("group_split uses labels", {
   p1 <-
-    group_split(
+    plot_group_split(
       ggplot2::mpg,
       split_on = "year",
       dep_var = "hwy",
@@ -29,7 +29,7 @@ test_that("group_split uses labels", {
       caption = 'test_caption'
     )
 
-  p2 <- group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
+  p2 <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
 
   p1_labs <- p1$labels
   p2_labs <- p2$labels

@@ -16,8 +16,6 @@
 #' @importFrom tidyr spread
 #'
 #' @export
-#' @family visualization functions
-
 #' @examples
 #' \dontrun{
 #' profile_n(df = iris, dep_var = "Sepal.Length")

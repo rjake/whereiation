@@ -1,11 +1,11 @@
 simple_p <-
-  expected_proportions(
+  plot_expected_proportions(
     df = mtcars,
     dep_var = "mpg > 15"
   )
 
 complex_p <-
-  expected_proportions(
+  plot_expected_proportions(
     df = mtcars,
     dep_var = "mpg > 15",
     n_cat = 5,
@@ -24,9 +24,9 @@ simple_p_data <- dplyr::filter(simple_p$data, field == "hp")
 complex_p_data <- dplyr::filter(complex_p$data, field == "hp")
 
 
-test_that("over_under_rep categorizes correctly", {
+test_that("summarize_over_under_proportions categorizes correctly", {
   df <-
-    over_under_rep(
+    summarize_over_under_proportions(
       df = refactor_columns(iris, dep_var = "Sepal.Length > 5"),
       "Species"
     )
@@ -37,22 +37,22 @@ test_that("over_under_rep categorizes correctly", {
 })
 
 
-test_that("expected_prop_prep creates new fields", {
-  df <- expected_prop_prep(df = iris, dep_var = "Sepal.Length > 5")
+test_that("map_over_under_proportions creates new fields", {
+  df <- map_over_under_proportions(df = iris, dep_var = "Sepal.Length > 5")
   expect_true(all(c("expected", "actual", "category") %in% names(df)))
 })
 
 
-test_that("expected_prop_prep throws warning for non-binary DV", {
+test_that("map_over_under_proportions throws warning for non-binary DV", {
   # Sepal.Length is not binary
-  expect_warning(expected_prop_prep(df = iris, dep_var = "Sepal.Length"))
+  expect_warning(map_over_under_proportions(df = iris, dep_var = "Sepal.Length"))
 })
 
-test_that("over_under_rep omits NA values", {
+test_that("summarize_over_under_proportions omits NA values", {
   iris_na <- iris
   iris_na$missing <- c(1, 2, NA)
   df <-
-    over_under_rep(
+    summarize_over_under_proportions(
       df = refactor_columns(iris_na, dep_var = "Sepal.Length > 5"),
       "missing"
     )
@@ -61,7 +61,7 @@ test_that("over_under_rep omits NA values", {
 
 test_that("returns data", {
   df <-
-    expected_proportions(
+    plot_expected_proportions(
       df = mtcars,
       dep_var = "mpg > 15",
       return_data = TRUE
@@ -129,7 +129,7 @@ test_that("y-axis truncated", {
 
 test_that("sorted", {
   by_expected <-
-    expected_proportions(
+    plot_expected_proportions(
       df = mtcars,
       dep_var = "mpg > 15",
       sort_by = "expected",
@@ -139,7 +139,7 @@ test_that("sorted", {
     ggplot2::ggplot_build()
 
   by_actual <-
-    expected_proportions(
+    plot_expected_proportions(
       df = mtcars,
       dep_var = "mpg > 15",
       sort_by = "actual",

@@ -8,11 +8,11 @@
 #' @importFrom tidyr pivot_wider
 #'
 #' @examples
-#' find_drivers(df = ggplot2::mpg, dep_var = "hwy")
-find_drivers <- function(...) {
-  # prep_df <- analyze_data(df = mpg, dep_var = "hwy")
+#' identify_factor_extremes(df = ggplot2::mpg, dep_var = "hwy")
+identify_factor_extremes <- function(...) {
+  # prep_df <- summarize_factors_all_fields(df = mpg, dep_var = "hwy")
 
-  prep_df <- analyze_data(...)
+  prep_df <- summarize_factors_all_fields(...)
 
   grand_avg <- prep_df$grand_avg[1]
 

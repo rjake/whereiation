@@ -11,19 +11,17 @@
 #' @importFrom scales rescale_mid
 #' @importFrom stats complete.cases weighted.mean
 #' @importFrom rlang .data
-#'
-#' @export
-#' @family manipulation functions
+#' @noRd
 #' @examples
 #' generate_estimate_details(df = iris, dep_var = "Sepal.Length")
 generate_estimate_details <- function(df, train_data, dep_var, ...) {
 
   if (missing(train_data)) {
     base_data <- refactor_columns(df, dep_var = dep_var, ...)
-    group_stats <- analyze_data(df, dep_var = dep_var, ..., return = "list")
+    group_stats <- summarize_factors_all_fields(df, dep_var = dep_var, ..., return = "list")
   } else {
     base_data <- df
-    group_stats <- analyze_data(train_data, dep_var = dep_var, ..., return = "list")
+    group_stats <- summarize_factors_all_fields(train_data, dep_var = dep_var, ..., return = "list")
   }
 
   group_stats_data <- group_stats$data

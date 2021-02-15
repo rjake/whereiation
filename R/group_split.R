@@ -9,12 +9,17 @@
 #' @importFrom stats na.omit
 #' @noRd
 #' @examples
-#' over_under_split(df = refactor_columns(ggplot2::mpg, "hwy", split = "year", n_cat = NULL), field = "model", type = "dv", n_cat = 5)
-over_under_split <- function(df,
-                             field,
-                             type,
-                             n_cat
-                             ) {
+#' summarize_over_under_split(
+#'   df = refactor_columns(ggplot2::mpg, "hwy", split_on = "year", n_cat = NULL),
+#'   field = "model",
+#'   type = "dv",
+#'   n_cat = 5
+#' )
+summarize_over_under_split <- function(df,
+                                       field,
+                                       type,
+                                       n_cat) {
+
   # df <- ggplot2::mpg; split <- "year"; field <- "model"
   group_df <-
     df %>%
@@ -90,8 +95,8 @@ over_under_split <- function(df,
       n_group_1 = sum(.data$n_group_1, na.rm = TRUE),
       n_group_2 = sum(.data$n_group_2, na.rm = TRUE)
     ) %>%
-   ungroup() %>%
-   mutate(
+    ungroup() %>%
+    mutate(
       delta = .data$x_group_2 - .data$x_group_1,
       abs_delta = abs(.data$delta),
       field_delta = sum(.data$abs_delta, na.rm = TRUE),
@@ -106,7 +111,7 @@ over_under_split <- function(df,
 }
 
 
-#' Prep for group_split by iterating over_under_split()
+#' Prep for group_split by iterating summarize_over_under_split()
 #' @inheritDotParams refactor_columns
 #' @inheritParams group_split
 #' @inheritParams refactor_columns
@@ -115,15 +120,19 @@ over_under_split <- function(df,
 #' @importFrom forcats fct_reorder
 #' @noRd
 #' @examples
-#' group_split_prep(ggplot2::mpg, dep_var = "hwy", split_on = "year", type = "dv", n_cat = 5)
-group_split_prep <- function(df,
-                             split_on = NULL,
-                             type,
-                             dep_var,
-                             n_cat,
-                             ...
-                             ) {
-
+#' map_over_under_split(
+#'   df = ggplot2::mpg,
+#'   dep_var = "hwy",
+#'   split_on = "year",
+#'   type = "dv",
+#'   n_cat = 5
+#' )
+map_over_under_split <- function(df,
+                                 split_on = NULL,
+                                 type,
+                                 dep_var,
+                                 n_cat,
+                                 ...) {
   calc_type <- type
 
   dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
@@ -141,7 +150,7 @@ group_split_prep <- function(df,
   check_binary(refactor_df$y_split)
 
   names(refactor_df)[4:length(refactor_df)] %>%
-    map_dfr(over_under_split, df = refactor_df, type = type, n_cat = n_cat) %>%
+    map_dfr(summarize_over_under_split, df = refactor_df, type = type, n_cat = n_cat) %>%
     mutate(field = fct_reorder(.data$field, .data$field_delta, .desc = TRUE))
 }
 
@@ -179,38 +188,38 @@ group_split_prep <- function(df,
 #' @export
 #'
 #' @examples
-#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")
-#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-#' group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
-#' group_split(ggplot2::mpg, split_on = "year", type = "percent")
-#' group_split(
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "percent")
+#' plot_group_split(
 #'   ggplot2::mpg %>% dplyr::select(year, cty, trans),
 #'   split_on = "year",
 #'   type = "dv",
 #'   dep_var = "cty",
-#'   base_group = "1", #return_data = TRUE,
+#'   base_group = "1", # return_data = TRUE,
 #'   color_missing = "violet"
 #' )
 #'
-#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-#' group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-group_split <- function(df,
-                        split_on,
-                        type = c("dv", "percent", "count"),
-                        dep_var,
-                        ...,
-                        n_cat = 10,
-                        trunc_length = 100,
-                        threshold = 0.02,
-                        base_group = c("1", "2"),
-                        return_data = FALSE,
-                        n_field = 9,
-                        color_over = "navyblue",
-                        color_under = "red",
-                        color_missing = "grey50",
-                        title = NULL,
-                        subtitle = NULL,
-                        caption = NULL) {
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
+#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+plot_group_split <- function(df,
+                             split_on,
+                             type = c("dv", "percent", "count"),
+                             dep_var,
+                             ...,
+                             n_cat = 10,
+                             trunc_length = 100,
+                             threshold = 0.02,
+                             base_group = c("1", "2"),
+                             return_data = FALSE,
+                             n_field = 9,
+                             color_over = "navyblue",
+                             color_under = "red",
+                             color_missing = "grey50",
+                             title = NULL,
+                             subtitle = NULL,
+                             caption = NULL) {
   # to be used with scale_color... and scale_fill...
   fill_colors <- c(
     "higher" = color_over,
@@ -225,7 +234,7 @@ group_split <- function(df,
   dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
 
   base_data <-
-    group_split_prep(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
+    map_over_under_split(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
     mutate(
       split_group_1 = ifelse(.data$has_group_1 == 0, NA, .data$split_group_1),
       split_group_2 = ifelse(.data$has_group_2 == 0, NA, .data$split_group_2),
@@ -235,15 +244,14 @@ group_split <- function(df,
 
 
   plot_data <-
-    group_split_plot_data(base_data, threshold, ref_group, trunc_length)
+    plot_group_split_prep(base_data, threshold, ref_group, trunc_length)
   # return table or plot
-  if (return_data) {# return data
+  if (return_data) { # return data
     select(
       plot_data,
       -c(.data$abs_delta, .data$ref_group_1, .data$plot_bar, .data$plot_point)
     )
-
-  } else {# return plot
+  } else { # return plot
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
@@ -253,7 +261,7 @@ group_split <- function(df,
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
     }
 
-    group_counts <- group_split_counts(base_data, ref_group, split_on)
+    group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
 
     # labels
     # get values/captions for threshold if not specified
@@ -281,7 +289,7 @@ group_split <- function(df,
 
     # title
     if (!is.null(title)) {
-      title_text <-  title
+      title_text <- title
     } else {
       title_text <-
         case_when(
@@ -326,7 +334,7 @@ group_split <- function(df,
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
       guides(color = FALSE) +
-      facet_wrap(~.data$field, scales = "free_y") +
+      facet_wrap(~ .data$field, scales = "free_y") +
       labs(
         title = title_text,
         subtitle = subtitle_text,
@@ -354,33 +362,36 @@ group_split <- function(df,
 #' @importFrom glue glue
 #' @noRd
 #' @examples
-#' group_split_counts(
+#' summarize_group_split_metadata(
 #'   base_data =
-#'     group_split_prep(
+#'     map_over_under_split(
 #'       df = ggplot2::mpg,
 #'       split_on = "year",
 #'       type = "dv",
-#'       dep_var = "hwy"
-#'       )
+#'       dep_var = "hwy",
+#'       n_cat = 5
+#'     ),
+#'   ref_group = "1",
+#'   split_on = "year"
 #' )
-group_split_counts <- function(base_data, ref_group, split_on) {
+summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
   base_data %>%
-  filter(as.integer(.data$field) == min(as.integer(.data$field))) %>%
-  select(.data$split_group_1, .data$split_group_2, .data$n_group_1, .data$n_group_2) %>%
-  pivot_longer(
-    everything(),
-    names_to = c(".value", "group"),
-    names_pattern = "(.*)_group_(.*)",
-    values_drop_na = TRUE
-  ) %>%
-  filter(n != 0) %>%
-  count(.data$group, .data$split, wt = .data$n, name = "n") %>%
-  arrange(.data$group) %>%
-  mutate(
-    shape = ifelse(ref_group == .data$group, "bar", "point"),
-    label = glue("{split_on} is {split}"),
-    text = glue("Group {group} ({shape}): {label}, n = {n}")
-  )
+    filter(as.integer(.data$field) == min(as.integer(.data$field))) %>%
+    select(.data$split_group_1, .data$split_group_2, .data$n_group_1, .data$n_group_2) %>%
+    pivot_longer(
+      everything(),
+      names_to = c(".value", "group"),
+      names_pattern = "(.*)_group_(.*)",
+      values_drop_na = TRUE
+    ) %>%
+    filter(n != 0) %>%
+    count(.data$group, .data$split, wt = .data$n, name = "n") %>%
+    arrange(.data$group) %>%
+    mutate(
+      shape = ifelse(ref_group == .data$group, "bar", "point"),
+      label = glue("{split_on} is {split}"),
+      text = glue("Group {group} ({shape}): {label}, n = {n}")
+    )
 }
 
 #' Prep data for group_split plotting
@@ -389,20 +400,20 @@ group_split_counts <- function(base_data, ref_group, split_on) {
 #' @importFrom forcats fct_inorder
 #' @noRd
 #' @examples
-#' group_split_plot_data(
+#' plot_group_split_prep(
 #'   base_data =
-#'     group_split_prep(
+#'     map_over_under_split(
 #'       df = ggplot2::mpg,
 #'       split_on = "year",
 #'       type = "dv",
 #'       dep_var = "hwy",
 #'       n_cat = 5
-#'       ),
-#'  ref_group = "1",
-#'  threshold = 0.02,
-#'  trunc_length = 20
+#'     ),
+#'   ref_group = "1",
+#'   threshold = 0.02,
+#'   trunc_length = 20
 #' )
-group_split_plot_data <- function(base_data, threshold, ref_group, trunc_length) {
+plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length) {
   base_data %>%
     filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
     mutate(

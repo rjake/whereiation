@@ -6,17 +6,17 @@
 #' @importFrom dplyr group_by summarise n ungroup mutate case_when
 #' @importFrom tidyr replace_na
 #' @examples
-#' over_under_rep(
+#' summarize_over_under_proportions(
 #'   df = refactor_columns(iris, dep_var = "Sepal.Length > 5"),
 #'   "Species"
 #' )
-over_under_rep <- function(field, df) {
+summarize_over_under_proportions <- function(field, df) {
   df %>%
     group_by(
       field = field,
       value =
         as.character(get(field)) %>%
-        replace_na("NA")
+          replace_na("NA")
     ) %>%
     summarise(
       n = n(),
@@ -39,7 +39,7 @@ over_under_rep <- function(field, df) {
 
 
 
-#' Prep for expected_proportions() function
+#' Prep for plot_expected_proportions() function
 #'
 #' @param df data frame to analyze
 #' @inheritDotParams refactor_columns
@@ -48,8 +48,8 @@ over_under_rep <- function(field, df) {
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 #' @examples
-#' expected_prop_prep(df = iris, dep_var = "Sepal.Length > 5")
-expected_prop_prep <- function(df, ...) {
+#' map_over_under_proportions(df = iris, dep_var = "Sepal.Length > 5")
+map_over_under_proportions <- function(df, ...) {
   refactor_df <-
     refactor_columns(df, ...) %>%
     select(-.data$unique_id)
@@ -58,7 +58,7 @@ expected_prop_prep <- function(df, ...) {
   check_01_binary(refactor_df$y_outcome)
 
   names(refactor_df %>% select(-.data$y_outcome)) %>%
-    map_dfr(over_under_rep, df = refactor_df) %>%
+    map_dfr(summarize_over_under_proportions, df = refactor_df) %>%
     mutate(field = fct_reorder(.data$field, .data$field_delta, .desc = TRUE))
 }
 
@@ -90,47 +90,46 @@ expected_prop_prep <- function(df, ...) {
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
-#' expected_proportions(df = iris, dep_var = "Sepal.Length > 5")
+#' plot_expected_proportions(df = iris, dep_var = "Sepal.Length > 5")
 #'
 #' # sorted by the expected representation (default)
-#' expected_proportions(
+#' plot_expected_proportions(
 #'   df = mtcars,
 #'   dep_var = "mpg > 15",
 #' )
 #'
 #' # sorted by the actual representation
-#' expected_proportions(
+#' plot_expected_proportions(
 #'   df = mtcars,
 #'   dep_var = "mpg > 15",
 #'   sort_by = "actual"
 #' )
 #'
 #' # you can return the dataframe if you want
-#' expected_proportions(
+#' plot_expected_proportions(
 #'   df = mtcars,
 #'   dep_var = "mpg > 15",
 #'   return_data = TRUE
 #' )
 #'
 #' # an example with more parameters
-#' expected_proportions(
-#'   df = mtcars,          # data to use
+#' plot_expected_proportions(
+#'   df = mtcars, # data to use
 #'   dep_var = "mpg > 15", # can be a field name or an evaluation
-#'   n_cat = 5,            # collapse field values into 5 categories
-#'   n_field = 3,          # keep the frist 3 facets
-#'   threshold = NULL      # keep all values
+#'   n_cat = 5, # collapse field values into 5 categories
+#'   n_field = 3, # keep the frist 3 facets
+#'   threshold = NULL # keep all values
 #' )
-expected_proportions <- function(df,
-                                 dep_var,
-                                 ...,
-                                 trunc_length = 100,
-                                 sort_by = c("expected", "actual"),
-                                 threshold = 0.02,
-                                 return_data = FALSE,
-                                 n_field = 9,
-                                 color_over = "navyblue",
-                                 color_under = "red"
-                                 ) {
+plot_expected_proportions <- function(df,
+                                      dep_var,
+                                      ...,
+                                      trunc_length = 100,
+                                      sort_by = c("expected", "actual"),
+                                      threshold = 0.02,
+                                      return_data = FALSE,
+                                      n_field = 9,
+                                      color_over = "navyblue",
+                                      color_under = "red") {
 
   # to be used with scale_color... and scale_fill...
   fill_colors <- c(
@@ -154,19 +153,19 @@ expected_proportions <- function(df,
   }
 
   base_data <-
-    expected_prop_prep(df, dep_var, ...) %>%
+    map_over_under_proportions(df, dep_var, ...) %>%
     filter(.data$abs_delta > threshold)
 
   # return table or plot
-  if (return_data) {# return data
+  if (return_data) { # return data
     base_data
-  } else {# return plot
+  } else { # return plot
     plot_data <-
       base_data %>%
       mutate(
         value =
           str_trunc(.data$value, trunc_length) %>%
-          fct_reorder(get(sort_by))
+            fct_reorder(get(sort_by))
       )
 
 
@@ -193,7 +192,7 @@ expected_proportions <- function(df,
       geom_point(aes(x = .data$actual, size = .data$n)) +
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
-      facet_wrap(~ .data$field ,scales = "free_y") +
+      facet_wrap(~ .data$field, scales = "free_y") +
       guides(color = FALSE) +
       labs(
         title = glue("Over/Under Representatin of '{dep_var}'"),
@@ -215,4 +214,3 @@ expected_proportions <- function(df,
       )
   }
 }
-

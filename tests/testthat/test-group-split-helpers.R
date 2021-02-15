@@ -1,6 +1,6 @@
-test_that("over_under_split", {
+test_that("summarize_over_under_split", {
   df <-
-    over_under_split(
+    summarize_over_under_split(
       df = refactor_columns(ggplot2::mpg, "hwy", split = "year"),
       field = "class",
       n_cat = 5,
@@ -13,9 +13,9 @@ test_that("over_under_split", {
 })
 
 
-test_that("group_split_prep", {
+test_that("map_over_under_split", {
   df <-
-    group_split_prep(
+    map_over_under_split(
       ggplot2::mpg,
       dep_var = "hwy",
       split = "year",
@@ -29,11 +29,11 @@ test_that("group_split_prep", {
 })
 
 
-test_that("group_split_plot_data", {
+test_that("plot_group_split_prep", {
   df <-
-    group_split_plot_data(
+    plot_group_split_prep(
       base_data =
-        group_split_prep(
+        map_over_under_split(
           df = ggplot2::mpg,
           split_on = "year",
           type = "dv",
@@ -56,11 +56,11 @@ test_that("group_split_plot_data", {
 })
 
 
-test_that("group_split_counts", {
+test_that("summarize_group_split_metadata", {
   df <-
-    group_split_counts(
+    summarize_group_split_metadata(
       base_data =
-        group_split_prep(
+        map_over_under_split(
           df = ggplot2::mpg,
           split_on = "year",
           type = "dv",

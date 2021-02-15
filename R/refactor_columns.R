@@ -26,7 +26,6 @@
 #' @importFrom glue glue
 #'
 #' @export
-#' @family manipulation functions
 #' @examples
 #' refactor_columns(df = iris, dep_var = "Sepal.Length")
 refactor_columns <- function(df,

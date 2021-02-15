@@ -13,8 +13,8 @@ test_that("refactor_columns works", {
 })
 
 
-test_that("analyze_data works", {
-  df <- analyze_data(iris, "Petal.Length")
+test_that("summarize_factors_all_fields works", {
+  df <- summarize_factors_all_fields(iris, "Petal.Length")
 
   actual_dim <- dim(df)
   expected_dim <- c(28, 10)
@@ -31,9 +31,9 @@ test_that("analyze_data works", {
 })
 
 
-test_that("analyze_data returns list", {
+test_that("summarize_factors_all_fields returns list", {
   x <-
-    analyze_data(
+    summarize_factors_all_fields(
       iris,
       dep_var = "Petal.Length",
       return = "list"

@@ -8,19 +8,18 @@
 #' @importFrom rlang .data
 #'
 #' @export
-#' @family visualization functions
 #'
 #' @examples
-#' variation_plot(ggplot2::mpg, "hwy")
-variation_plot <- function(df,
-                           dep_var,
-                           ...,
-                           avg_type = c("mean", "median")
-                           ) {
+#' plot_funnel(ggplot2::mpg, "hwy")
+plot_funnel <- function(df,
+                        dep_var,
+                        ...,
+                        avg_type = c("mean", "median")
+                        ) {
   avg_name <- match.arg(avg_type)
 
   factor_stats <-
-    analyze_data(
+    summarize_factors_all_fields(
       df = df,
       dep_var = dep_var,
       ...
@@ -85,16 +84,16 @@ variation_plot <- function(df,
 #' @importFrom rlang .data
 #'
 #' @export
-#' @family visualization functions
+#' @describeIn plot_funnel highlight a single observation
 #'
 #' @examples
-#' variation_plot_single_obs(ggplot2::mpg, "hwy")
-variation_plot_single_obs <- function(df,
-                                      dep_var,
-                                      ...,
-                                      avg_type = c("mean", "median"),
-                                      labels = FALSE,
-                                      id = 1) {
+#' plot_funnel_single_obs(ggplot2::mpg, "hwy")
+plot_funnel_single_obs <- function(df,
+                                   dep_var,
+                                   ...,
+                                   avg_type = c("mean", "median"),
+                                   labels = FALSE,
+                                   id = 1) {
 
   avg_name <- match.arg(avg_type)
 
@@ -125,7 +124,7 @@ variation_plot_single_obs <- function(df,
   obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
-    variation_plot(df = df, dep_var = dep_var, ...) +
+    plot_funnel(df = df, dep_var = dep_var, ...) +
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
@@ -159,11 +158,11 @@ variation_plot_single_obs <- function(df,
 
 #' @export
 #' @inheritDotParams refactor_columns
-#' @describeIn variation_plot an utilizing ggplotly
+#' @describeIn plot_funnel utilizing ggplotly
 #' @importFrom plotly ggplotly
 #' @examples
-#' variation_plot_interactive(ggplot2::mpg, "hwy")
-variation_plot_interactive <- function(...) {
-  p <- variation_plot(...)
+#' plot_funnel_interactive(ggplot2::mpg, "hwy")
+plot_funnel_interactive <- function(...) {
+  p <- plot_funnel(...)
   ggplotly(p, tooltip = c("label"))
 }
