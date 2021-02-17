@@ -58,6 +58,7 @@ plot_deltas <- function(df,
     plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
   }
 
+  plot_data %>%
     ggplot(
       aes(
         x = .data$factor_avg, y = .data$value,
