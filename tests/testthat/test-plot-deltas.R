@@ -9,3 +9,23 @@ test_that("plot_deltas works", {
   expected_layers <- 3
   expect_equal(actual_layers, expected_layers)
 })
+
+test_that("plot_deltas accepts params", {
+  p <-
+    plot_deltas(
+      df = ggplot2::mpg,
+      dep_var = "hwy",
+      trunc_length = 15
+    )
+
+  df <- p$data
+
+  expected_dim <- c(50, 12)
+  actual_dim <- dim(df)
+  expect_equal(expected_dim, actual_dim)
+
+  expect_equal(
+    object = max(nchar(as.character(df$value))),
+    expected = 15
+  )
+})

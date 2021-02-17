@@ -257,10 +257,6 @@ plot_group_split <- function(df,
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
     }
 
-    if (!is.null(n_field)) {
-      plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
-    }
-
     group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
 
     # labels

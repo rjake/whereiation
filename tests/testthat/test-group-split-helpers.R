@@ -1,7 +1,7 @@
 test_that("summarize_over_under_split", {
   df <-
     summarize_over_under_split(
-      df = refactor_columns(ggplot2::mpg, "hwy", split = "year"),
+      df = refactor_columns(ggplot2::mpg, "hwy", split_on = "year"),
       field = "class",
       n_cat = 5,
       type = "dv"
@@ -18,7 +18,7 @@ test_that("map_over_under_split", {
     map_over_under_split(
       ggplot2::mpg,
       dep_var = "hwy",
-      split = "year",
+      split_on = "year",
       n_cat = 5,
       type = "dv"
     )
