@@ -8,6 +8,7 @@
 #' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
+#' @importFrom glue glue
 #' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha theme element_rect labs
 #' @importFrom rlang .data
 #'
@@ -63,8 +64,9 @@ plot_deltas <- function(df,
     ) +
     scale_alpha(range = c(0.2, 1), guide = FALSE) +
     labs(
-      title = paste("Difference in", avg_name, dep_var, "from grand", avg_name, "across all factors of all fields"),
-      subtitle = paste("Each chart shows the different values (factors) within each field and the", avg_name, dep_var, "for each. Charts with the highest \nadjusted R-square start in the top left. Factors with 5 or fewer observations have been excluded and the vertical line \nis the grand", avg_name, "across all observations"),
+      title = glue("Difference in {avg_name} {dep_var} from grand {avg_name} across all factors of all fields"),
+      subtitle = glue(
+        "Each chart shows the different values (factors) within each field and the {avg_name} {dep_var} for each. Charts with the highest \nadjusted R-square start in the top left. Factors with 5 or fewer observations have been excluded and the vertical line \nis the grand {avg_name} across all observations"
       y = NULL,
       x = paste(avg_name, dep_var),
       size = "# of \n observations"
