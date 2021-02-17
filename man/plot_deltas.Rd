@@ -4,7 +4,15 @@
 \alias{plot_deltas}
 \title{Visualize difference from avg. by factor (lollipop)}
 \usage{
-plot_deltas(df, dep_var, ..., avg_type = c("mean", "median"))
+plot_deltas(
+  df,
+  dep_var,
+  ...,
+  trunc_length = 100,
+  return_data = FALSE,
+  n_field = 9,
+  avg_type = c("mean", "median")
+)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -31,11 +39,27 @@ fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
   }}
 
+\item{trunc_length}{number of charcters to print on y-axis}
+
+\item{return_data}{When TRUE will return data frame instead of a plot.}
+
+\item{n_field}{How many fields/facets should the plot return.}
+
 \item{avg_type}{mean or median}
 }
 \description{
 Visualize difference from avg. by factor (lollipop)
 }
 \examples{
+
+# show distances (deltas) from grand mean
 plot_deltas(df = ggplot2::mpg, dep_var = "hwy")
+
+# adjust aesthetics with 'trunc_length' and 'n_field'
+plot_deltas(
+  df = ggplot2::mpg,
+  dep_var = "hwy",
+  trunc_length = 15,
+  n_field = 5
+)
 }
