@@ -46,6 +46,18 @@ plot_deltas <- function(df,
       abs_delta = abs(.data$delta),
       color = ifelse(.data$factor_avg > .data$grand_avg, "above", "below")
     )
+
+  # return table if requesed
+  if (return_data) { # return data
+    return(plot_data)
+  }
+
+  # return plot
+  # filter # of facets if n_field specified
+  if (!is.null(n_field)) {
+    plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
+  }
+
     ggplot(
       aes(
         x = .data$factor_avg, y = .data$value,
