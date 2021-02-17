@@ -23,5 +23,8 @@ reference:
   contents:
   - profile_n
   - refactor_columns
-
-
+- title: Data
+  desc: >
+    Built-in data sets
+  contents:
+  - employee_attrition
