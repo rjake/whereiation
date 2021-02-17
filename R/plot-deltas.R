@@ -55,7 +55,12 @@ plot_deltas <- function(df,
     geom_segment(aes(xend = .data$grand_avg, yend = .data$value)) +
     geom_point(aes(size = .data$n)) +
     facet_wrap(~.data$field, scales = "free_y") +
-    theme(panel.background = element_rect(fill = "white", color = "grey60")) +
+    theme(
+      axis.text.y = element_text(size = 9),
+      panel.background = element_rect(color = "grey70", fill = "white"),
+      plot.title.position = "plot",
+      legend.position = "bottom"
+    ) +
     scale_alpha(range = c(0.2, 1), guide = FALSE) +
     labs(
       title = paste("Difference in", avg_name, dep_var, "from grand", avg_name, "across all factors of all fields"),
