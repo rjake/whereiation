@@ -8,6 +8,7 @@
 #' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
+#' @importFrom stringr str_trunc str_remove_all
 #' @importFrom glue glue
 #' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha theme element_rect labs
 #' @importFrom rlang .data
