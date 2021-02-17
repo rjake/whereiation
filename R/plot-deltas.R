@@ -1,5 +1,9 @@
 #' Visualize difference from avg. by factor (lollipop)
 #'
+#' @param trunc_length number of charcters to print on y-axis
+#' @param return_data When TRUE will return data frame instead of a plot.
+#' @param n_field How many fields/facets should the plot return.
+#'
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
@@ -14,8 +18,10 @@
 plot_deltas <- function(df,
                         dep_var,
                         ...,
-                        avg_type = c("mean", "median")
-                        ) {
+                        trunc_length = 100,
+                        return_data = FALSE,
+                        n_field = 9,
+                        avg_type = c("mean", "median")) {
   avg_name <- match.arg(avg_type)
 
   factor_stats <-
@@ -25,14 +31,20 @@ plot_deltas <- function(df,
       ...
     )
 
-  # <- factor_stats$grand_avg[1]
-
-  factor_stats %>%
+  # prep plots/facets
+  plot_data <-
+    factor_stats %>%
+    select(-.data$rescale_factor_avg) %>%
     mutate(
-      field = fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE),
-      delta = abs(.data$factor_avg - .data$grand_avg),
+      field =
+        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE),
+      value =
+        str_trunc(.data$value, trunc_length) %>%
+        fct_reorder(.data$factor_avg, .fun = max, .desc = TRUE),
+      delta = .data$factor_avg - .data$grand_avg,
+      abs_delta = abs(.data$delta),
       color = ifelse(.data$factor_avg > .data$grand_avg, "above", "below")
-    ) %>%
+    )
     ggplot(
       aes(
         x = .data$factor_avg, y = .data$value,
