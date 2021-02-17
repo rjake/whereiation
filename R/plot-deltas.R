@@ -15,7 +15,17 @@
 #' @export
 #'
 #' @examples
+#'
+#' # show distances (deltas) from grand mean
 #' plot_deltas(df = ggplot2::mpg, dep_var = "hwy")
+#'
+#' # adjust aesthetics with 'trunc_length' and 'n_field'
+#' plot_deltas(
+#'   df = ggplot2::mpg,
+#'   dep_var = "hwy",
+#'   trunc_length = 15,
+#'   n_field = 5
+#' )
 plot_deltas <- function(df,
                         dep_var,
                         ...,
