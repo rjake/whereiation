@@ -30,3 +30,5 @@ Imports:
   stringr,
   tibble,
   tidyr
+Depends: 
+    R (>= 2.10)
