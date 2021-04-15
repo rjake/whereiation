@@ -470,8 +470,11 @@ plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length)
     filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
     arrange(.data$x_bar, .data$x_point) %>%
     mutate(
-    arrange(.data$plot_bar, .data$plot_point) %>%
-    mutate(value = fct_inorder(str_trunc(.data$value, trunc_length)))
+      value =
+        str_trunc(.data$value, trunc_length) %>%
+        fct_inorder() %>%
+        fct_rev()
+    )
 }
 
 
