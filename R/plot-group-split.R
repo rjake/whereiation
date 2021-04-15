@@ -18,9 +18,10 @@
 summarize_over_under_split <- function(df,
                                        field,
                                        type,
-                                       n_cat) {
 
   # df <- ggplot2::mpg; split <- "year"; field <- "model"
+                                       n_cat,
+                                       base_group = "1") {
   group_df <-
     df %>%
     group_by(
