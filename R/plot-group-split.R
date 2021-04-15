@@ -65,9 +65,13 @@ summarize_over_under_split <- function(df,
       mutate(x = .data$n / sum(.data$n) * 100)
   }
 
-
-  calc_df %>%
+  final_df <-
+    calc_df %>%
     ungroup() %>%
+    mutate(
+      split_ord = ifelse(
+        str_detect(split_ord, base_group), "bar", "point")
+    ) %>%
     pivot_wider(
       names_from = .data$split_ord,
       values_from = c(.data$split, .data$x, .data$n),
