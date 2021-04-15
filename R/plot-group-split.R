@@ -49,13 +49,19 @@ summarize_over_under_split <- function(df,
         n = n(),
         x = n()
       )
-  } else if (type == "percent") {
-    agg_fn <- sum
+  } else if (type == "percent_field") {
     agg_fn <- .mean
     calc_df <-
       group_df %>%
       count() %>%
       group_by(.data$split_ord) %>%
+      mutate(x = .data$n / sum(.data$n) * 100)
+  } else if (type == "percent_factor") {
+    agg_fn <- .mean
+    calc_df <-
+      group_df %>%
+      count() %>%
+      group_by(.data$value) %>%
       mutate(x = .data$n / sum(.data$n) * 100)
   }
 
