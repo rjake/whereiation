@@ -102,7 +102,26 @@ summarize_over_under_split <- function(df,
     ) %>%
     ungroup() %>%
     mutate(
-      delta = .data$x_group_2 - .data$x_group_1,
+      expected = mean(df$y_outcome),
+      delta = .data$x_point - .data$x_bar
+    )
+
+  if (type == "percent_factor") {
+    # return df with expected %
+    final_df <-
+      final_df %>%
+      mutate(
+        expected =
+          .sum(.data$n_point) / .sum(calc_df$n) * 100,
+        delta = .data$x_point - .data$expected
+      )
+  } else if (type == "percent_field") {
+    final_df$expected <- NA_integer_
+  }
+
+  # else return data
+  final_df %>%
+    mutate(
       abs_delta = abs(.data$delta),
       field_delta = sum(.data$abs_delta, na.rm = TRUE),
       category =
