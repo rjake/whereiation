@@ -448,7 +448,7 @@ summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
 #' Prep data for group_split plotting
 #' @param base_data data frame
 #' @importFrom dplyr filter mutate coalesce arrange
-#' @importFrom forcats fct_inorder
+#' @importFrom forcats fct_inorder fct_rev
 #' @noRd
 #' @examples
 #' plot_group_split_prep(
@@ -467,13 +467,8 @@ summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
 plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length) {
   base_data %>%
     filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
+    arrange(.data$x_bar, .data$x_point) %>%
     mutate(
-      ref_group_1 = ref_group == "1",
-      bar = ifelse(.data$ref_group_1, .data$x_group_1, .data$x_group_2),
-      point = ifelse(.data$ref_group_1, .data$x_group_2, .data$x_group_1),
-      plot_bar = coalesce(as.numeric(.data$bar), 0),
-      plot_point = coalesce(as.numeric(.data$point), 0)
-    ) %>%
     arrange(.data$plot_bar, .data$plot_point) %>%
     mutate(value = fct_inorder(str_trunc(.data$value, trunc_length)))
 }
