@@ -5,7 +5,7 @@
 #' @param field field to evaluate
 #' @inheritParams group_split
 #' @importFrom dplyr group_by dense_rank summarise n ungroup mutate case_when
-#' @importFrom tidyr pivot_wider replace_na
+#' @importFrom tidyr pivot_wider replace_na fill
 #' @importFrom stats na.omit
 #' @noRd
 #' @examples
@@ -88,10 +88,7 @@ summarize_over_under_split <- function(df,
       has_point = max(!is.na(.data$split_point))
     ) %>%
     ungroup() %>%
-    mutate(
-      split_group_1 = unique(na.omit(.data$split_group_1)),
-      split_group_2 = unique(na.omit(.data$split_group_2))
-    ) %>%
+    fill(split_bar, split_point, .direction = "updown") %>%
     group_by(
       .data$field, .data$value,
       .data$has_bar, .data$has_point,
