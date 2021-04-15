@@ -156,6 +156,7 @@ map_over_under_split <- function(df,
                                  type,
                                  dep_var,
                                  n_cat,
+                                 base_group = "1",
                                  ...) {
   calc_type <- type
 
@@ -174,7 +175,7 @@ map_over_under_split <- function(df,
   check_binary(refactor_df$y_split)
 
   names(refactor_df)[4:length(refactor_df)] %>%
-    map_dfr(summarize_over_under_split, df = refactor_df, type = type, n_cat = n_cat) %>%
+    map_dfr(summarize_over_under_split, df = refactor_df, type = type, n_cat = n_cat, base_group = base_group) %>%
     mutate(field = fct_reorder(.data$field, .data$field_delta, .desc = TRUE))
 }
 
@@ -258,7 +259,15 @@ plot_group_split <- function(df,
   dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
 
   base_data <-
-    map_over_under_split(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
+    map_over_under_split(
+      df = df,
+      split_on = split_on,
+      type = calc_type,
+      dep_var = dep_var,
+      n_cat = n_cat,
+      base_group = ref_group,
+      ...
+    ) %>%
     mutate(
       split_bar = ifelse(.data$has_bar == 0, NA, .data$split_bar),
       split_point = ifelse(.data$has_point == 0, NA, .data$split_point),
