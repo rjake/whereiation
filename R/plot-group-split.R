@@ -280,10 +280,7 @@ plot_group_split <- function(df,
     plot_group_split_prep(base_data, threshold, ref_group, trunc_length)
   # return table or plot
   if (return_data) { # return data
-    select(
-      plot_data,
-      -c(.data$abs_delta, .data$ref_group_1, .data$plot_bar, .data$plot_point)
-    )
+      plot_data
   } else { # return plot
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
