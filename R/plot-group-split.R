@@ -214,21 +214,37 @@ map_over_under_split <- function(df,
 #' @export
 #'
 #' @examples
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty")
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "count", threshold = 10)
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "percent")
-#' plot_group_split(
-#'   ggplot2::mpg %>% dplyr::select(year, cty, trans),
-#'   split_on = "year",
-#'   type = "dv",
-#'   dep_var = "cty",
-#'   base_group = "1", # return_data = TRUE,
-#'   color_missing = "violet"
-#' )
+#' # there are 4 types of plots available: comparing the dependent variable,
+#' # comparing counts, comparing % of field, comparing % within each factor
 #'
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "1")
-#' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
+#' # type = "dv" is used when comparing an outcome variable (dependent variable)
+#' # here we see that men have higher rates of attrition than women in most
+#' # categories except for when job_level = "Director" or when the person
+#' # works in HR
+#' employee_attrition[,1:4] %>%
+#'   plot_group_split(split_on = "gender", type = "dv", dep_var = "attrition")
+#'
+#' # type = "count" is used to compare raw volume differences between two groups
+#' # here we see that there are more men than women in each of these areas
+#' employee_attrition[,2:4] %>%
+#'   plot_group_split(split_on = "gender", type = "count")
+#'
+#' # type = "percent_field" is used when comparing the distribution of one
+#' # demographic vs another. A good example would be pre- vs post-COVID
+#' # closures. In this example, more men are in intern and director roles
+#' # than the other  categories
+#' employee_attrition[,2:4] %>%
+#'   plot_group_split(split_on = "gender", type = "percent_field")
+#'
+#' # type = "percent_factor" is used when comparing the representation of two
+#' # groups vs how they are represented in the overall data. In this example
+#' # we can see that men make up ~60% of the observations but 65% of the
+#' # director positions and 52% of the senior position while women have the
+#' # inverse at 35 and 48% respectively
+#' employee_attrition[,2:4] %>%
+#'   plot_group_split(split_on = "gender", type = "percent_factor")
+#'
+
 plot_group_split <- function(df,
                              split_on,
                              type = c("dv", "count", "percent_field", "percent_factor"),
