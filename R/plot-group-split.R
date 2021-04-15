@@ -54,12 +54,9 @@ summarize_over_under_split <- function(df,
     agg_fn <- .mean
     calc_df <-
       group_df %>%
-      summarise(
-        n = n(),
-        x = n()
-      ) %>%
+      count() %>%
       group_by(.data$split_ord) %>%
-      mutate(x = .data$x / sum(.data$x) * 100)
+      mutate(x = .data$n / sum(.data$n) * 100)
   }
 
 
