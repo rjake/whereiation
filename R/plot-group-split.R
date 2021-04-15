@@ -230,7 +230,7 @@ map_over_under_split <- function(df,
 #' plot_group_split(ggplot2::mpg, split_on = "year", type = "dv", dep_var = "cty", base_group = "2")
 plot_group_split <- function(df,
                              split_on,
-                             type = c("dv", "percent", "count"),
+                             type = c("dv", "count", "percent_field", "percent_factor"),
                              dep_var,
                              ...,
                              n_cat = 10,
@@ -421,7 +421,8 @@ plot_group_split <- function(df,
 #'       split_on = "year",
 #'       type = "dv",
 #'       dep_var = "hwy",
-#'       n_cat = 5
+#'       n_cat = 5,
+#'       base_group = "1"
 #'     ),
 #'   ref_group = "1",
 #'   split_on = "year"
@@ -490,3 +491,4 @@ check_dv_has_value <- function(type, cond, dep_var) {
     dep_var
   }
 }
+
