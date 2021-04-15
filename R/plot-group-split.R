@@ -285,6 +285,7 @@ plot_group_split <- function(df,
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
       plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
+        filter(.data$n_bar > 10 & .data$n_point > 10) %>%
     }
 
     group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
