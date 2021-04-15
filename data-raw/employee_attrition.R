@@ -17,9 +17,13 @@ raw_data <-
 
 employee_attrition <-
   raw_data %>%
-  select(-c(employee_count, over18, standard_hours)) %>%
+  select(
+    -c(employee_count, over18, standard_hours, employee_number),
+    -matches("(dai|month)ly_rate")
+  ) %>%
   mutate(
     attrition = as.integer(attrition == "Yes"),
+    marital_status = recode(marital_status, "Divorced" = "Single"),
     education = recode(
       education,
       "1" = "Below Associate",
@@ -35,6 +39,13 @@ employee_attrition <-
       "3" = "Mid-level",
       "4" = "Senior",
       "5" = "Director"
+    ),
+    job_involvement = recode(
+      job_involvement,
+      "1" = "Low",
+      "2" = "Medium",
+      "3" = "High",
+      "4" = "Very High"
     ),
     environment_satisfaction = recode(
       environment_satisfaction,
@@ -72,9 +83,19 @@ employee_attrition <-
       "4" = "Best"
     )
   ) %>%
+  select(
+    attrition, gender,
+    job_level, department, job_role,
+    education, education_field,
+    over_time, hourly_rate, monthly_income,
+    age,
+    performance_rating,
+    work_life_balance,
+    everything()
+  ) %>%
   print()
 
 
-# attrition %>% plot_deltas(dep_var = "attrition")
+# employee_attrition %>% plot_deltas(dep_var = "attrition")
 
 usethis::use_data(employee_attrition, overwrite = TRUE)
