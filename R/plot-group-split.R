@@ -18,10 +18,9 @@
 summarize_over_under_split <- function(df,
                                        field,
                                        type,
-
-  # df <- ggplot2::mpg; split <- "year"; field <- "model"
                                        n_cat,
                                        base_group = "1") {
+  # df <- head(ggplot2::mpg, 100); df$y_split <- df$year; split <- "year"; field <- "model"; type = "percent_factor"; base_group = "1"
   group_df <-
     df %>%
     group_by(
