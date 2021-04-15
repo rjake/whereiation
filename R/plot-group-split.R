@@ -303,7 +303,7 @@ plot_group_split <- function(df,
     } else {
       threshold_value <-
         ifelse(
-          type == "percent",
+          str_detect(type, "percent"),
           round(threshold * 100, 1),
           threshold
         )
@@ -315,7 +315,7 @@ plot_group_split <- function(df,
     # x-axis
     x_axis <- case_when(
       calc_type == "dv" ~ dep_var,
-      calc_type == "percent" ~ "Represenation %",
+      str_detect(calc_type, "percent") ~ "Represenation %",
       TRUE ~ "# of Obs."
     )
 
@@ -326,8 +326,9 @@ plot_group_split <- function(df,
       title_text <-
         case_when(
           calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
-          calc_type == "percent" ~ "Change in Proportion of Population",
-          TRUE ~ "Change in # of Obs."
+          calc_type == "percent_field" ~ "Difference in proportion of population",
+          calc_type == "percent_factor" ~ "Difference from expected representation",
+          TRUE ~ "Change in # of observations"
         )
     }
 
@@ -347,25 +348,25 @@ plot_group_split <- function(df,
       )
 
     # plot
-    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
-      geom_col(
-        aes(x = .data$plot_bar, fill = .data$category),
-        alpha = 0.2, color = NA
-      ) +
+    p <-
+      ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
+      geom_vline(aes(xintercept = .data$expected)) +
       geom_segment(
-        data = filter(plot_data, !is.na(.data$point)),
+        # data = filter(plot_data, !is.na(.data$point)),
         aes(
-          x = .data$plot_bar, xend = .data$plot_point, yend = .data$value,
-          color = .data$category, group = .data$value
+          x = .data$x_point, xend = .data$x_end, yend = .data$value,
+          color = .data$category,
+          linetype = ifelse(!(is.na(.data$x_point) | is.na(.data$x_bar)), "dotted", "solid"),
+          group = .data$value
         )
       ) +
       geom_point(
-        aes(x = .data$plot_point),
+        aes(x = .data$x_point),
         size = 3
       ) +
       scale_fill_manual(values = fill_colors) +
       scale_color_manual(values = fill_colors) +
-      guides(color = FALSE) +
+      guides(color = FALSE, linetype = FALSE) +
       facet_wrap(~ .data$field, scales = "free_y") +
       labs(
         title = title_text,
@@ -382,6 +383,25 @@ plot_group_split <- function(df,
         plot.title.position = "plot",
         legend.position = "bottom"
       )
+
+    if (type != "percent_factor") {
+      p <-
+        p +
+        geom_col(
+          aes(x = .data$x_bar, fill = .data$category),
+          alpha = 0.2, color = NA
+        )
+    } else {
+      p <-
+        p +
+        geom_point(
+          aes(x = .data$x_bar, fill = .data$category),
+          shape = "|", size = 3
+        ) +
+        geom_vline(aes(xintercept = 100 - .data$expected), linetype = "dotted")
+    }
+
+    suppressWarnings(p)
   }
 }
 
