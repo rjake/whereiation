@@ -78,14 +78,14 @@ summarize_over_under_split <- function(df,
       values_fill = list(n = 0, x = 0)
     ) %>%
     mutate(
-      delta = .data$x_group_2 - .data$x_group_1,
+      delta = .data$x_point - .data$x_bar,
       abs_delta = abs(.data$delta),
       value = collapse_cat(.data$value, n = n_cat, w = .data$abs_delta)
     ) %>%
     group_by(.data$field, .data$value) %>%
     mutate(
-      has_group_1 = max(!is.na(.data$split_group_1)),
-      has_group_2 = max(!is.na(.data$split_group_2))
+      has_bar = max(!is.na(.data$split_bar)),
+      has_point = max(!is.na(.data$split_point))
     ) %>%
     ungroup() %>%
     mutate(
@@ -94,8 +94,8 @@ summarize_over_under_split <- function(df,
     ) %>%
     group_by(
       .data$field, .data$value,
-      .data$has_group_1, .data$has_group_2,
-      .data$split_group_1, .data$split_group_2
+      .data$has_bar, .data$has_point,
+      .data$split_bar, .data$split_point
     ) %>%
     summarise(
       x_bar = agg_fn(.data$x_bar),
@@ -110,9 +110,9 @@ summarize_over_under_split <- function(df,
       field_delta = sum(.data$abs_delta, na.rm = TRUE),
       category =
         case_when(
-          .data$has_group_1 == 0 | .data$has_group_2 == 0 ~ "missing",
-          delta > 0 ~ "higher",
-          delta < 0 ~ "lower",
+          .data$has_bar == 0 | .data$has_point == 0 ~ "missing",
+          .data$delta > 0 ~ "higher",
+          .data$delta < 0 ~ "lower",
           TRUE ~ "same"
         )
     )
@@ -244,10 +244,10 @@ plot_group_split <- function(df,
   base_data <-
     map_over_under_split(df, split_on, type = calc_type, dep_var, n_cat, ...) %>%
     mutate(
-      split_group_1 = ifelse(.data$has_group_1 == 0, NA, .data$split_group_1),
-      split_group_2 = ifelse(.data$has_group_2 == 0, NA, .data$split_group_2),
-      x_group_1 = ifelse(.data$has_group_1 == 0, NA, .data$x_group_1),
-      x_group_2 = ifelse(.data$has_group_2 == 0, NA, .data$x_group_2)
+      split_bar = ifelse(.data$has_bar == 0, NA, .data$split_bar),
+      split_point = ifelse(.data$has_point == 0, NA, .data$split_point),
+      x_bar = ifelse(.data$has_bar == 0, NA, .data$x_bar),
+      x_point = ifelse(.data$has_point == 0, NA, .data$x_point)
     )
 
 
@@ -381,20 +381,19 @@ plot_group_split <- function(df,
 summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
   base_data %>%
     filter(as.integer(.data$field) == min(as.integer(.data$field))) %>%
-    select(.data$split_group_1, .data$split_group_2, .data$n_group_1, .data$n_group_2) %>%
+    select(.data$split_bar, .data$split_point, .data$n_bar, .data$n_point) %>%
     pivot_longer(
       everything(),
       names_to = c(".value", "group"),
-      names_pattern = "(.*)_group_(.*)",
+      names_pattern = "(.*)_(.*)",
       values_drop_na = TRUE
     ) %>%
     filter(n != 0) %>%
     count(.data$group, .data$split, wt = .data$n, name = "n") %>%
     arrange(.data$group) %>%
     mutate(
-      shape = ifelse(ref_group == .data$group, "bar", "point"),
       label = glue("{split_on} is {split}"),
-      text = glue("Group {group} ({shape}): {label}, n = {n}")
+      text = glue("{label} ({group}), n = {n}")
     )
 }
 
