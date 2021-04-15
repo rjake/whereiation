@@ -34,7 +34,7 @@ summarize_over_under_split <- function(df,
 
 
   if (type == "dv") {
-    agg_fn <- mean
+    agg_fn <- .mean
     calc_df <-
       group_df %>%
       summarise(
@@ -42,7 +42,7 @@ summarize_over_under_split <- function(df,
         x = mean(.data$y_outcome)
       )
   } else if (type == "count") {
-    agg_fn <- sum
+    agg_fn <- .sum
     calc_df <-
       group_df %>%
       summarise(
@@ -51,6 +51,7 @@ summarize_over_under_split <- function(df,
       )
   } else if (type == "percent") {
     agg_fn <- sum
+    agg_fn <- .mean
     calc_df <-
       group_df %>%
       summarise(
@@ -90,10 +91,10 @@ summarize_over_under_split <- function(df,
       .data$split_group_1, .data$split_group_2
     ) %>%
     summarise(
-      x_group_1 = agg_fn(.data$x_group_1, na.rm = TRUE),
-      x_group_2 = agg_fn(.data$x_group_2, na.rm = TRUE),
-      n_group_1 = sum(.data$n_group_1, na.rm = TRUE),
-      n_group_2 = sum(.data$n_group_2, na.rm = TRUE)
+      x_bar = agg_fn(.data$x_bar),
+      x_point = agg_fn(.data$x_point),
+      n_bar = sum(.data$n_bar),
+      n_point = sum(.data$n_point)
     ) %>%
     ungroup() %>%
     mutate(
