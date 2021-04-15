@@ -1,8 +1,8 @@
-test_that("summarize_over_under_split", {
+test_that("summarize_over_under_split works", {
   df <-
     summarize_over_under_split(
       df = refactor_columns(ggplot2::mpg, "hwy", split_on = "year"),
-      field = "class",
+      field = "cyl",
       n_cat = 5,
       type = "dv"
     )
@@ -11,6 +11,34 @@ test_that("summarize_over_under_split", {
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })
+
+test_that("summarize_over_under_split works for all types", {
+  df <- refactor_columns(ggplot2::mpg, "hwy", split_on = "year")
+
+  df_dv <-
+    summarize_over_under_split(df = df, field = "cyl", n_cat = 5, type = "dv")
+
+  expect_equal(round(weighted.mean(df_dv$x_bar, df_dv$n_bar), 1), 23.4)
+  expect_equal(round(weighted.mean(df_dv$x_point, df_dv$n_point), 1), 23.5)
+
+  df_count <-
+    summarize_over_under_split(df = head(df, 100), field = "cyl", n_cat = 5, type = "count")
+
+  expect_equal(sum(df_count$x_bar), 48)
+  expect_equal(sum(df_count$x_point), 52)
+
+  df_pct_field <-
+    summarize_over_under_split(df = df, field = "cyl", n_cat = 5, type = "percent_field")
+
+  expect_equal(sum(df_pct_field$x_bar), 100)
+  expect_equal(sum(df_pct_field$x_point), 100)
+
+  df_pct_factor <-
+    summarize_over_under_split(df = df, field = "cyl", n_cat = 5, type = "percent_factor")
+
+  expect_equal(df_pct_factor$x_bar + df_pct_factor$x_point, rep(100, 4))
+})
+
 
 
 test_that("map_over_under_split", {
