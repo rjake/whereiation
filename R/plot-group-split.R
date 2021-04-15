@@ -208,7 +208,8 @@ map_over_under_split <- function(df,
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
 #' @importFrom glue glue
-#' @importFrom dplyr case_when filter select
+#' @importFrom dplyr case_when filter select n
+#' @importFrom stringr str_detect
 #' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element_text element_rect
 #' @export
 #'
