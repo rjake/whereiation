@@ -5,7 +5,7 @@
 \alias{employee_attrition}
 \title{Employee Attrition (IBM Watson)}
 \format{
-An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1470 rows and 32 columns.
+An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1470 rows and 29 columns.
 }
 \usage{
 employee_attrition
