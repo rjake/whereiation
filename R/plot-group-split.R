@@ -292,10 +292,11 @@ plot_group_split <- function(df,
   plot_data <-
     plot_group_split_prep(base_data, threshold, ref_group, trunc_length)
 
-  # return table or plot
   if (return_data) { # return data
-      plot_data
-  } else { # return plot
+      return(plot_data)
+  }
+
+  # else return plot
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {
       plot_data <-
@@ -424,7 +425,6 @@ plot_group_split <- function(df,
     }
 
     suppressWarnings(p)
-  }
 }
 
 
