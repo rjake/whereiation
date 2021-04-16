@@ -121,7 +121,7 @@ summarize_over_under_split <- function(df,
         delta = .data$x_point - .data$expected
       )
   } else if (type == "percent_field") {
-    final_df$expected <- NA_integer_
+    final_df$expected <- 0
   }
 
   # else return data
