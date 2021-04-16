@@ -80,7 +80,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -91,7 +91,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rjake/whereiation/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -120,7 +120,7 @@
     <pre class="usage"><span class='fu'>plot_group_split</span><span class='op'>(</span>
   <span class='va'>df</span>,
   <span class='va'>split_on</span>,
-  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dv"</span>, <span class='st'>"percent"</span>, <span class='st'>"count"</span><span class='op'>)</span>,
+  type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dv"</span>, <span class='st'>"count"</span>, <span class='st'>"percent_field"</span>, <span class='st'>"percent_factor"</span><span class='op'>)</span>,
   <span class='va'>dep_var</span>,
   <span class='va'>...</span>,
   n_cat <span class='op'>=</span> <span class='fl'>10</span>,
@@ -235,22 +235,37 @@ the bar and the other will be the point.</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"cty"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"cty"</span>, base_group <span class='op'>=</span> <span class='st'>"2"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"count"</span>, threshold <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"percent"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span>
-  <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span> <span class='op'>%&gt;%</span> <span class='fu'>dplyr</span><span class='fu'>::</span><span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>year</span>, <span class='va'>cty</span>, <span class='va'>trans</span><span class='op'>)</span>,
-  split_on <span class='op'>=</span> <span class='st'>"year"</span>,
-  type <span class='op'>=</span> <span class='st'>"dv"</span>,
-  dep_var <span class='op'>=</span> <span class='st'>"cty"</span>,
-  base_group <span class='op'>=</span> <span class='st'>"1"</span>, <span class='co'># return_data = TRUE,</span>
-  color_missing <span class='op'>=</span> <span class='st'>"violet"</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"cty"</span>, base_group <span class='op'>=</span> <span class='st'>"1"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-6.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_group_split</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, split_on <span class='op'>=</span> <span class='st'>"year"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"cty"</span>, base_group <span class='op'>=</span> <span class='st'>"2"</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_group_split-7.png' alt='' width='700' height='433' /></div></pre>
+    <pre class="examples"><div class='input'><span class='co'># there are 4 types of plots available: comparing the dependent variable,</span>
+<span class='co'># comparing counts, comparing % of field, comparing % within each factor</span>
+
+<span class='co'># type = "dv" is used when comparing an outcome variable (dependent variable)</span>
+<span class='co'># here we see that men have higher rates of attrition than women in most</span>
+<span class='co'># categories except for when job_level = "Director" or when the person</span>
+<span class='co'># works in HR</span>
+<span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"attrition"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_group_split-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># type = "count" is used to compare raw volume differences between two groups</span>
+<span class='co'># here we see that there are more men than women in each of these areas</span>
+<span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_group_split-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># type = "percent_field" is used when comparing the distribution of one</span>
+<span class='co'># demographic vs another. A good example would be pre- vs post-COVID</span>
+<span class='co'># closures. In this example, more men are in intern and director roles</span>
+<span class='co'># than the other  categories</span>
+<span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"percent_field"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_group_split-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># type = "percent_factor" is used when comparing the representation of two</span>
+<span class='co'># groups vs how they are represented in the overall data. In this example</span>
+<span class='co'># we can see that men make up ~60% of the observations but 65% of the</span>
+<span class='co'># director positions and 52% of the senior position while women have the</span>
+<span class='co'># inverse at 35 and 48% respectively</span>
+<span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"percent_factor"</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_group_split-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
