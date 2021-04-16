@@ -7,7 +7,7 @@ test_that("summarize_over_under_split works", {
       type = "dv"
     )
 
-  expected_dim <- c(6, 14)
+  expected_dim <- c(4, 15)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })
@@ -51,7 +51,7 @@ test_that("map_over_under_split", {
       type = "dv"
     )
 
-  expected_dim <- c(48, 14)
+  expected_dim <- c(48, 15)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })
@@ -73,7 +73,7 @@ test_that("plot_group_split_prep", {
       trunc_length = 20
     )
 
-  expected_dim <- c(33, 19)
+  expected_dim <- c(33, 15)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 
@@ -99,7 +99,7 @@ test_that("summarize_group_split_metadata", {
       split_on = "year"
     )
 
-  expected_dim <- c(2, 6)
+  expected_dim <- c(2, 5)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 })

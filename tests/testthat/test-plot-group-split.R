@@ -1,12 +1,12 @@
 test_that("group_split works", {
-  p <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
+  p <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy")
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(26, 19)
+  expected_dim <- c(27, 16)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)
-  expected_layers <- 3
+  expected_layers <- 4
   expect_equal(actual_layers, expected_layers)
 
   # no more than 1 pt per facet + y
