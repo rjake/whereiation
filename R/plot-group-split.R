@@ -417,7 +417,7 @@ plot_group_split <- function(df,
         p +
         geom_point(
           aes(x = .data$x_bar, fill = .data$category),
-          shape = "|", size = 3
+          shape = "|", size = 4
         ) +
         geom_vline(aes(xintercept = 100 - .data$expected), linetype = "dotted")
     }
