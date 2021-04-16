@@ -21,6 +21,11 @@ summarize_over_under_split <- function(df,
                                        n_cat,
                                        base_group = "1") {
   # df <- head(ggplot2::mpg, 100); df$y_split <- df$year; split <- "year"; field <- "model"; type = "percent_factor"; base_group = "1"
+
+  # helper math functions
+  .mean <- function(...) mean(..., na.rm = TRUE)
+  .sum <- function(...) sum(..., na.rm = TRUE)
+
   group_df <-
     df %>%
     group_by(

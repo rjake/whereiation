@@ -137,6 +137,3 @@ extract_field_name <- function(x) {
     gsub(pattern = "\\(", replacement = "")
 }
 
-#' Helper math functions
-.mean <- function(...) mean(..., na.rm = TRUE)
-.sum <- function(...) sum(..., na.rm = TRUE)
