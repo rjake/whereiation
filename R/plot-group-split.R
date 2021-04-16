@@ -377,7 +377,8 @@ plot_group_split <- function(df,
         aes(
           x = .data$x_point, xend = .data$x_end, yend = .data$value,
           color = .data$category,
-          linetype = ifelse(!(is.na(.data$x_point) | is.na(.data$x_bar)), "dotted", "solid"),
+          linetype =
+            ifelse(!(is.na(.data$x_point) | is.na(.data$x_bar)), "dotted", "solid"),
           group = .data$value
         )
       ) +
