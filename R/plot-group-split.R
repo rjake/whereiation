@@ -265,13 +265,6 @@ plot_group_split <- function(df,
                              title = NULL,
                              subtitle = NULL,
                              caption = NULL) {
-  # to be used with scale_color... and scale_fill...
-  fill_colors <- c(
-    "higher" = color_over,
-    "lower" = color_under,
-    "missing" = color_missing
-  )
-
   # dv, percent of pop, or count
   calc_type <- match.arg(type)
   ref_group <- match.arg(base_group)
@@ -367,6 +360,13 @@ plot_group_split <- function(df,
         paste(threshold_caption, caption, sep = "\n"),
         threshold_caption
       )
+
+    # colors to be used with scale_color... and scale_fill...
+    fill_colors <- c(
+      "higher" = color_over,
+      "lower" = color_under,
+      "missing" = color_missing
+    )
 
     # plot
     p <-
