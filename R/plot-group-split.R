@@ -306,11 +306,14 @@ plot_group_split <- function(df,
     plot_data <-
       plot_data %>%
       filter(as.integer(.data$field) <= n_field) %>%
-      filter(.data$n_bar > 10 & .data$n_point > 10) %>%
-      mutate(
-        x_end =
-          ifelse(rep(type == "percent_factor", n()), .data$expected, .data$x_bar)
-      )
+      filter(.data$n_bar > 10 & .data$n_point > 10)
+  }
+
+  if (calc_type == "percent_factor") {
+    # return df with expected %
+    plot_data$x_end <- plot_data$expected
+  } else {
+    plot_data$x_end <- plot_data$x_bar
   }
 
   group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
@@ -412,7 +415,8 @@ plot_group_split <- function(df,
       legend.position = "bottom"
     )
 
-  if (type != "percent_factor") {
+
+  if (calc_type != "percent_factor") {
     p <-
       p +
       geom_col(
@@ -429,7 +433,7 @@ plot_group_split <- function(df,
       geom_vline(aes(xintercept = 100 - .data$expected), linetype = "dotted")
   }
 
-    suppressWarnings(p)
+    p
 }
 
 
