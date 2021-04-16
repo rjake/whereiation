@@ -265,6 +265,8 @@ plot_group_split <- function(df,
                              title = NULL,
                              subtitle = NULL,
                              caption = NULL) {
+  # prep data for plot ----
+
   # dv, percent of pop, or count
   calc_type <- match.arg(type)
   ref_group <- match.arg(base_group)
@@ -292,137 +294,140 @@ plot_group_split <- function(df,
   plot_data <-
     plot_group_split_prep(base_data, threshold, ref_group, trunc_length)
 
-  if (return_data) { # return data
+  # early return of underlying data
+  if (return_data) {
       return(plot_data)
   }
 
-  # else return plot
-    # filter # of facets if n_field specified
-    if (!is.null(n_field)) {
-      plot_data <-
-        plot_data %>%
-        filter(as.integer(.data$field) <= n_field) %>%
-        filter(.data$n_bar > 10 & .data$n_point > 10) %>%
-        mutate(
-          x_end = ifelse(rep(type == "percent_factor", n()), .data$expected, .data$x_bar)
-        )
-    }
+  # return plot ----
 
-    group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
+  # filter # of facets if n_field specified
+  if (!is.null(n_field)) {
+    plot_data <-
+      plot_data %>%
+      filter(as.integer(.data$field) <= n_field) %>%
+      filter(.data$n_bar > 10 & .data$n_point > 10) %>%
+      mutate(
+        x_end =
+          ifelse(rep(type == "percent_factor", n()), .data$expected, .data$x_bar)
+      )
+  }
 
-    # labels
-    # get values/captions for threshold if not specified
-    if (is.null(threshold)) {
-      threshold_value <- 0
-      threshold_caption <- ""
-    } else {
-      threshold_value <-
-        ifelse(
-          str_detect(type, "percent"),
-          round(threshold * 100, 1),
-          threshold
-        )
+  group_counts <- summarize_group_split_metadata(base_data, ref_group, split_on)
 
-      threshold_caption <-
-        glue("* Values are excluded if difference is < {threshold_value}")
-    }
-
-    # x-axis
-    x_axis <- case_when(
-      calc_type == "dv" ~ dep_var,
-      str_detect(calc_type, "percent") ~ "Represenation %",
-      TRUE ~ "# of Obs."
-    )
-
-    # title
-    if (!is.null(title)) {
-      title_text <- title
-    } else {
-      title_text <-
-        case_when(
-          calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
-          calc_type == "percent_field" ~ "Difference in proportion of population",
-          calc_type == "percent_factor" ~ "Difference from expected representation",
-          TRUE ~ "Change in # of observations"
-        )
-    }
-
-    # subtitle
-    subtitle_text <- paste(group_counts$text, collapse = "\n")
-
-    if (!is.null(subtitle)) {
-      subtitle_text <- paste(subtitle, subtitle_text, sep = "\n")
-    }
-
-    # caption
-    caption_text <-
+  # labels
+  # get values/captions for threshold if not specified
+  if (is.null(threshold)) {
+    threshold_value <- 0
+    threshold_caption <- ""
+  } else {
+    threshold_value <-
       ifelse(
-        !is.null(caption),
-        paste(threshold_caption, caption, sep = "\n"),
-        threshold_caption
+        str_detect(type, "percent"),
+        round(threshold * 100, 1),
+        threshold
       )
 
-    # colors to be used with scale_color... and scale_fill...
-    fill_colors <- c(
-      "higher" = color_over,
-      "lower" = color_under,
-      "missing" = color_missing
+    threshold_caption <-
+      glue("* Values are excluded if difference is < {threshold_value}")
+  }
+
+  # x-axis
+  x_axis <- case_when(
+    calc_type == "dv" ~ dep_var,
+    str_detect(calc_type, "percent") ~ "Represenation %",
+    TRUE ~ "# of Obs."
+  )
+
+  # title
+  if (!is.null(title)) {
+    title_text <- title
+  } else {
+    title_text <-
+      case_when(
+        calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
+        calc_type == "percent_field" ~ "Difference in proportion of population",
+        calc_type == "percent_factor" ~ "Difference from expected representation",
+        TRUE ~ "Change in # of observations"
+      )
+  }
+
+  # subtitle
+  subtitle_text <- paste(group_counts$text, collapse = "\n")
+
+  if (!is.null(subtitle)) {
+    subtitle_text <- paste(subtitle, subtitle_text, sep = "\n")
+  }
+
+  # caption
+  caption_text <-
+    ifelse(
+      !is.null(caption),
+      paste(threshold_caption, caption, sep = "\n"),
+      threshold_caption
     )
 
-    # plot
-    p <-
-      ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
-      geom_vline(aes(xintercept = .data$expected)) +
-      geom_segment(
-        # data = filter(plot_data, !is.na(.data$point)),
-        aes(
-          x = .data$x_point, xend = .data$x_end, yend = .data$value,
-          color = .data$category,
-          linetype =
-            ifelse(!(is.na(.data$x_point) | is.na(.data$x_bar)), "dotted", "solid"),
-          group = .data$value
-        )
-      ) +
-      geom_point(
-        aes(x = .data$x_point),
-        size = 3
-      ) +
-      scale_fill_manual(values = fill_colors) +
-      scale_color_manual(values = fill_colors) +
-      guides(color = FALSE, linetype = FALSE) +
-      facet_wrap(~ .data$field, scales = "free_y") +
-      labs(
-        title = title_text,
-        subtitle = subtitle_text,
-        caption = caption_text,
-        x = x_axis,
-        y = "",
-        size = paste0("# of obs. when\n", group_counts$label[2]),
-        fill = "Difference"
-      ) +
-      theme(
-        axis.text.y = element_text(size = 9),
-        panel.background = element_rect(color = "grey70", fill = "white"),
-        plot.title.position = "plot",
-        legend.position = "bottom"
-      )
+  # colors to be used with scale_color... and scale_fill...
+  fill_colors <- c(
+    "higher" = color_over,
+    "lower" = color_under,
+    "missing" = color_missing
+  )
 
-    if (type != "percent_factor") {
-      p <-
-        p +
-        geom_col(
-          aes(x = .data$x_bar, fill = .data$category),
-          alpha = 0.2, color = NA
-        )
-    } else {
-      p <-
-        p +
-        geom_point(
-          aes(x = .data$x_bar, fill = .data$category),
-          shape = "|", size = 4
-        ) +
-        geom_vline(aes(xintercept = 100 - .data$expected), linetype = "dotted")
-    }
+  # plot
+  p <-
+    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
+    geom_vline(aes(xintercept = .data$expected)) +
+    geom_segment(
+      # data = filter(plot_data, !is.na(.data$point)),
+      aes(
+        x = .data$x_point, xend = .data$x_end, yend = .data$value,
+        color = .data$category,
+        linetype =
+          ifelse(!(is.na(.data$x_point) | is.na(.data$x_bar)), "dotted", "solid"),
+        group = .data$value
+      )
+    ) +
+    geom_point(
+      aes(x = .data$x_point),
+      size = 3
+    ) +
+    scale_fill_manual(values = fill_colors) +
+    scale_color_manual(values = fill_colors) +
+    guides(color = FALSE, linetype = FALSE) +
+    facet_wrap(~ .data$field, scales = "free_y") +
+    labs(
+      title = title_text,
+      subtitle = subtitle_text,
+      caption = caption_text,
+      x = x_axis,
+      y = "",
+      size = paste0("# of obs. when\n", group_counts$label[2]),
+      fill = "Difference"
+    ) +
+    theme(
+      axis.text.y = element_text(size = 9),
+      panel.background = element_rect(color = "grey70", fill = "white"),
+      plot.title.position = "plot",
+      legend.position = "bottom"
+    )
+
+  if (type != "percent_factor") {
+    p <-
+      p +
+      geom_col(
+        aes(x = .data$x_bar, fill = .data$category),
+        alpha = 0.2, color = NA
+      )
+  } else {
+    p <-
+      p +
+      geom_point(
+        aes(x = .data$x_bar, fill = .data$category),
+        shape = "|", size = 4
+      ) +
+      geom_vline(aes(xintercept = 100 - .data$expected), linetype = "dotted")
+  }
 
     suppressWarnings(p)
 }
