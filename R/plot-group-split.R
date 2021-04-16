@@ -116,8 +116,7 @@ summarize_over_under_split <- function(df,
     final_df <-
       final_df %>%
       mutate(
-        expected =
-          .sum(.data$n_point) / .sum(calc_df$n) * 100,
+        expected = .sum(.data$n_point) / .sum(calc_df$n) * 100,
         delta = .data$x_point - .data$expected
       )
   } else if (type == "percent_field") {
@@ -249,7 +248,6 @@ map_over_under_split <- function(df,
 #' employee_attrition[,2:4] %>%
 #'   plot_group_split(split_on = "gender", type = "percent_factor")
 #'
-
 plot_group_split <- function(df,
                              split_on,
                              type = c("dv", "count", "percent_field", "percent_factor"),
@@ -300,6 +298,7 @@ plot_group_split <- function(df,
 
   plot_data <-
     plot_group_split_prep(base_data, threshold, ref_group, trunc_length)
+
   # return table or plot
   if (return_data) { # return data
       plot_data
