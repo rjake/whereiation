@@ -136,3 +136,4 @@ extract_field_name <- function(x) {
     gsub(pattern = " .*", replacement = "") %>%
     gsub(pattern = "\\(", replacement = "")
 }
+

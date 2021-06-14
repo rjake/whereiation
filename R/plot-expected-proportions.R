@@ -12,12 +12,18 @@
 #' )
 summarize_over_under_proportions <- function(field, df) {
   df %>%
-    group_by(
-      field = field,
-      value =
+    transmute(
+      .data$y_outcome,
+      .data$y_split,
+      value =             # values from column selected
         as.character(get(field)) %>%
-          replace_na("NA")
+        replace_na("NA"),
+      field = field       # character string of field name
     ) %>%
+    group_by(
+      field = .data$field,
+      value = .data$value
+    )  %>%
     summarise(
       n = n(),
       total = sum(.data$y_outcome, na.rm = TRUE)

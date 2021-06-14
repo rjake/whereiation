@@ -81,7 +81,7 @@ used for plotting" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -92,7 +92,7 @@ used for plotting" />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rjake/whereiation/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -170,63 +170,63 @@ grand average.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>summarize_factors_all_fields</span><span class='op'>(</span><span class='va'>iris</span>, dep_var <span class='op'>=</span> <span class='st'>"Sepal.Length"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 26 x 10</span><span>
-#&gt;    field value factor_avg     n field_r_sq field_r_sq_adj field_p_value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Sepa~ 02 [~       5.31     7      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Sepa~ 03 [~       5.89    22      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Sepa~ 04 [~       6.22    24      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Sepa~ 05 [~       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Sepa~ 06 [~       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Sepa~ 07 [~       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Sepa~ 08 [~       5.75    11      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Peta~ 01 [~       4.98    37      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Peta~ 02 [~       5.07    13      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Peta~ 05 [~       5.49     8      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #949494;'># ... with 16 more rows, and 3 more variables: rescale_factor_avg </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   grand_avg </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, field_wt </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span></div><div class='input'><span class='fu'>summarize_factors_all_fields</span><span class='op'>(</span><span class='va'>iris</span>, dep_var <span class='op'>=</span> <span class='st'>"Sepal.Length"</span>, return <span class='op'>=</span> <span class='st'>"list"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 26 x 10</span>
+#&gt;    field     value      factor_avg     n field_r_sq field_r_sq_adj field_p_value
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Sepal.Wi~ 02 [2.24 ~       5.31     7      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> Sepal.Wi~ 03 [2.48 ~       5.89    22      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span> Sepal.Wi~ 04 [2.72 ~       6.22    24      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 4</span> Sepal.Wi~ 05 [2.96 ~       6.02    37      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> Sepal.Wi~ 06 [3.2 t~       5.69    31      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span> Sepal.Wi~ 07 [3.44 ~       5.26    10      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> Sepal.Wi~ 08 [3.68 ~       5.75    11      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> Petal.Le~ 01 [0.99 ~       4.98    37      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span> Petal.Le~ 02 [1.59 ~       5.07    13      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #BCBCBC;'>10</span> Petal.Le~ 05 [3.36 ~       5.49     8      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #949494;'># ... with 16 more rows, and 3 more variables: rescale_factor_avg &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   grand_avg &lt;dbl&gt;, field_wt &lt;dbl&gt;</span></div><div class='input'><span class='fu'>summarize_factors_all_fields</span><span class='op'>(</span><span class='va'>iris</span>, dep_var <span class='op'>=</span> <span class='st'>"Sepal.Length"</span>, return <span class='op'>=</span> <span class='st'>"list"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; $data
-#&gt; </span><span style='color: #949494;'># A tibble: 26 x 10</span><span>
-#&gt;    field value factor_avg     n field_r_sq field_r_sq_adj field_p_value
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;fct&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Sepa~ 02 [~       5.31     7      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Sepa~ 03 [~       5.89    22      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Sepa~ 04 [~       6.22    24      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Sepa~ 05 [~       6.02    37      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Sepa~ 06 [~       5.69    31      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Sepa~ 07 [~       5.26    10      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Sepa~ 08 [~       5.75    11      0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Peta~ 01 [~       4.98    37      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Peta~ 02 [~       5.07    13      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Peta~ 05 [~       5.49     8      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #949494;'># ... with 16 more rows, and 3 more variables: rescale_factor_avg </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>,</span><span>
-#&gt; </span><span style='color: #949494;'>#   grand_avg </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span style='color: #949494;'>, field_wt </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 26 x 10</span>
+#&gt;    field     value      factor_avg     n field_r_sq field_r_sq_adj field_p_value
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>           <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>      <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Sepal.Wi~ 02 [2.24 ~       5.31     7      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 2</span> Sepal.Wi~ 03 [2.48 ~       5.89    22      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 3</span> Sepal.Wi~ 04 [2.72 ~       6.22    24      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 4</span> Sepal.Wi~ 05 [2.96 ~       6.02    37      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 5</span> Sepal.Wi~ 06 [3.2 t~       5.69    31      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 6</span> Sepal.Wi~ 07 [3.44 ~       5.26    10      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 7</span> Sepal.Wi~ 08 [3.68 ~       5.75    11      0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'> 8</span> Petal.Le~ 01 [0.99 ~       4.98    37      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #BCBCBC;'> 9</span> Petal.Le~ 02 [1.59 ~       5.07    13      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #BCBCBC;'>10</span> Petal.Le~ 05 [3.36 ~       5.49     8      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #949494;'># ... with 16 more rows, and 3 more variables: rescale_factor_avg &lt;dbl&gt;,</span>
+#&gt; <span style='color: #949494;'>#   grand_avg &lt;dbl&gt;, field_wt &lt;dbl&gt;</span>
 #&gt; 
 #&gt; $field_stats
-#&gt; </span><span style='color: #949494;'># A tibble: 5 x 4</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 5 x 4</span>
 #&gt;   field        field_r_sq field_r_sq_adj field_p_value
-#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>             </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>          </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>         </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>1</span><span> unique_id         0.514         0.510       6.22</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-25</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Sepal.Width       0.110         0.052</span><span style='text-decoration: underline;'>4</span><span>      5.44</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>3</span><span> Petal.Length      0.827         0.817       7.18</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>4</span><span> Petal.Width       0.685         0.665       5.95</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-31</span><span>
-#&gt; </span><span style='color: #BCBCBC;'>5</span><span> Species           0.619         0.614       1.67</span><span style='color: #949494;'>e</span><span style='color: #BB0000;'>-31</span><span>
+#&gt;   <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>             <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>          <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>         <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>
+#&gt; <span style='color: #BCBCBC;'>1</span> unique_id         0.514         0.510       6.22<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-25</span>
+#&gt; <span style='color: #BCBCBC;'>2</span> Sepal.Width       0.110         0.052<span style='text-decoration: underline;'>4</span>      5.44<span style='color: #949494;'>e</span><span style='color: #BB0000;'>- 2</span>
+#&gt; <span style='color: #BCBCBC;'>3</span> Petal.Length      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
+#&gt; <span style='color: #BCBCBC;'>4</span> Petal.Width       0.685         0.665       5.95<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-31</span>
+#&gt; <span style='color: #BCBCBC;'>5</span> Species           0.619         0.614       1.67<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-31</span>
 #&gt; 
 #&gt; $factor_stats
-#&gt; </span><span style='color: #949494;'># A tibble: 26 x 4</span><span>
+#&gt; <span style='color: #949494;'># A tibble: 26 x 4</span>
 #&gt;    field        value             factor_avg     n
-#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>        </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>                  </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Sepal.Width  02 [2.24 to 2.48)       5.31     7
-#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Sepal.Width  03 [2.48 to 2.72)       5.89    22
-#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Sepal.Width  04 [2.72 to 2.96)       6.22    24
-#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Sepal.Width  05 [2.96 to 3.2)        6.02    37
-#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Sepal.Width  06 [3.2 to 3.44)        5.69    31
-#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Sepal.Width  07 [3.44 to 3.68)       5.26    10
-#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Sepal.Width  08 [3.68 to 3.92)       5.75    11
-#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Petal.Length 01 [0.99 to 1.59)       4.98    37
-#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Petal.Length 02 [1.59 to 2.18)       5.07    13
-#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Petal.Length 05 [3.36 to 3.95)       5.49     8
-#&gt; </span><span style='color: #949494;'># ... with 16 more rows</span><span>
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>                  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>
+#&gt; <span style='color: #BCBCBC;'> 1</span> Sepal.Width  02 [2.24 to 2.48)       5.31     7
+#&gt; <span style='color: #BCBCBC;'> 2</span> Sepal.Width  03 [2.48 to 2.72)       5.89    22
+#&gt; <span style='color: #BCBCBC;'> 3</span> Sepal.Width  04 [2.72 to 2.96)       6.22    24
+#&gt; <span style='color: #BCBCBC;'> 4</span> Sepal.Width  05 [2.96 to 3.2)        6.02    37
+#&gt; <span style='color: #BCBCBC;'> 5</span> Sepal.Width  06 [3.2 to 3.44)        5.69    31
+#&gt; <span style='color: #BCBCBC;'> 6</span> Sepal.Width  07 [3.44 to 3.68)       5.26    10
+#&gt; <span style='color: #BCBCBC;'> 7</span> Sepal.Width  08 [3.68 to 3.92)       5.75    11
+#&gt; <span style='color: #BCBCBC;'> 8</span> Petal.Length 01 [0.99 to 1.59)       4.98    37
+#&gt; <span style='color: #BCBCBC;'> 9</span> Petal.Length 02 [1.59 to 2.18)       5.07    13
+#&gt; <span style='color: #BCBCBC;'>10</span> Petal.Length 05 [3.36 to 3.95)       5.49     8
+#&gt; <span style='color: #949494;'># ... with 16 more rows</span>
 #&gt; 
 #&gt; $grand_avg
 #&gt; [1] 5.843333
@@ -238,7 +238,7 @@ grand average.</p></td>
 #&gt; $orig_max
 #&gt; 98% 
 #&gt; 7.7 
-#&gt; </div></span></pre>
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
