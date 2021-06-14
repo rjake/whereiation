@@ -4,7 +4,7 @@
 #' @param df refactored data frame
 #' @param field field to evaluate
 #' @inheritParams group_split
-#' @importFrom dplyr group_by dense_rank summarise n ungroup mutate case_when
+#' @importFrom dplyr transmute group_by dense_rank summarise n ungroup mutate case_when
 #' @importFrom tidyr pivot_wider replace_na fill
 #' @importFrom stats na.omit
 #' @noRd
@@ -28,13 +28,20 @@ summarize_over_under_split <- function(df,
 
   group_df <-
     df %>%
+    transmute(
+      y_outcome,
+      y_split,
+      unique_id,
+      value =             # values from column selected
+        as.character(get(field)) %>%
+        replace_na("NA"),
+      field = field       # character string of field name
+    ) %>%
     group_by(
-      field = field,
+      field = .data$field,
       split = .data$y_split,
       split_ord = paste0("group_", dense_rank(.data$split)),
-      value =
-        as.character(get(field)) %>%
-          replace_na("NA")
+      value = .data$value
     )
 
 
