@@ -29,9 +29,9 @@ summarize_over_under_split <- function(df,
   group_df <-
     df %>%
     transmute(
-      y_outcome,
-      y_split,
-      unique_id,
+      .data$y_outcome,
+      .data$y_split,
+      .data$unique_id,
       value =             # values from column selected
         as.character(get(field)) %>%
         replace_na("NA"),
