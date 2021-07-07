@@ -10,6 +10,7 @@ base_data <- refactor_columns(df, dep_var, ignore_cols = ignore_cols)
 
 set.seed(1234)
 df_train <- base_data %>% sample_frac(base_data, 0.8)
+
 df_test <- setdiff(base_data, df_train)
 
 df_estimate <-

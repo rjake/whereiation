@@ -54,12 +54,13 @@ df_prep <-
   select(
     id = unique_id, #orig = y_outcome, 
     field, field_wt, value, group_avg, estimate
-  ) %>% 
+    estimate, side_correct
+  ) %>%
   mutate(
     pct_group = percent(group_avg, accuracy = 1),
     est_obs = floor(estimate*100),
     cell = glue("{value}\n{pct_group}"),
-    id = glue("est_{est_obs}_id_{id}")
+    id = glue("est_{est_obs}-id_{id}-side_correct_{side_correct}")
   ) %>% 
   mutate(id = fct_reorder(id, estimate, .desc = TRUE))
 
@@ -77,9 +78,9 @@ df_style <-
         )
     )
   ) %>% 
-  select(-c(value, group_avg, pct_group, est_obs, estimate)) %>% 
+  select(-c(value, group_avg, pct_group, est_obs, estimate, side_correct)) %>% 
   spread(id, cell) %>% 
-  rename_all(str_replace, "est_(..)_(id.*)", "\\2\n\\1%") %>% 
+  rename_all(str_replace, "-", "\n") %>% 
   arrange(desc(field_wt)) %>% 
   mutate(field_wt = percent(field_wt, 3))
 
