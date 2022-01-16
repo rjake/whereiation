@@ -77,7 +77,7 @@ collapse_cat <- function(x,
 check_01_binary <- function(x) {
   if (!typeof(x) %in% c("integer", "double", "logical")) {
     stop(
-      "the 'dep_var' specified is not binary (0/1) or logical",
+      "the 'dv' specified is not binary (0/1) or logical",
       call. = FALSE
     )
   }
@@ -92,7 +92,7 @@ check_01_binary <- function(x) {
 
     warning(
       glue(
-        "Expected 'dep_var' to be a binary field 0/1 or TRUE/FALSE \\
+        "Expected 'dv' to be a binary field 0/1 or TRUE/FALSE \\
         and data has values {rng}.
         The result may not be meaningful."
       ),

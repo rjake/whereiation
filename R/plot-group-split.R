@@ -157,7 +157,7 @@ summarize_over_under_split <- function(df,
 #' @examples
 #' map_over_under_split(
 #'   df = ggplot2::mpg,
-#'   dep_var = "hwy",
+#'   dv = "hwy",
 #'   split_on = "year",
 #'   type = "dv",
 #'   n_cat = 5
@@ -165,24 +165,24 @@ summarize_over_under_split <- function(df,
 map_over_under_split <- function(df,
                                  split_on = NULL,
                                  type,
-                                 dep_var,
+                                 dv,
                                  n_cat,
                                  base_group = "1",
                                  ...) {
   calc_type <- type
 
-  dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
+  dv <- check_dv_has_value(calc_type, missing(dv), dv)
 
   refactor_df <-
     refactor_columns(
       df,
-      dep_var = dep_var,
+      dv = dv,
       ...,
       n_cat = NULL,
       split_on = split_on
     )
 
-  # give warning if dep_var isn't 0/1 or T/F
+  # give warning if dv isn't 0/1 or T/F
   check_binary(refactor_df$y_split)
 
   names(refactor_df)[4:length(refactor_df)] %>%
@@ -233,7 +233,7 @@ map_over_under_split <- function(df,
 #' # categories except for when job_level = "Director" or when the person
 #' # works in HR
 #' employee_attrition[,1:4] %>%
-#'   plot_group_split(split_on = "gender", type = "dv", dep_var = "attrition")
+#'   plot_group_split(split_on = "gender", type = "dv", dv = "attrition")
 #'
 #' # type = "count" is used to compare raw volume differences between two groups
 #' # here we see that there are more men than women in each of these areas
@@ -258,7 +258,7 @@ map_over_under_split <- function(df,
 plot_group_split <- function(df,
                              split_on,
                              type = c("dv", "count", "percent_field", "percent_factor"),
-                             dep_var,
+                             dv,
                              ...,
                              n_cat = 10,
                              trunc_length = 100,
@@ -278,14 +278,14 @@ plot_group_split <- function(df,
   calc_type <- match.arg(type)
   ref_group <- match.arg(base_group)
 
-  dep_var <- check_dv_has_value(calc_type, missing(dep_var), dep_var)
+  dv <- check_dv_has_value(calc_type, missing(dv), dv)
 
   base_data <-
     map_over_under_split(
       df = df,
       split_on = split_on,
       type = calc_type,
-      dep_var = dep_var,
+      dv = dv,
       n_cat = n_cat,
       base_group = ref_group,
       ...
@@ -344,7 +344,7 @@ plot_group_split <- function(df,
 
   # x-axis
   x_axis <- case_when(
-    calc_type == "dv" ~ dep_var,
+    calc_type == "dv" ~ dv,
     str_detect(calc_type, "percent") ~ "Represenation %",
     TRUE ~ "# of Obs."
   )
@@ -355,7 +355,7 @@ plot_group_split <- function(df,
   } else {
     title_text <-
       case_when(
-        calc_type == "dv" ~ glue("Change in outcome ({dep_var})"),
+        calc_type == "dv" ~ glue("Change in outcome ({dv})"),
         calc_type == "percent_field" ~ "Difference in proportion of population",
         calc_type == "percent_factor" ~ "Difference from expected representation",
         TRUE ~ "Change in # of observations"
@@ -458,7 +458,7 @@ plot_group_split <- function(df,
 #'       df = ggplot2::mpg,
 #'       split_on = "year",
 #'       type = "dv",
-#'       dep_var = "hwy",
+#'       dv = "hwy",
 #'       n_cat = 5,
 #'       base_group = "1"
 #'     ),
@@ -496,7 +496,7 @@ summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
 #'       df = ggplot2::mpg,
 #'       split_on = "year",
 #'       type = "dv",
-#'       dep_var = "hwy",
+#'       dv = "hwy",
 #'       n_cat = 5
 #'     ),
 #'   ref_group = "1",
@@ -516,20 +516,20 @@ plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length)
 }
 
 
-#' Assign default value to dep_var or throw error depending on type
+#' Assign default value to dv or throw error depending on type
 #'
 #' @param type evaluation type to use
-#' @param cond condition for evaluation \code{missing(dep_var)}
-#' @param dep_var dependent variable
+#' @param cond condition for evaluation \code{missing(dv)}
+#' @param dv dependent variable
 #'
 #' @noRd
-check_dv_has_value <- function(type, cond, dep_var) {
+check_dv_has_value <- function(type, cond, dv) {
   if (type != "dv") {
     "1"
   } else if (cond) {
-    stop("'dep_var' required when type = 'dv'")
+    stop("'dv' required when type = 'dv'")
   } else {
-    dep_var
+    dv
   }
 }
 

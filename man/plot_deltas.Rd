@@ -6,7 +6,7 @@
 \usage{
 plot_deltas(
   df,
-  dep_var,
+  dv,
   ...,
   trunc_length = 100,
   return_data = FALSE,
@@ -17,7 +17,7 @@ plot_deltas(
 \arguments{
 \item{df}{dataframe to evaluate}
 
-\item{dep_var}{dependent variable to use (column name)}
+\item{dv}{dependent variable to use (column name)}
 
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
@@ -53,12 +53,12 @@ Visualize difference from avg. by factor (lollipop)
 \examples{
 
 # show distances (deltas) from grand mean
-plot_deltas(df = ggplot2::mpg, dep_var = "hwy")
+plot_deltas(df = ggplot2::mpg, dv = "hwy")
 
 # adjust aesthetics with 'trunc_length' and 'n_field'
 plot_deltas(
   df = ggplot2::mpg,
-  dep_var = "hwy",
+  dv = "hwy",
   trunc_length = 15,
   n_field = 5
 )

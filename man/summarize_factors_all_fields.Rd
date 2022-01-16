@@ -17,7 +17,7 @@ summarize_factors_all_fields(
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
-    \item{\code{dep_var}}{dependent variable to use (column name)}
+    \item{\code{dv}}{dependent variable to use (column name)}
     \item{\code{split_on}}{variable to split data / group by}
     \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
@@ -46,6 +46,6 @@ Pivots data and summarizes factor frequencies by field and generates stats
 used for plotting
 }
 \examples{
-summarize_factors_all_fields(iris, dep_var = "Sepal.Length")
-summarize_factors_all_fields(iris, dep_var = "Sepal.Length", return = "list")
+summarize_factors_all_fields(iris, dv = "Sepal.Length")
+summarize_factors_all_fields(iris, dv = "Sepal.Length", return = "list")
 }

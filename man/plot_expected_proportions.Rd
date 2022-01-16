@@ -6,7 +6,7 @@
 \usage{
 plot_expected_proportions(
   df,
-  dep_var,
+  dv,
   ...,
   trunc_length = 100,
   sort_by = c("expected", "actual"),
@@ -20,7 +20,7 @@ plot_expected_proportions(
 \arguments{
 \item{df}{data to be analyzed}
 
-\item{dep_var}{dependent variable}
+\item{dv}{dependent variable}
 
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
@@ -65,32 +65,32 @@ column).}
 Ideal for a 0/1 dichotomous variable.
 }
 \examples{
-plot_expected_proportions(df = iris, dep_var = "Sepal.Length > 5")
+plot_expected_proportions(df = iris, dv = "Sepal.Length > 5")
 
 # sorted by the expected representation (default)
 plot_expected_proportions(
   df = mtcars,
-  dep_var = "mpg > 15",
+  dv = "mpg > 15",
 )
 
 # sorted by the actual representation
 plot_expected_proportions(
   df = mtcars,
-  dep_var = "mpg > 15",
+  dv = "mpg > 15",
   sort_by = "actual"
 )
 
 # you can return the dataframe if you want
 plot_expected_proportions(
   df = mtcars,
-  dep_var = "mpg > 15",
+  dv = "mpg > 15",
   return_data = TRUE
 )
 
 # an example with more parameters
 plot_expected_proportions(
   df = mtcars, # data to use
-  dep_var = "mpg > 15", # can be a field name or an evaluation
+  dv = "mpg > 15", # can be a field name or an evaluation
   n_cat = 5, # collapse field values into 5 categories
   n_field = 3, # keep the frist 3 facets
   threshold = NULL # keep all values

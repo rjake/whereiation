@@ -20,8 +20,8 @@
 #'
 #' @export
 #' @examples
-#' summarize_factors_all_fields(iris, dep_var = "Sepal.Length")
-#' summarize_factors_all_fields(iris, dep_var = "Sepal.Length", return = "list")
+#' summarize_factors_all_fields(iris, dv = "Sepal.Length")
+#' summarize_factors_all_fields(iris, dv = "Sepal.Length", return = "list")
 summarize_factors_all_fields <- function(df,
                          ...,
                          avg_type = c("mean", "median"),

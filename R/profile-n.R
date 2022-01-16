@@ -18,18 +18,18 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' profile_n(df = iris, dep_var = "Sepal.Length")
-#' profile_n(df = iris, dep_var = "Species == 'virginica'")
+#' profile_n(df = iris, dv = "Sepal.Length")
+#' profile_n(df = iris, dv = "Species == 'virginica'")
 #' }
 #'
 profile_n <- function(df,
-                      dep_var,
+                      dv,
                       ...,
                       n = 5,
                       position = c("top", "bottom")) {
-  # df <- survival::flchain; dep_var <- "death"; ignore_cols <- "chapter";
+  # df <- survival::flchain; dv <- "death"; ignore_cols <- "chapter";
 
-  df_prep <- generate_estimate_details(df = df, dep_var = dep_var, ...)
+  df_prep <- generate_estimate_details(df = df, dv = dv, ...)
 
   position <- match.arg(position)
 
@@ -83,7 +83,7 @@ profile_n <- function(df,
     kable(
       escape = FALSE, align = "c",
       format = "html",
-      caption = glue("{dep_var}: {position} {n} observations")
+      caption = glue("{dv}: {position} {n} observations")
     ) %>%
     kable_styling(c("striped", "condensed"), full_width = TRUE) %>%
     capture.output()

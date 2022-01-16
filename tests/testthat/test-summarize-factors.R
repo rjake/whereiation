@@ -35,7 +35,7 @@ test_that("summarize_factors_all_fields returns list", {
   x <-
     summarize_factors_all_fields(
       iris,
-      dep_var = "Petal.Length",
+      dv = "Petal.Length",
       return = "list"
     )
 

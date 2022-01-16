@@ -117,7 +117,7 @@
     <p>Profile observations with the most extreme values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>profile_n</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>dep_var</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>5</span>, position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>profile_n</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>dv</span>, <span class='va'>...</span>, n <span class='op'>=</span> <span class='fl'>5</span>, position <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"top"</span>, <span class='st'>"bottom"</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -127,7 +127,7 @@
       <td><p>dataframe to evaluate</p></td>
     </tr>
     <tr>
-      <th>dep_var</th>
+      <th>dv</th>
       <td><p>dependent variable to use (column name)</p></td>
     </tr>
     <tr>
@@ -165,8 +165,8 @@ a large proportion of null values</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>profile_n</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>iris</span>, dep_var <span class='op'>=</span> <span class='st'>"Sepal.Length"</span><span class='op'>)</span>
-<span class='fu'>profile_n</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>iris</span>, dep_var <span class='op'>=</span> <span class='st'>"Species == 'virginica'"</span><span class='op'>)</span>
+<span class='fu'>profile_n</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>iris</span>, dv <span class='op'>=</span> <span class='st'>"Sepal.Length"</span><span class='op'>)</span>
+<span class='fu'>profile_n</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>iris</span>, dv <span class='op'>=</span> <span class='st'>"Species == 'virginica'"</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 </div></pre>

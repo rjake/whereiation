@@ -6,11 +6,11 @@
 \alias{plot_spread_interactive}
 \title{Visualize spread of avg. values among all factors for all variables}
 \usage{
-plot_spread(df, dep_var, ..., avg_type = c("mean", "median"))
+plot_spread(df, dv, ..., avg_type = c("mean", "median"))
 
 plot_spread_single_obs(
   df,
-  dep_var,
+  dv,
   ...,
   avg_type = c("mean", "median"),
   labels = FALSE,
@@ -22,7 +22,7 @@ plot_spread_interactive(...)
 \arguments{
 \item{df}{dataframe to evaluate}
 
-\item{dep_var}{dependent variable to use (column name)}
+\item{dv}{dependent variable to use (column name)}
 
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}

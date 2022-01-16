@@ -4,8 +4,8 @@ test_that("refactor_columns uses id", {
     dplyr::mutate(id2 = 1:234) %>%
     mutate(id2 = paste(manufacturer, id2))
 
-  no_id <- refactor_columns(df, dep_var = "cty")
-  with_id <-  refactor_columns(df, dep_var = "cty", id = "id2")
+  no_id <- refactor_columns(df, dv = "cty")
+  with_id <-  refactor_columns(df, dv = "cty", id = "id2")
 
   expect_equal(
     object = c(234, 14),
@@ -24,8 +24,8 @@ test_that("refactor_columns uses weights correctly", {
     ggplot2::mpg %>%
     select(cty, manufacturer)
 
-  use_dv <- refactor_columns(df, dep_var = "cty", n_cat = 3, collapse_by = "dv")
-  use_n <-  refactor_columns(df, dep_var = "cty", n_cat = 3, collapse_by = "n")
+  use_dv <- refactor_columns(df, dv = "cty", n_cat = 3, collapse_by = "dv")
+  use_n <-  refactor_columns(df, dv = "cty", n_cat = 3, collapse_by = "n")
 
   table(df$manufacturer) %>% sort()
 

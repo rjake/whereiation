@@ -8,9 +8,9 @@
 #' @importFrom tidyr pivot_wider
 #'
 #' @examples
-#' summarize_factor_extremes(df = ggplot2::mpg, dep_var = "hwy")
+#' summarize_factor_extremes(df = ggplot2::mpg, dv = "hwy")
 summarize_factor_extremes <- function(...) {
-  # prep_df <- summarize_factors_all_fields(df = mpg, dep_var = "hwy")
+  # prep_df <- summarize_factors_all_fields(df = mpg, dv = "hwy")
 
   prep_df <- summarize_factors_all_fields(...)
 

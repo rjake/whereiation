@@ -1,7 +1,7 @@
 #' Convert all fields to factors (same method as under plots)
 #'
 #' @param df dataframe to evaluate
-#' @param dep_var dependent variable to use (column name)
+#' @param dv dependent variable to use (column name)
 #' @param split_on variable to split data / group by
 #' @param id field to use as ID
 #' @param n_cat for categorical variables, the max number of unique values
@@ -27,9 +27,9 @@
 #'
 #' @export
 #' @examples
-#' refactor_columns(df = iris, dep_var = "Sepal.Length")
+#' refactor_columns(df = iris, dv = "Sepal.Length")
 refactor_columns <- function(df,
-                             dep_var,
+                             dv,
                              split_on = NA_character_,
                              id = NULL,
                              n_cat = 10,
@@ -43,8 +43,8 @@ refactor_columns <- function(df,
   collapse_by <- match.arg(collapse_by)
 
   avg <- eval(parse(text = avg_name))
-  if (missing(dep_var)) {
-    dep_var <- "1"
+  if (missing(dv)) {
+    dv <- "1"
   }
 
   if (missing(split_on)) {
@@ -54,7 +54,7 @@ refactor_columns <- function(df,
     split_name <- extract_field_name(split_on)
   }
 
-  dv_name <- extract_field_name(dep_var)
+  dv_name <- extract_field_name(dv)
 
   # add ID
   if (is.null(id)) {
@@ -74,7 +74,7 @@ refactor_columns <- function(df,
     keep_cols <-
       as_tibble(df) %>%
       mutate(
-        y_outcome = eval(parse(text = dep_var)),
+        y_outcome = eval(parse(text = dv)),
         y_split = eval(parse(text = split_on))
       ) %>%
       select(

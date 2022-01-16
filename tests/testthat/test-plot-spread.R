@@ -49,7 +49,7 @@ test_that("plot_spread uses weights", {
 
 
 test_that("plot_spread_single_obs works", {
-  p1 <- plot_spread_single_obs(df = iris, dep_var = "Petal.Length", avg_type = "mean")
+  p1 <- plot_spread_single_obs(df = iris, dv = "Petal.Length", avg_type = "mean")
   p2 <- plot_spread_single_obs(iris, "Petal.Length", labels = TRUE)
   actual_dim_p1 <- dim(p1$data)
   actual_dim_p2 <- dim(p2$data)

@@ -8,7 +8,7 @@ plot_group_split(
   df,
   split_on,
   type = c("dv", "count", "percent_field", "percent_factor"),
-  dep_var,
+  dv,
   ...,
   n_cat = 10,
   trunc_length = 100,
@@ -32,7 +32,7 @@ plot_group_split(
 \item{type}{the outcome or dependent variable ("dv"), the percent of obs.
 ("percent"), or the number of obs. ("count")}
 
-\item{dep_var}{dependent variable to use (column name)}
+\item{dv}{dependent variable to use (column name)}
 
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
@@ -95,7 +95,7 @@ Visualize variation between two groups
 # categories except for when job_level = "Director" or when the person
 # works in HR
 employee_attrition[,1:4] \%>\%
-  plot_group_split(split_on = "gender", type = "dv", dep_var = "attrition")
+  plot_group_split(split_on = "gender", type = "dv", dv = "attrition")
 
 # type = "count" is used to compare raw volume differences between two groups
 # here we see that there are more men than women in each of these areas

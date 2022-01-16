@@ -14,7 +14,7 @@ test_that("plot_deltas accepts params", {
   p <-
     plot_deltas(
       df = ggplot2::mpg,
-      dep_var = "hwy",
+      dv = "hwy",
       trunc_length = 15
     )
 
