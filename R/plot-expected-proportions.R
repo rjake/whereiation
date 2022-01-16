@@ -171,54 +171,55 @@ plot_expected_proportions <- function(df,
 
   # return table or plot
   if (return_data) { # return data
-  } else { # return plot
-
+    return(
       base_data %>% mutate(value = clean_labels(.data$value))
+    )
+  }
+  # else return plot
   plot_data <- base_data
 
-    # filter # of facets if n_field specified
-    if (!is.null(n_field)) {
-      plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
-    }
-
-    # make plot
-    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
-      geom_col(
-        aes(x = .data$expected, fill = .data$category),
-        alpha = 0.2, color = NA
-      ) +
-      geom_segment(
-        aes(
-          x = .data$actual, xend = .data$expected,
-          yend = .data$value,
-          color = .data$category,
-          group = .data$value
-        )
-      ) +
-      geom_point(aes(x = .data$expected, size = .data$n), shape = "|") +
-      geom_point(aes(x = .data$actual, size = .data$n)) +
-      scale_fill_manual(values = fill_colors) +
-      scale_color_manual(values = fill_colors) +
-      facet_wrap(~ .data$field, scales = "free_y") +
-      guides(color = FALSE) +
-      labs(
-        title = glue("Over/Under Representatin of '{dv_name}'"),
-        subtitle =
-          glue(
-            "% of population (line) compared to \\
-            % of obs. with {dv_name} (circle){threshold_astrisk}"
-          ),
-        caption = threshold_caption,
-        x = "Representation %",
-        y = "",
-        size = "# of obs.",
-        color = "Difference"
-      ) +
-      theme(
-        axis.text.y = element_text(size = 9),
-        panel.background = element_rect(color = "grey70", fill = "white"),
-        legend.position = "left"
-      )
+  # filter # of facets if n_field specified
+  if (!is.null(n_field)) {
+    plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
   }
+
+  # make plot
+  ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
+    geom_col(
+      aes(x = .data$expected, fill = .data$category),
+      alpha = 0.2, color = NA
+    ) +
+    geom_segment(
+      aes(
+        x = .data$actual, xend = .data$expected,
+        yend = .data$value,
+        color = .data$category,
+        group = .data$value
+      )
+    ) +
+    geom_point(aes(x = .data$expected, size = .data$n), shape = "|") +
+    geom_point(aes(x = .data$actual, size = .data$n)) +
+    scale_fill_manual(values = fill_colors) +
+    scale_color_manual(values = fill_colors) +
     scale_y_discrete(labels = clean_labels) +
+    facet_wrap(~ .data$field, scales = "free_y") +
+    guides(color = FALSE) +
+    labs(
+      title = glue("Over/Under Representatin of '{dv_name}'"),
+      subtitle =
+        glue(
+          "% of population (line) compared to \\
+          % of obs. with {dv_name} (circle){threshold_astrisk}"
+        ),
+      caption = threshold_caption,
+      x = "Representation %",
+      y = "",
+      size = "# of obs.",
+      color = "Difference"
+    ) +
+    theme(
+      axis.text.y = element_text(size = 9),
+      panel.background = element_rect(color = "grey70", fill = "white"),
+      legend.position = "left"
+    )
 }
