@@ -93,7 +93,7 @@ map_over_under_proportions <- function(df, ...) {
 #' @importFrom stringr str_trunc
 #' @importFrom forcats fct_reorder
 #' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point
-#' @importFrom ggplot2 scale_fill_manual scale_color_manual
+#' @importFrom ggplot2 scale_fill_manual scale_color_manual scale_y_discrete
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
@@ -171,9 +171,9 @@ plot_expected_proportions <- function(df,
 
   # return table or plot
   if (return_data) { # return data
-    base_data
   } else { # return plot
 
+      base_data %>% mutate(value = clean_labels(.data$value))
   plot_data <- base_data
 
     # filter # of facets if n_field specified
@@ -220,4 +220,5 @@ plot_expected_proportions <- function(df,
         legend.position = "left"
       )
   }
+    scale_y_discrete(labels = clean_labels) +
 }

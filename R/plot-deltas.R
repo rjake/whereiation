@@ -8,9 +8,9 @@
 #' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
-#' @importFrom stringr str_trunc str_remove_all
+#' @importFrom stringr str_remove_all
 #' @importFrom glue glue
-#' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha theme element_rect labs
+#' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha scale_y_discrete theme element_rect labs
 #' @importFrom rlang .data
 #'
 #' @export
@@ -65,7 +65,10 @@ plot_deltas <- function(df,
 
   # return table if requesed
   if (return_data) { # return data
-    return(plot_data)
+    return(
+      plot_data %>%
+        mutate(value = clean_labels(.data$value))
+    )
   }
 
   # return plot
@@ -92,6 +95,7 @@ plot_deltas <- function(df,
       legend.position = "bottom"
     ) +
     scale_alpha(range = c(0.2, 1), guide = FALSE) +
+    scale_y_discrete(labels = clean_labels) +
     labs(
       title = glue("Difference in {avg_name} {dv_name} from grand {avg_name} across all factors of all fields"),
       subtitle = glue(

@@ -136,6 +136,17 @@ extract_field_name <- function(x) {
     gsub(pattern = "\\(", replacement = "")
 }
 
+
+#' @importFrom stringr str_remove_all
+#' @noRd
+#' @examples
+#' clean_labels(x = "<class>suv")
+#' clean_labels(x = "<cty>01 [8.97 to 11.6)")
+clean_labels <- function(x) {
+  str_remove_all(x, "^[^\\>]*(\\>)")
+}
+
+
 #' @importFrom stringr str_trunc str_detect
 #' @importFrom glue glue
 #' @importFrom forcats fct_reorder
