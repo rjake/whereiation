@@ -13,15 +13,15 @@
 #' @importFrom rlang .data
 #' @noRd
 #' @examples
-#' generate_estimate_details(df = iris, dv = "Sepal.Length")
+#' generate_estimate_details(df = iris, dv = Sepal.Length)
 generate_estimate_details <- function(df, train_data, dv, ...) {
 
   if (missing(train_data)) {
-    base_data <- refactor_columns(df, dv = dv, ...)
-    group_stats <- summarize_factors_all_fields(df, dv = dv, ..., return = "list")
+    base_data <- refactor_columns(df, dv = {{dv}}, ...)
+    group_stats <- summarize_factors_all_fields(df, dv = {{dv}}, ..., return = "list")
   } else {
     base_data <- df
-    group_stats <- summarize_factors_all_fields(train_data, dv = dv, ..., return = "list")
+    group_stats <- summarize_factors_all_fields(train_data, dv = {{dv}}, ..., return = "list")
   }
 
   group_stats_data <- group_stats$data

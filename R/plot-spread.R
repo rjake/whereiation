@@ -10,18 +10,19 @@
 #' @export
 #'
 #' @examples
-#' plot_spread(ggplot2::mpg, "hwy")
+#' plot_spread(ggplot2::mpg, dv = hwy)
 plot_spread <- function(df,
                         dv,
                         ...,
                         avg_type = c("mean", "median")
                         ) {
   avg_name <- match.arg(avg_type)
+  dv_name <- deparse(substitute(dv))
 
   factor_stats <-
     summarize_factors_all_fields(
       df = df,
-      dv = dv,
+      dv = {{dv}},
       ...
     )
 
@@ -61,7 +62,7 @@ plot_spread <- function(df,
     guides(color = FALSE, fill = FALSE) +
     theme(panel.background = element_rect(fill = "white", color = "grey60")) +
     labs(
-      title = paste0(dv, " across all factors of all fields"),
+      title = paste0(dv_name, " across all factors of all fields"),
       subtitle = paste0("each point represents a factor in the field along the y axis, factors with 5 or fewer observations have been excluded \nthe dotted line is the grand ", avg_name, " across all observations"),
       y = "Field ranked by adjusted r-squared",
       x = paste0("group ", avg_name, " of the dependent variable for each factor"),
@@ -87,7 +88,7 @@ plot_spread <- function(df,
 #' @describeIn plot_spread highlight a single observation
 #'
 #' @examples
-#' plot_spread_single_obs(ggplot2::mpg, "hwy")
+#' plot_spread_single_obs(ggplot2::mpg, dv = hwy)
 plot_spread_single_obs <- function(df,
                                    dv,
                                    ...,
@@ -96,13 +97,14 @@ plot_spread_single_obs <- function(df,
                                    id = 1) {
 
   avg_name <- match.arg(avg_type)
+  dv_name <- deparse(substitute(dv))
 
   avg <- eval(parse(text = avg_name))
 
   compare_values <-
     generate_estimate_details(
       df = df,
-      dv = dv,
+      dv = {{dv}},
       avg_type = avg_name,
       ...
     )
@@ -124,7 +126,7 @@ plot_spread_single_obs <- function(df,
   obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
-    plot_spread(df = df, dv = dv, ...) +
+    plot_spread(df = df, dv = {{dv}}, ...) +
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
@@ -136,7 +138,7 @@ plot_spread_single_obs <- function(df,
       color = "black", size = 5, shape = 21, stroke = 2
     ) +
     labs(
-      title = paste0(dv, " across all factors of all fields", " - single observation")
+      title = paste0(dv_name, " across all factors of all fields", " - single observation")
     )
 
   if (labels == TRUE) {
@@ -161,7 +163,7 @@ plot_spread_single_obs <- function(df,
 #' @describeIn plot_spread utilizing ggplotly
 #' @importFrom plotly ggplotly
 #' @examples
-#' plot_spread_interactive(ggplot2::mpg, "hwy")
+#' plot_spread_interactive(ggplot2::mpg, dv = hwy)
 plot_spread_interactive <- function(...) {
   p <- plot_spread(...)
   ggplotly(p, tooltip = c("label"))

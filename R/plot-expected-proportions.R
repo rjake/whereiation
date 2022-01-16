@@ -7,7 +7,7 @@
 #' @importFrom tidyr replace_na
 #' @examples
 #' summarize_over_under_proportions(
-#'   df = refactor_columns(iris, dv = "Sepal.Length > 5"),
+#'   df = refactor_columns(iris, dv = Sepal.Length > 5),
 #'   "Species"
 #' )
 summarize_over_under_proportions <- function(field, df) {
@@ -54,7 +54,7 @@ summarize_over_under_proportions <- function(field, df) {
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
 #' @examples
-#' map_over_under_proportions(df = iris, dv = "Sepal.Length > 5")
+#' map_over_under_proportions(df = iris, dv = Sepal.Length > 5)
 map_over_under_proportions <- function(df, ...) {
   refactor_df <-
     refactor_columns(df, ...) %>%
@@ -97,32 +97,32 @@ map_over_under_proportions <- function(df, ...) {
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
-#' plot_expected_proportions(df = iris, dv = "Sepal.Length > 5")
+#' plot_expected_proportions(df = iris, dv = Sepal.Length > 5)
 #'
 #' # sorted by the expected representation (default)
 #' plot_expected_proportions(
 #'   df = mtcars,
-#'   dv = "mpg > 15",
+#'   dv = mpg > 15,
 #' )
 #'
 #' # sorted by the actual representation
 #' plot_expected_proportions(
 #'   df = mtcars,
-#'   dv = "mpg > 15",
+#'   dv = mpg > 15,
 #'   sort_by = "actual"
 #' )
 #'
 #' # you can return the dataframe if you want
 #' plot_expected_proportions(
 #'   df = mtcars,
-#'   dv = "mpg > 15",
+#'   dv = mpg > 15,
 #'   return_data = TRUE
 #' )
 #'
 #' # an example with more parameters
 #' plot_expected_proportions(
 #'   df = mtcars, # data to use
-#'   dv = "mpg > 15", # can be a field name or an evaluation
+#'   dv = mpg > 15, # can be a field name or an evaluation
 #'   n_cat = 5, # collapse field values into 5 categories
 #'   n_field = 3, # keep the frist 3 facets
 #'   threshold = NULL # keep all values
@@ -144,6 +144,8 @@ plot_expected_proportions <- function(df,
     "under" = color_under
   )
 
+  dv_name <- deparse(substitute(dv))
+
   # sort by actual or expected %
   sort_by <- match.arg(sort_by)
 
@@ -160,7 +162,7 @@ plot_expected_proportions <- function(df,
   }
 
   base_data <-
-    map_over_under_proportions(df, dv, ...) %>%
+    map_over_under_proportions(df, {{dv}}, ...) %>%
     filter(.data$abs_delta > threshold)
 
   # return table or plot
@@ -202,11 +204,11 @@ plot_expected_proportions <- function(df,
       facet_wrap(~ .data$field, scales = "free_y") +
       guides(color = FALSE) +
       labs(
-        title = glue("Over/Under Representatin of '{dv}'"),
+        title = glue("Over/Under Representatin of '{dv_name}'"),
         subtitle =
           glue(
             "% of population (line) compared to \\
-            % of obs. with {dv} (circle){threshold_astrisk}"
+            % of obs. with {dv_name} (circle){threshold_astrisk}"
           ),
         caption = threshold_caption,
         x = "Representation %",

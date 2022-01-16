@@ -21,13 +21,13 @@
 #'
 #'
 #' @importFrom tibble as_tibble
-#' @importFrom dplyr rename_at vars filter pull mutate select one_of row_number mutate_if bind_cols
+#' @importFrom dplyr rename vars filter pull enquo mutate select one_of row_number mutate_if bind_cols
 #' @importFrom lubridate is.Date is.POSIXct
 #' @importFrom glue glue
 #'
 #' @export
 #' @examples
-#' refactor_columns(df = iris, dv = "Sepal.Length")
+#' refactor_columns(df = iris, dv = Sepal.Length)
 refactor_columns <- function(df,
                              dv,
                              split_on = NA_character_,
@@ -37,7 +37,7 @@ refactor_columns <- function(df,
                              n_quantile = 10,
                              n_digits = 2,
                              avg_type = c("mean", "median"),
-                             ignore_cols = NA_character_) {
+                             ignore_cols = NULL) {
 
   avg_name <- match.arg(avg_type)
   collapse_by <- match.arg(collapse_by)
@@ -50,41 +50,49 @@ refactor_columns <- function(df,
   if (missing(split_on)) {
     split_on <- "1"
     split_name <- ""
-  } else {
-    split_name <- extract_field_name(split_on)
   }
 
-  dv_name <- extract_field_name(dv)
-
   # add ID
-  if (is.null(id)) {
+  if (missing(id)) {
     df$unique_id <- seq_len(nrow(df))
   } else {
-    if (any(duplicated(df[[id]]))) {
-      stop(glue("the id field '{id}' is not unique"))
+    not_unique <-
+      df %>%
+      pull({{id}}) %>%
+      duplicated()
+
+    if (any(not_unique)) {
+      stop(
+        glue(
+          "the id field '{field}' is not unique",
+          field = deparse(substitute(id))
+        )
+      )
     }
     if (!"unique_id" %in% names(df)) {
-      df <- df %>% rename_at(vars(id), ~"unique_id")
+      df <- df %>% rename(unique_id = {{id}})
     }
+  }
+
+  if (!missing(ignore_cols)) {
+    df <- select(df, -c(!!enquo(ignore_cols)))
   }
 
 
   # create standard cols
-  suppressWarnings(
-    keep_cols <-
-      as_tibble(df) %>%
-      mutate(
-        y_outcome = eval(parse(text = dv)),
-        y_split = eval(parse(text = split_on))
-      ) %>%
-      select(
-        .data$y_outcome,
-        .data$y_split,
-        .data$unique_id,
-        everything(),
-        -one_of(c(ignore_cols, dv_name, split_name))
-      )
-  )
+  keep_cols <-
+    as_tibble(df) %>%
+    mutate(
+      y_outcome = {{dv}},
+      y_split = {{split_on}},
+      .keep = "unused"
+    ) %>%
+    select(
+      .data$y_outcome,
+      .data$y_split,
+      .data$unique_id,
+      everything()
+    )
 
   # wt for collapsing
   if (collapse_by == "dv") {
@@ -93,15 +101,20 @@ refactor_columns <- function(df,
     wt <- NULL
   )
 
-  keep_cols %>%
+  clean_cols <-
+    keep_cols %>%
     select(-c(1:3)) %>%
-    mutate_if(~(is.Date(.) | is.POSIXct(.)), as.numeric) %>%
+    mutate_if(~(is.Date(.x) | is.POSIXct(.x)), as.numeric) %>%
     mutate_if(
-      ~check_cut_numeric(., n_quantile),
+      ~check_cut_numeric(.x, n_quantile),
       cut_custom, n_quantile, n_digits
     ) %>%
     mutate_if(is.factor, as.character) %>%
-    mutate_if(is.character, collapse_cat, n = n_cat, w = wt) %>%
-    bind_cols(select(keep_cols, c(1:3)), .) %>%
+    mutate_if(is.character, collapse_cat, n = n_cat, w = wt)
+
+
+  keep_cols %>%
+    select(1:3) %>%
+    bind_cols(clean_cols) %>%
     mutate_if(is.logical, as.integer)
 }

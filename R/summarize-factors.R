@@ -20,8 +20,8 @@
 #'
 #' @export
 #' @examples
-#' summarize_factors_all_fields(iris, dv = "Sepal.Length")
-#' summarize_factors_all_fields(iris, dv = "Sepal.Length", return = "list")
+#' summarize_factors_all_fields(iris, dv = Sepal.Length)
+#' summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
 summarize_factors_all_fields <- function(df,
                          ...,
                          avg_type = c("mean", "median"),
@@ -108,8 +108,13 @@ summarize_factors_all_fields <- function(df,
 #'
 #' @importFrom dplyr select mutate group_by summarise n ungroup filter everything
 #'
+#' @noRd
 #' @examples
-#' # summarize_factors_one_field("Sepal.Length", refactor_columns(iris, "Sepal.Width"), avg_fn = mean)
+#' # summarize_factors_one_field(
+#' #   var = "Sepal.Length",
+#' #   df = refactor_columns(iris, dv = Sepal.Width),
+#' #   avg_fn = mean
+#' # )
 summarize_factors_one_field <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
@@ -135,8 +140,9 @@ summarize_factors_one_field <- function(var, df, avg_fn) {
 #' @importFrom broom glance
 #' @importFrom stats lm
 #'
+#' @noRd
 #' @examples
-#' # summarize_one_field("Sepal.Length", refactor_columns(iris, "Sepal.Width"))
+#' # summarize_one_field("Sepal.Length", refactor_columns(iris, Sepal.Width))
 summarize_one_field <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
