@@ -31,7 +31,7 @@ generate_estimate_details <- function(df, train_data, dv, ...) {
 
   suppressWarnings(
     base_data %>%
-      gather(key = field, value = value, -c(1, 2, 3)) %>%
+      gather(key = "field", value = "value", -c(1, 2, 3)) %>%
       mutate(value = as.character(.data$value)) %>%
       left_join(group_stats_data, by = c("field", "value")) %>%
       group_by(.data$unique_id) %>%
