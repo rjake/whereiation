@@ -8,9 +8,9 @@
 #' @inheritParams refactor_columns
 #' @importFrom dplyr mutate
 #' @importFrom forcats fct_reorder
-#' @importFrom stringr str_trunc str_remove_all
+#' @importFrom stringr str_remove_all
 #' @importFrom glue glue
-#' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha theme element_rect labs
+#' @importFrom ggplot2 ggplot aes geom_vline geom_segment geom_point facet_wrap scale_alpha scale_y_discrete theme element_rect labs
 #' @importFrom rlang .data
 #'
 #' @export
@@ -50,18 +50,25 @@ plot_deltas <- function(df,
     select(-.data$rescale_factor_avg) %>%
     mutate(
       field =
-        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE),
-      value =
-        str_trunc(.data$value, trunc_length) %>%
-        fct_reorder(.data$factor_avg, .fun = max, .desc = TRUE),
+        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
+    ) %>%
+    reorder_within_field(
+      sort_cols = .data$factor_avg,
+      trunc_length = trunc_length
+    ) %>%
+    mutate(
       delta = .data$factor_avg - .data$grand_avg,
       abs_delta = abs(.data$delta),
       color = ifelse(.data$factor_avg > .data$grand_avg, "above", "below")
-    )
+    ) %>%
+    arrange(.data$field, .data$value)
 
   # return table if requesed
   if (return_data) { # return data
-    return(plot_data)
+    return(
+      plot_data %>%
+        mutate(value = clean_labels(.data$value))
+    )
   }
 
   # return plot
@@ -88,6 +95,7 @@ plot_deltas <- function(df,
       legend.position = "bottom"
     ) +
     scale_alpha(range = c(0.2, 1), guide = FALSE) +
+    scale_y_discrete(labels = clean_labels) +
     labs(
       title = glue("Difference in {avg_name} {dv_name} from grand {avg_name} across all factors of all fields"),
       subtitle = glue(

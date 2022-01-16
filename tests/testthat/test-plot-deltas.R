@@ -24,8 +24,9 @@ test_that("plot_deltas accepts params", {
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 
-  expect_equal(
-    object = max(nchar(as.character(df$value))),
-    expected = 15
-  )
+  df$value %>%
+    clean_labels() %>%
+    nchar() %>%
+    max() %>%
+    expect_equal(expected = 15)
 })

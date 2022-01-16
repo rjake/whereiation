@@ -93,7 +93,7 @@ map_over_under_proportions <- function(df, ...) {
 #' @importFrom stringr str_trunc
 #' @importFrom forcats fct_reorder
 #' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point
-#' @importFrom ggplot2 scale_fill_manual scale_color_manual
+#' @importFrom ggplot2 scale_fill_manual scale_color_manual scale_y_discrete
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
@@ -163,63 +163,64 @@ plot_expected_proportions <- function(df,
 
   base_data <-
     map_over_under_proportions(df, {{dv}}, ...) %>%
-    filter(.data$abs_delta > threshold)
+    filter(.data$abs_delta > threshold) %>%
+    reorder_within_field(
+      sort_cols = get(sort_by),
+      trunc_length = trunc_length
+    )
 
   # return table or plot
   if (return_data) { # return data
-    base_data
-  } else { # return plot
-    plot_data <-
-      base_data %>%
-      mutate(
-        value =
-          str_trunc(.data$value, trunc_length) %>%
-            fct_reorder(get(sort_by))
-      )
-
-
-    # filter # of facets if n_field specified
-    if (!is.null(n_field)) {
-      plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
-    }
-
-    # make plot
-    ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
-      geom_col(
-        aes(x = .data$expected, fill = .data$category),
-        alpha = 0.2, color = NA
-      ) +
-      geom_segment(
-        aes(
-          x = .data$actual, xend = .data$expected,
-          yend = .data$value,
-          color = .data$category,
-          group = .data$value
-        )
-      ) +
-      geom_point(aes(x = .data$expected, size = .data$n), shape = "|") +
-      geom_point(aes(x = .data$actual, size = .data$n)) +
-      scale_fill_manual(values = fill_colors) +
-      scale_color_manual(values = fill_colors) +
-      facet_wrap(~ .data$field, scales = "free_y") +
-      guides(color = FALSE) +
-      labs(
-        title = glue("Over/Under Representatin of '{dv_name}'"),
-        subtitle =
-          glue(
-            "% of population (line) compared to \\
-            % of obs. with {dv_name} (circle){threshold_astrisk}"
-          ),
-        caption = threshold_caption,
-        x = "Representation %",
-        y = "",
-        size = "# of obs.",
-        color = "Difference"
-      ) +
-      theme(
-        axis.text.y = element_text(size = 9),
-        panel.background = element_rect(color = "grey70", fill = "white"),
-        legend.position = "left"
-      )
+    return(
+      base_data %>% mutate(value = clean_labels(.data$value))
+    )
   }
+  
+  # else return plot
+  plot_data <- base_data
+
+  # filter # of facets if n_field specified
+  if (!is.null(n_field)) {
+    plot_data <- filter(plot_data, as.integer(.data$field) <= n_field)
+  }
+
+  # make plot
+  ggplot(plot_data, aes(y = .data$value, color = .data$category)) +
+    geom_col(
+      aes(x = .data$expected, fill = .data$category),
+      alpha = 0.2, color = NA
+    ) +
+    geom_segment(
+      aes(
+        x = .data$actual, xend = .data$expected,
+        yend = .data$value,
+        color = .data$category,
+        group = .data$value
+      )
+    ) +
+    geom_point(aes(x = .data$expected, size = .data$n), shape = "|") +
+    geom_point(aes(x = .data$actual, size = .data$n)) +
+    scale_fill_manual(values = fill_colors) +
+    scale_color_manual(values = fill_colors) +
+    scale_y_discrete(labels = clean_labels) +
+    facet_wrap(~ .data$field, scales = "free_y") +
+    guides(color = FALSE) +
+    labs(
+      title = glue("Over/Under Representatin of '{dv_name}'"),
+      subtitle =
+        glue(
+          "% of population (line) compared to \\
+          % of obs. with {dv_name} (circle){threshold_astrisk}"
+        ),
+      caption = threshold_caption,
+      x = "Representation %",
+      y = "",
+      size = "# of obs.",
+      color = "Difference"
+    ) +
+    theme(
+      axis.text.y = element_text(size = 9),
+      panel.background = element_rect(color = "grey70", fill = "white"),
+      legend.position = "left"
+    )
 }

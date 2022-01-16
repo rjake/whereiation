@@ -226,7 +226,7 @@ map_over_under_split <- function(df,
 #' @importFrom glue glue
 #' @importFrom dplyr case_when filter select n
 #' @importFrom stringr str_detect
-#' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual guides facet_wrap labs theme element_text element_rect
+#' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual scale_y_discrete guides facet_wrap labs theme element_text element_rect
 #' @export
 #'
 #' @examples
@@ -313,7 +313,9 @@ plot_group_split <- function(df,
 
   # early return of underlying data
   if (return_data) {
-      return(plot_data)
+      return(
+        plot_data %>% mutate(value = clean_labels(.data$value))
+      )
   }
 
   # return plot ----
@@ -419,6 +421,7 @@ plot_group_split <- function(df,
     ) +
     scale_fill_manual(values = fill_colors) +
     scale_color_manual(values = fill_colors) +
+    scale_y_discrete(labels = clean_labels) +
     guides(color = FALSE, linetype = FALSE) +
     facet_wrap(~ .data$field, scales = "free_y") +
     labs(
@@ -522,10 +525,11 @@ plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length)
   base_data %>%
     filter(is.na(.data$delta) | .data$abs_delta > threshold) %>%
     arrange(.data$x_bar, .data$x_point) %>%
+    reorder_within_field(
+      trunc_length = trunc_length,
+      sort_cols = c(.data$x_bar, .data$x_point)
+    ) %>%
     mutate(
-      value =
-        str_trunc(.data$value, trunc_length) %>%
-        fct_inorder() %>%
-        fct_rev()
+      value = fct_rev(.data$value)
     )
 }
