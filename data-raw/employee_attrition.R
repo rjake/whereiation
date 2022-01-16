@@ -96,6 +96,6 @@ employee_attrition <-
   print()
 
 
-# employee_attrition %>% plot_deltas(dv = "attrition")
+# employee_attrition %>% plot_deltas(dv = attrition)
 
 usethis::use_data(employee_attrition, overwrite = TRUE)
