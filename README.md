@@ -4,7 +4,6 @@
 # whereiation
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 `where` *(is the var-)* `iation` ?
@@ -32,7 +31,7 @@ the dependent variable across all factors in all fields.
 ``` r
 library(whereiation)
 ## basic example code
-plot_spread(ggplot2::mpg, "cty")
+plot_spread(ggplot2::mpg, dv = cty)
 ```
 
 <img src="man/figures/mpg_variation_plot.png" alt="mpg_variation_plot" width="500"/>
@@ -65,7 +64,7 @@ fall. For this you can use
 ``` r
 plot_spread_single_obs(
   df = ggplot2::mpg, 
-  dv = "cty", 
+  dv = cty, 
   id = 182, # essentially the row number
   labels = TRUE
 )
