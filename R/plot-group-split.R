@@ -82,7 +82,7 @@ summarize_over_under_split <- function(df,
     ungroup() %>%
     mutate(
       split_ord = ifelse(
-        str_detect(split_ord, base_group), "bar", "point")
+        str_detect(.data$split_ord, base_group), "bar", "point")
     ) %>%
     pivot_wider(
       names_from = .data$split_ord,
@@ -100,7 +100,7 @@ summarize_over_under_split <- function(df,
       has_point = max(!is.na(.data$split_point))
     ) %>%
     ungroup() %>%
-    fill(split_bar, split_point, .direction = "updown") %>%
+    fill(.data$split_bar, .data$split_point, .direction = "updown") %>%
     group_by(
       .data$field, .data$value,
       .data$has_bar, .data$has_point,
