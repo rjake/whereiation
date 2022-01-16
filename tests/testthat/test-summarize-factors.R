@@ -1,5 +1,5 @@
 test_that("refactor_columns works", {
-  df <- refactor_columns(iris, "Petal.Length")
+  df <- refactor_columns(iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
   expected_dim <- c(150, 7)
@@ -14,7 +14,7 @@ test_that("refactor_columns works", {
 
 
 test_that("summarize_factors_all_fields works", {
-  df <- summarize_factors_all_fields(iris, "Petal.Length")
+  df <- summarize_factors_all_fields(iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
   expected_dim <- c(28, 10)
@@ -35,7 +35,7 @@ test_that("summarize_factors_all_fields returns list", {
   x <-
     summarize_factors_all_fields(
       iris,
-      dv = "Petal.Length",
+      dv = Petal.Length,
       return = "list"
     )
 

@@ -1,5 +1,5 @@
 test_that("group_split works", {
-  p <- plot_group_split(ggplot2::mpg, split_on = "year", dv = "hwy")
+  p <- plot_group_split(ggplot2::mpg, split_on = year, dv = hwy)
 
   actual_dim <- dim(p$data)
   expected_dim <- c(27, 16)
@@ -20,8 +20,8 @@ test_that("group_split uses labels", {
   p1 <-
     plot_group_split(
       ggplot2::mpg,
-      split_on = "year",
-      dv = "hwy",
+      split_on = year,
+      dv = hwy,
       n_field = 5,
       n_cat = 5,
       title = "test title",
@@ -29,7 +29,7 @@ test_that("group_split uses labels", {
       caption = 'test_caption'
     )
 
-  p2 <- plot_group_split(ggplot2::mpg, split_on = "year", dv = "hwy", n_field = 5, n_cat = 5)
+  p2 <- plot_group_split(ggplot2::mpg, split_on = year, dv = hwy, n_field = 5, n_cat = 5)
 
   p1_labs <- p1$labels
   p2_labs <- p2$labels
@@ -54,7 +54,7 @@ test_that("group_split uses labels", {
 test_that("summarize_over_under_split works", {
   df <-
     summarize_over_under_split(
-      df = refactor_columns(ggplot2::mpg, "hwy", split_on = "year"),
+      df = refactor_columns(ggplot2::mpg, hwy, split_on = year),
       field = "cyl",
       n_cat = 5,
       type = "dv"
@@ -66,7 +66,7 @@ test_that("summarize_over_under_split works", {
 })
 
 test_that("summarize_over_under_split works for all types", {
-  df <- refactor_columns(ggplot2::mpg, "hwy", split_on = "year")
+  df <- refactor_columns(ggplot2::mpg, hwy, split_on = year)
 
   df_dv <-
     summarize_over_under_split(df = df, field = "cyl", n_cat = 5, type = "dv")
@@ -98,8 +98,8 @@ test_that("map_over_under_split", {
   df <-
     map_over_under_split(
       ggplot2::mpg,
-      dv = "hwy",
-      split_on = "year",
+      dv = hwy,
+      split_on = year,
       n_cat = 5,
       type = "dv"
     )
@@ -116,10 +116,10 @@ test_that("plot_group_split_prep", {
       base_data =
         map_over_under_split(
           df = ggplot2::mpg,
-          split_on = "year",
+          split_on = year,
           type = "dv",
           n_cat = 5,
-          dv = "hwy"
+          dv = hwy
         ),
       threshold = 1,
       ref_group = "1",
@@ -143,10 +143,10 @@ test_that("summarize_group_split_metadata", {
       base_data =
         map_over_under_split(
           df = ggplot2::mpg,
-          split_on = "year",
+          split_on = year,
           type = "dv",
           n_cat = 5,
-          dv = "hwy"
+          dv = hwy
         ),
       ref_group = "1",
       split_on = "year"
@@ -157,27 +157,3 @@ test_that("summarize_group_split_metadata", {
   expect_equal(expected_dim, actual_dim)
 })
 
-
-
-test_that("check_dv_has_value", {
-  expect_equal(
-    object = check_dv_has_value(type = "count"),
-    expected = "1"
-  )
-
-  expect_equal(
-    object = check_dv_has_value(type = "percent"),
-    expected = "1"
-  )
-
-  expect_equal(
-    object = check_dv_has_value(type = "dv", FALSE, "x"),
-    expected = "x"
-  )
-
-  expect_error(
-    object = check_dv_has_value(type = "dv", TRUE),
-    regexp = "required"
-  )
-
-})
