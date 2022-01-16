@@ -175,6 +175,7 @@ plot_expected_proportions <- function(df,
       base_data %>% mutate(value = clean_labels(.data$value))
     )
   }
+  
   # else return plot
   plot_data <- base_data
 
