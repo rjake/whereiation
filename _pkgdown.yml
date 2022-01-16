@@ -15,8 +15,6 @@ reference:
   contents:
   - summarize_factor_extremes
   - summarize_factors_all_fields
-  - summarize_factors_one_field
-  - summarize_one_field
 - title: Other
   desc: >
     Functions that do something else or in-progress
@@ -27,4 +25,5 @@ reference:
   desc: >
     Built-in data sets
   contents:
+  - cancer_data
   - employee_attrition
