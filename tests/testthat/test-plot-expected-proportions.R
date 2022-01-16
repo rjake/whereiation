@@ -130,27 +130,27 @@ test_that("y-axis truncated", {
 test_that("sorted", {
   by_expected <-
     plot_expected_proportions(
-      df = mtcars,
-      dv = mpg > 15,
+      df = employee_attrition |> select(gender, job_level),
+      dv = gender == "Female",
       sort_by = "expected",
-      n_field = 1,
-      n_cat = 5
-    ) %>%
-    ggplot2::ggplot_build()
+      threshold = 0
+    )
 
   by_actual <-
     plot_expected_proportions(
-      df = mtcars,
-      dv = mpg > 15,
+      df = employee_attrition |> select(gender, job_level),
+      dv = gender == "Female",
       sort_by = "actual",
-      n_field = 1,
-      n_cat = 5
-    ) %>%
-    ggplot2::ggplot_build()
+      threshold = 0
+    )
 
   expect_true(
-    any(by_expected$data[[1]]$y != by_actual$data[[1]]$y)
+    !identical(
+      levels(by_expected$data$value),
+      levels(by_actual$data$value)
+    )
   )
+
 })
 
 
