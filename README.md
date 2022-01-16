@@ -65,7 +65,7 @@ fall. For this you can use
 ``` r
 plot_spread_single_obs(
   df = ggplot2::mpg, 
-  dep_var = "cty", 
+  dv = "cty", 
   id = 182, # essentially the row number
   labels = TRUE
 )

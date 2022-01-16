@@ -1,13 +1,13 @@
 simple_p <-
   plot_expected_proportions(
     df = mtcars,
-    dep_var = "mpg > 15"
+    dv = "mpg > 15"
   )
 
 complex_p <-
   plot_expected_proportions(
     df = mtcars,
-    dep_var = "mpg > 15",
+    dv = "mpg > 15",
     n_cat = 5,
     n_field = 3,
     threshold = NULL,
@@ -27,7 +27,7 @@ complex_p_data <- dplyr::filter(complex_p$data, field == "hp")
 test_that("summarize_over_under_proportions categorizes correctly", {
   df <-
     summarize_over_under_proportions(
-      df = refactor_columns(iris, dep_var = "Sepal.Length > 5"),
+      df = refactor_columns(iris, dv = "Sepal.Length > 5"),
       "Species"
     )
   expect_equal(
@@ -38,14 +38,14 @@ test_that("summarize_over_under_proportions categorizes correctly", {
 
 
 test_that("map_over_under_proportions creates new fields", {
-  df <- map_over_under_proportions(df = iris, dep_var = "Sepal.Length > 5")
+  df <- map_over_under_proportions(df = iris, dv = "Sepal.Length > 5")
   expect_true(all(c("expected", "actual", "category") %in% names(df)))
 })
 
 
 test_that("map_over_under_proportions throws warning for non-binary DV", {
   # Sepal.Length is not binary
-  expect_warning(map_over_under_proportions(df = iris, dep_var = "Sepal.Length"))
+  expect_warning(map_over_under_proportions(df = iris, dv = "Sepal.Length"))
 })
 
 test_that("summarize_over_under_proportions omits NA values", {
@@ -53,7 +53,7 @@ test_that("summarize_over_under_proportions omits NA values", {
   iris_na$missing <- c(1, 2, NA)
   df <-
     summarize_over_under_proportions(
-      df = refactor_columns(iris_na, dep_var = "Sepal.Length > 5"),
+      df = refactor_columns(iris_na, dv = "Sepal.Length > 5"),
       "missing"
     )
   expect_true(sum(is.na(df)) == 0)
@@ -63,7 +63,7 @@ test_that("returns data", {
   df <-
     plot_expected_proportions(
       df = mtcars,
-      dep_var = "mpg > 15",
+      dv = "mpg > 15",
       return_data = TRUE
     )
 
@@ -131,7 +131,7 @@ test_that("sorted", {
   by_expected <-
     plot_expected_proportions(
       df = mtcars,
-      dep_var = "mpg > 15",
+      dv = "mpg > 15",
       sort_by = "expected",
       n_field = 1,
       n_cat = 5
@@ -141,7 +141,7 @@ test_that("sorted", {
   by_actual <-
     plot_expected_proportions(
       df = mtcars,
-      dep_var = "mpg > 15",
+      dv = "mpg > 15",
       sort_by = "actual",
       n_field = 1,
       n_cat = 5

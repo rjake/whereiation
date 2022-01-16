@@ -119,11 +119,11 @@ Visualize variation and logic for a single observation" />
 <p>Visualize variation and logic for a single observation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_spread</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>dep_var</span>, <span class='va'>...</span>, avg_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"median"</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="usage"><span class='fu'>plot_spread</span><span class='op'>(</span><span class='va'>df</span>, <span class='va'>dv</span>, <span class='va'>...</span>, avg_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"median"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='fu'>plot_spread_single_obs</span><span class='op'>(</span>
   <span class='va'>df</span>,
-  <span class='va'>dep_var</span>,
+  <span class='va'>dv</span>,
   <span class='va'>...</span>,
   avg_type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"mean"</span>, <span class='st'>"median"</span><span class='op'>)</span>,
   labels <span class='op'>=</span> <span class='cn'>FALSE</span>,
@@ -140,7 +140,7 @@ Visualize variation and logic for a single observation" />
       <td><p>dataframe to evaluate</p></td>
     </tr>
     <tr>
-      <th>dep_var</th>
+      <th>dv</th>
       <td><p>dependent variable to use (column name)</p></td>
     </tr>
     <tr>

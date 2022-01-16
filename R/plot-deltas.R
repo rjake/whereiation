@@ -18,17 +18,17 @@
 #' @examples
 #'
 #' # show distances (deltas) from grand mean
-#' plot_deltas(df = ggplot2::mpg, dep_var = "hwy")
+#' plot_deltas(df = ggplot2::mpg, dv = "hwy")
 #'
 #' # adjust aesthetics with 'trunc_length' and 'n_field'
 #' plot_deltas(
 #'   df = ggplot2::mpg,
-#'   dep_var = "hwy",
+#'   dv = "hwy",
 #'   trunc_length = 15,
 #'   n_field = 5
 #' )
 plot_deltas <- function(df,
-                        dep_var,
+                        dv,
                         ...,
                         trunc_length = 100,
                         return_data = FALSE,
@@ -39,7 +39,7 @@ plot_deltas <- function(df,
   factor_stats <-
     summarize_factors_all_fields(
       df = df,
-      dep_var = dep_var,
+      dv = dv,
       ...
     )
 
@@ -88,12 +88,12 @@ plot_deltas <- function(df,
     ) +
     scale_alpha(range = c(0.2, 1), guide = FALSE) +
     labs(
-      title = glue("Difference in {avg_name} {dep_var} from grand {avg_name} across all factors of all fields"),
+      title = glue("Difference in {avg_name} {dv} from grand {avg_name} across all factors of all fields"),
       subtitle = glue(
-        "Each chart shows the different values (factors) within each field and the {avg_name} {dep_var} for each. Charts with the highest \nadjusted R-square start in the top left. Factors with 5 or fewer observations have been excluded and the vertical line \nis the grand {avg_name} across all observations"
+        "Each chart shows the different values (factors) within each field and the {avg_name} {dv} for each. Charts with the highest \nadjusted R-square start in the top left. Factors with 5 or fewer observations have been excluded and the vertical line \nis the grand {avg_name} across all observations"
       ),
       y = NULL,
-      x = paste(avg_name, dep_var),
+      x = paste(avg_name, dv),
       size = "# of \n observations"
     )
 }

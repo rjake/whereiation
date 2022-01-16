@@ -11,7 +11,7 @@ summarize_factor_extremes(...)
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
     \item{\code{df}}{dataframe to evaluate}
-    \item{\code{dep_var}}{dependent variable to use (column name)}
+    \item{\code{dv}}{dependent variable to use (column name)}
     \item{\code{split_on}}{variable to split data / group by}
     \item{\code{id}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
@@ -34,5 +34,5 @@ a large proportion of null values}
 Identify the factors with the most extreme averages for each field
 }
 \examples{
-summarize_factor_extremes(df = ggplot2::mpg, dep_var = "hwy")
+summarize_factor_extremes(df = ggplot2::mpg, dv = "hwy")
 }

@@ -121,7 +121,7 @@
   <span class='va'>df</span>,
   <span class='va'>split_on</span>,
   type <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"dv"</span>, <span class='st'>"count"</span>, <span class='st'>"percent_field"</span>, <span class='st'>"percent_factor"</span><span class='op'>)</span>,
-  <span class='va'>dep_var</span>,
+  <span class='va'>dv</span>,
   <span class='va'>...</span>,
   n_cat <span class='op'>=</span> <span class='fl'>10</span>,
   trunc_length <span class='op'>=</span> <span class='fl'>100</span>,
@@ -154,7 +154,7 @@
 ("percent"), or the number of obs. ("count")</p></td>
     </tr>
     <tr>
-      <th>dep_var</th>
+      <th>dv</th>
       <td><p>dependent variable to use (column name)</p></td>
     </tr>
     <tr>
@@ -243,7 +243,7 @@ the bar and the other will be the point.</p></td>
 <span class='co'># categories except for when job_level = "Director" or when the person</span>
 <span class='co'># works in HR</span>
 <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dep_var <span class='op'>=</span> <span class='st'>"attrition"</span><span class='op'>)</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dv <span class='op'>=</span> <span class='st'>"attrition"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_group_split-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># type = "count" is used to compare raw volume differences between two groups</span>
 <span class='co'># here we see that there are more men than women in each of these areas</span>

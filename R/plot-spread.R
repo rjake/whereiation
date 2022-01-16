@@ -12,7 +12,7 @@
 #' @examples
 #' plot_spread(ggplot2::mpg, "hwy")
 plot_spread <- function(df,
-                        dep_var,
+                        dv,
                         ...,
                         avg_type = c("mean", "median")
                         ) {
@@ -21,7 +21,7 @@ plot_spread <- function(df,
   factor_stats <-
     summarize_factors_all_fields(
       df = df,
-      dep_var = dep_var,
+      dv = dv,
       ...
     )
 
@@ -61,7 +61,7 @@ plot_spread <- function(df,
     guides(color = FALSE, fill = FALSE) +
     theme(panel.background = element_rect(fill = "white", color = "grey60")) +
     labs(
-      title = paste0(dep_var, " across all factors of all fields"),
+      title = paste0(dv, " across all factors of all fields"),
       subtitle = paste0("each point represents a factor in the field along the y axis, factors with 5 or fewer observations have been excluded \nthe dotted line is the grand ", avg_name, " across all observations"),
       y = "Field ranked by adjusted r-squared",
       x = paste0("group ", avg_name, " of the dependent variable for each factor"),
@@ -89,7 +89,7 @@ plot_spread <- function(df,
 #' @examples
 #' plot_spread_single_obs(ggplot2::mpg, "hwy")
 plot_spread_single_obs <- function(df,
-                                   dep_var,
+                                   dv,
                                    ...,
                                    avg_type = c("mean", "median"),
                                    labels = FALSE,
@@ -102,7 +102,7 @@ plot_spread_single_obs <- function(df,
   compare_values <-
     generate_estimate_details(
       df = df,
-      dep_var = dep_var,
+      dv = dv,
       avg_type = avg_name,
       ...
     )
@@ -124,7 +124,7 @@ plot_spread_single_obs <- function(df,
   obs_estimate <- one_obs_profile$estimate[1]
 
   plot_orig <-
-    plot_spread(df = df, dep_var = dep_var, ...) +
+    plot_spread(df = df, dv = dv, ...) +
     geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
     geom_segment(
       data = one_obs_profile, xend = obs_estimate,
@@ -136,7 +136,7 @@ plot_spread_single_obs <- function(df,
       color = "black", size = 5, shape = 21, stroke = 2
     ) +
     labs(
-      title = paste0(dep_var, " across all factors of all fields", " - single observation")
+      title = paste0(dv, " across all factors of all fields", " - single observation")
     )
 
   if (labels == TRUE) {

@@ -4,12 +4,12 @@
 \alias{profile_n}
 \title{Profile observations with the most extreme values}
 \usage{
-profile_n(df, dep_var, ..., n = 5, position = c("top", "bottom"))
+profile_n(df, dv, ..., n = 5, position = c("top", "bottom"))
 }
 \arguments{
 \item{df}{dataframe to evaluate}
 
-\item{dep_var}{dependent variable to use (column name)}
+\item{dv}{dependent variable to use (column name)}
 
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
@@ -41,8 +41,8 @@ Profile observations with the most extreme values
 }
 \examples{
 \dontrun{
-profile_n(df = iris, dep_var = "Sepal.Length")
-profile_n(df = iris, dep_var = "Species == 'virginica'")
+profile_n(df = iris, dv = "Sepal.Length")
+profile_n(df = iris, dv = "Species == 'virginica'")
 }
 
 }

@@ -126,7 +126,7 @@
       <th>...</th>
       <td><p>Arguments passed on to <code><a href='refactor_columns.html'>refactor_columns</a></code></p><dl>
     <dt><code>df</code></dt><dd><p>dataframe to evaluate</p></dd>
-    <dt><code>dep_var</code></dt><dd><p>dependent variable to use (column name)</p></dd>
+    <dt><code>dv</code></dt><dd><p>dependent variable to use (column name)</p></dd>
     <dt><code>split_on</code></dt><dd><p>variable to split data / group by</p></dd>
     <dt><code>id</code></dt><dd><p>field to use as ID</p></dd>
     <dt><code>n_cat</code></dt><dd><p>for categorical variables, the max number of unique values
@@ -150,7 +150,7 @@ a large proportion of null values</p></dd>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>summarize_factor_extremes</span><span class='op'>(</span>df <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dep_var <span class='op'>=</span> <span class='st'>"hwy"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'>summarize_factor_extremes</span><span class='op'>(</span>df <span class='op'>=</span> <span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dv <span class='op'>=</span> <span class='st'>"hwy"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span class='message'>Joining, by = "field"</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 10 x 9</span>
 #&gt;    adj_r_sq   p_value n_low value_low  avg_low field  avg_high value_high n_high
 #&gt;       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>        <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>

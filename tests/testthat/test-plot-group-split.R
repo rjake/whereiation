@@ -1,5 +1,5 @@
 test_that("group_split works", {
-  p <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy")
+  p <- plot_group_split(ggplot2::mpg, split_on = "year", dv = "hwy")
 
   actual_dim <- dim(p$data)
   expected_dim <- c(27, 16)
@@ -21,7 +21,7 @@ test_that("group_split uses labels", {
     plot_group_split(
       ggplot2::mpg,
       split_on = "year",
-      dep_var = "hwy",
+      dv = "hwy",
       n_field = 5,
       n_cat = 5,
       title = "test title",
@@ -29,7 +29,7 @@ test_that("group_split uses labels", {
       caption = 'test_caption'
     )
 
-  p2 <- plot_group_split(ggplot2::mpg, split_on = "year", dep_var = "hwy", n_field = 5, n_cat = 5)
+  p2 <- plot_group_split(ggplot2::mpg, split_on = "year", dv = "hwy", n_field = 5, n_cat = 5)
 
   p1_labs <- p1$labels
   p2_labs <- p2$labels
@@ -98,7 +98,7 @@ test_that("map_over_under_split", {
   df <-
     map_over_under_split(
       ggplot2::mpg,
-      dep_var = "hwy",
+      dv = "hwy",
       split_on = "year",
       n_cat = 5,
       type = "dv"
@@ -119,7 +119,7 @@ test_that("plot_group_split_prep", {
           split_on = "year",
           type = "dv",
           n_cat = 5,
-          dep_var = "hwy"
+          dv = "hwy"
         ),
       threshold = 1,
       ref_group = "1",
@@ -146,7 +146,7 @@ test_that("summarize_group_split_metadata", {
           split_on = "year",
           type = "dv",
           n_cat = 5,
-          dep_var = "hwy"
+          dv = "hwy"
         ),
       ref_group = "1",
       split_on = "year"

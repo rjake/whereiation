@@ -6,7 +6,7 @@
 \usage{
 refactor_columns(
   df,
-  dep_var,
+  dv,
   split_on = NA_character_,
   id = NULL,
   n_cat = 10,
@@ -20,7 +20,7 @@ refactor_columns(
 \arguments{
 \item{df}{dataframe to evaluate}
 
-\item{dep_var}{dependent variable to use (column name)}
+\item{dv}{dependent variable to use (column name)}
 
 \item{split_on}{variable to split data / group by}
 
@@ -50,5 +50,5 @@ a large proportion of null values}
 Convert all fields to factors (same method as under plots)
 }
 \examples{
-refactor_columns(df = iris, dep_var = "Sepal.Length")
+refactor_columns(df = iris, dv = "Sepal.Length")
 }
