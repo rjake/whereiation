@@ -28,7 +28,6 @@ cut_custom <- function(x, n_quantile, n_digits) {
   # will create order ex: "(02)"
   ord <- str_pad(as.integer(label), 2, pad = "0")
 
-
   paste(ord, label) %>%
     str_replace_all("(\\,)(?=\\d)", " to ") %>%
     str_replace_all(paste0("(\\.\\d{", n_digits, "})\\d*"), "\\1")
@@ -137,3 +136,35 @@ extract_field_name <- function(x) {
     gsub(pattern = "\\(", replacement = "")
 }
 
+#' @importFrom stringr str_trunc str_detect
+#' @importFrom glue glue
+#' @importFrom forcats fct_reorder
+#' @importFrom dplyr mutate group_by arrange row_number ungroup
+#' @noRd
+#' @examples
+#' reorder_within_field(
+#'   df = summarize_factors_all_fields(iris, dv = Sepal.Length) |> filter(field == "Petal.Width"),
+#'   sort_cols = field_avg,
+#'   trunc_length = 30
+#' )
+reorder_within_field <- function(df, sort_cols, trunc_length) {
+  df %>%
+    mutate(
+      value = glue(
+        "<{field}>{x}",
+        x = str_trunc(.data$value, trunc_length)
+      )
+    ) %>%
+    group_by(.data$field) %>%
+    arrange(
+      ifelse(
+        str_detect(.data$value, "\\d{2} \\["),
+        .data$value,
+        c(!!enquo(sort_cols))
+      )
+    ) |>
+    mutate(
+      value = fct_reorder(.data$value, row_number())
+    ) %>%
+    ungroup()
+}

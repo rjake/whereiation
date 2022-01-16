@@ -163,20 +163,18 @@ plot_expected_proportions <- function(df,
 
   base_data <-
     map_over_under_proportions(df, {{dv}}, ...) %>%
-    filter(.data$abs_delta > threshold)
+    filter(.data$abs_delta > threshold) %>%
+    reorder_within_field(
+      sort_cols = get(sort_by),
+      trunc_length = trunc_length
+    )
 
   # return table or plot
   if (return_data) { # return data
     base_data
   } else { # return plot
-    plot_data <-
-      base_data %>%
-      mutate(
-        value =
-          str_trunc(.data$value, trunc_length) %>%
-            fct_reorder(get(sort_by))
-      )
 
+  plot_data <- base_data
 
     # filter # of facets if n_field specified
     if (!is.null(n_field)) {

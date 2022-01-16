@@ -50,14 +50,18 @@ plot_deltas <- function(df,
     select(-.data$rescale_factor_avg) %>%
     mutate(
       field =
-        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE),
-      value =
-        str_trunc(.data$value, trunc_length) %>%
-        fct_reorder(.data$factor_avg, .fun = max, .desc = TRUE),
+        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
+    ) %>%
+    reorder_within_field(
+      sort_cols = .data$factor_avg,
+      trunc_length = trunc_length
+    ) %>%
+    mutate(
       delta = .data$factor_avg - .data$grand_avg,
       abs_delta = abs(.data$delta),
       color = ifelse(.data$factor_avg > .data$grand_avg, "above", "below")
-    )
+    ) %>%
+    arrange(.data$field, .data$value)
 
   # return table if requesed
   if (return_data) { # return data
