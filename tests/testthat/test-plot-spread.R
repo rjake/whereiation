@@ -1,5 +1,5 @@
 test_that("plot_spread works", {
-  p <- plot_spread(iris, "Petal.Length")
+  p <- plot_spread(iris, dv = Petal.Length)
 
   actual_dim <- dim(p$data)
   expected_dim <- c(28, 11)
@@ -12,8 +12,8 @@ test_that("plot_spread works", {
 
 
 test_that("plot_spread uses weights", {
-  p_dv <- plot_spread(iris, "Petal.Length", n_cat = 4, collapse_by = "dv")
-  p_n <- plot_spread(iris, "Petal.Length", n_cat = 4, collapse_by = "n")
+  p_dv <- plot_spread(iris, Petal.Length, n_cat = 4, collapse_by = "dv")
+  p_n <- plot_spread(iris, Petal.Length, n_cat = 4, collapse_by = "n")
 
   # tables are different
   expect_false(identical(p_dv, p_n))
@@ -36,7 +36,7 @@ test_that("plot_spread uses weights", {
     )
 
   ref_n <-
-    refactor_columns(iris, "Petal.Length", n_cat = NULL) %>%
+    refactor_columns(iris, Petal.Length, n_cat = NULL) %>%
     dplyr::count(Sepal.Length, sort = TRUE) %>%
     dplyr::slice(-c(1:4))
 
@@ -49,8 +49,8 @@ test_that("plot_spread uses weights", {
 
 
 test_that("plot_spread_single_obs works", {
-  p1 <- plot_spread_single_obs(df = iris, dv = "Petal.Length", avg_type = "mean")
-  p2 <- plot_spread_single_obs(iris, "Petal.Length", labels = TRUE)
+  p1 <- plot_spread_single_obs(df = iris, dv = Petal.Length, avg_type = "mean")
+  p2 <- plot_spread_single_obs(df = iris, dv = Petal.Length, labels = TRUE)
   actual_dim_p1 <- dim(p1$data)
   actual_dim_p2 <- dim(p2$data)
   expected_dim <- c(28, 10)

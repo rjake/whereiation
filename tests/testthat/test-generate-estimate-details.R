@@ -1,5 +1,5 @@
 test_that("generate_estimate_details works", {
-  df <- generate_estimate_details(df = iris, dv = "Petal.Length")
+  df <- generate_estimate_details(df = iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
   expected_dim <- c(586, 17)

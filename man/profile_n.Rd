@@ -41,8 +41,8 @@ Profile observations with the most extreme values
 }
 \examples{
 \dontrun{
-profile_n(df = iris, dv = "Sepal.Length")
-profile_n(df = iris, dv = "Species == 'virginica'")
+profile_n(df = iris, dv = Sepal.Length)
+profile_n(df = iris, dv = Species == 'virginica')
 }
 
 }

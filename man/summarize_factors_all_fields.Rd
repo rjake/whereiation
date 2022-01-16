@@ -46,6 +46,6 @@ Pivots data and summarizes factor frequencies by field and generates stats
 used for plotting
 }
 \examples{
-summarize_factors_all_fields(iris, dv = "Sepal.Length")
-summarize_factors_all_fields(iris, dv = "Sepal.Length", return = "list")
+summarize_factors_all_fields(iris, dv = Sepal.Length)
+summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
 }

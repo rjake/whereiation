@@ -1,5 +1,5 @@
 test_that("plot_deltas works", {
-  p <- plot_deltas(iris, "Petal.Length")
+  p <- plot_deltas(iris, Petal.Length)
 
   actual_dim <- dim(p$data)
   expected_dim <- c(28, 12)
@@ -14,7 +14,7 @@ test_that("plot_deltas accepts params", {
   p <-
     plot_deltas(
       df = ggplot2::mpg,
-      dv = "hwy",
+      dv = hwy,
       trunc_length = 15
     )
 

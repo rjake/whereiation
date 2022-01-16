@@ -53,12 +53,12 @@ Visualize difference from avg. by factor (lollipop)
 \examples{
 
 # show distances (deltas) from grand mean
-plot_deltas(df = ggplot2::mpg, dv = "hwy")
+plot_deltas(df = ggplot2::mpg, dv = hwy)
 
 # adjust aesthetics with 'trunc_length' and 'n_field'
 plot_deltas(
   df = ggplot2::mpg,
-  dv = "hwy",
+  dv = hwy,
   trunc_length = 15,
   n_field = 5
 )
