@@ -47,5 +47,7 @@ used for plotting
 }
 \examples{
 summarize_factors_all_fields(iris, dv = Sepal.Length)
+
+# Can also return a list object
 summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
 }

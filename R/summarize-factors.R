@@ -21,6 +21,8 @@
 #' @export
 #' @examples
 #' summarize_factors_all_fields(iris, dv = Sepal.Length)
+#'
+#' # Can also return a list object
 #' summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
 summarize_factors_all_fields <- function(df,
                          ...,
@@ -62,7 +64,7 @@ summarize_factors_all_fields <- function(df,
   agg_data <-
     factor_stats %>%
     filter(!is.na(.data$value)) %>%
-    left_join(field_stats) %>%
+    left_join(field_stats, by = "field") %>%
     mutate(
       rescale_factor_avg = rescale_mid(
         x = .data$factor_avg,
@@ -146,7 +148,7 @@ summarize_factors_one_field <- function(var, df, avg_fn) {
 summarize_one_field <- function(var, df) {
   df %>%
     select(value = var, .data$y_outcome) %>%
-    do(glance(lm(.data$y_outcome ~ .data$value, data = .))) %>%
+    do(glance(lm(.data$y_outcome ~ .data$value, data = .data))) %>%
     mutate(field = var) %>%
     select(
       .data$field,
