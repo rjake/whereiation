@@ -14,7 +14,7 @@ refactor_columns(
   n_quantile = 10,
   n_digits = 2,
   avg_type = c("mean", "median"),
-  ignore_cols = NA_character_
+  ignore_cols = NULL
 )
 }
 \arguments{
@@ -50,5 +50,5 @@ a large proportion of null values}
 Convert all fields to factors (same method as under plots)
 }
 \examples{
-refactor_columns(df = iris, dv = "Sepal.Length")
+refactor_columns(df = iris, dv = Sepal.Length)
 }

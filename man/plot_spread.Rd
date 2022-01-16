@@ -62,7 +62,7 @@ Visualize variation and logic for a single observation
 }}
 
 \examples{
-plot_spread(ggplot2::mpg, "hwy")
-plot_spread_single_obs(ggplot2::mpg, "hwy")
-plot_spread_interactive(ggplot2::mpg, "hwy")
+plot_spread(ggplot2::mpg, dv = hwy)
+plot_spread_single_obs(ggplot2::mpg, dv = hwy)
+plot_spread_interactive(ggplot2::mpg, dv = hwy)
 }

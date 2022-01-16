@@ -243,19 +243,19 @@ the bar and the other will be the point.</p></td>
 <span class='co'># categories except for when job_level = "Director" or when the person</span>
 <span class='co'># works in HR</span>
 <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dv <span class='op'>=</span> <span class='st'>"attrition"</span><span class='op'>)</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='va'>gender</span>, type <span class='op'>=</span> <span class='st'>"dv"</span>, dv <span class='op'>=</span> <span class='va'>attrition</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_group_split-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># type = "count" is used to compare raw volume differences between two groups</span>
 <span class='co'># here we see that there are more men than women in each of these areas</span>
 <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='va'>gender</span>, type <span class='op'>=</span> <span class='st'>"count"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_group_split-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># type = "percent_field" is used when comparing the distribution of one</span>
 <span class='co'># demographic vs another. A good example would be pre- vs post-COVID</span>
 <span class='co'># closures. In this example, more men are in intern and director roles</span>
 <span class='co'># than the other  categories</span>
 <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"percent_field"</span><span class='op'>)</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='va'>gender</span>, type <span class='op'>=</span> <span class='st'>"percent_field"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_group_split-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># type = "percent_factor" is used when comparing the representation of two</span>
 <span class='co'># groups vs how they are represented in the overall data. In this example</span>
@@ -263,7 +263,7 @@ the bar and the other will be the point.</p></td>
 <span class='co'># director positions and 52% of the senior position while women have the</span>
 <span class='co'># inverse at 35 and 48% respectively</span>
 <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>2</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>]</span> <span class='op'>%&gt;%</span>
-  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='st'>"gender"</span>, type <span class='op'>=</span> <span class='st'>"percent_factor"</span><span class='op'>)</span>
+  <span class='fu'>plot_group_split</span><span class='op'>(</span>split_on <span class='op'>=</span> <span class='va'>gender</span>, type <span class='op'>=</span> <span class='st'>"percent_factor"</span><span class='op'>)</span>
 </div><div class='img'><img src='plot_group_split-4.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>

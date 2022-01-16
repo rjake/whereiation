@@ -95,19 +95,19 @@ Visualize variation between two groups
 # categories except for when job_level = "Director" or when the person
 # works in HR
 employee_attrition[,1:4] \%>\%
-  plot_group_split(split_on = "gender", type = "dv", dv = "attrition")
+  plot_group_split(split_on = gender, type = "dv", dv = attrition)
 
 # type = "count" is used to compare raw volume differences between two groups
 # here we see that there are more men than women in each of these areas
 employee_attrition[,2:4] \%>\%
-  plot_group_split(split_on = "gender", type = "count")
+  plot_group_split(split_on = gender, type = "count")
 
 # type = "percent_field" is used when comparing the distribution of one
 # demographic vs another. A good example would be pre- vs post-COVID
 # closures. In this example, more men are in intern and director roles
 # than the other  categories
 employee_attrition[,2:4] \%>\%
-  plot_group_split(split_on = "gender", type = "percent_field")
+  plot_group_split(split_on = gender, type = "percent_field")
 
 # type = "percent_factor" is used when comparing the representation of two
 # groups vs how they are represented in the overall data. In this example
@@ -115,6 +115,6 @@ employee_attrition[,2:4] \%>\%
 # director positions and 52\% of the senior position while women have the
 # inverse at 35 and 48\% respectively
 employee_attrition[,2:4] \%>\%
-  plot_group_split(split_on = "gender", type = "percent_factor")
+  plot_group_split(split_on = gender, type = "percent_factor")
 
 }

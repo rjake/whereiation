@@ -34,5 +34,5 @@ a large proportion of null values}
 Identify the factors with the most extreme averages for each field
 }
 \examples{
-summarize_factor_extremes(df = ggplot2::mpg, dv = "hwy")
+summarize_factor_extremes(df = ggplot2::mpg, dv = hwy)
 }
