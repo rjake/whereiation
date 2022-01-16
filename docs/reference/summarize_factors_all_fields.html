@@ -184,7 +184,9 @@ grand average.</p></td>
 #&gt; <span style='color: #BCBCBC;'> 9</span> Petal.Le~ 02 [1.59 ~       5.07    13      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
 #&gt; <span style='color: #BCBCBC;'>10</span> Petal.Le~ 05 [3.36 ~       5.49     8      0.827         0.817       7.18<span style='color: #949494;'>e</span><span style='color: #BB0000;'>-50</span>
 #&gt; <span style='color: #949494;'># ... with 16 more rows, and 3 more variables: rescale_factor_avg &lt;dbl&gt;,</span>
-#&gt; <span style='color: #949494;'>#   grand_avg &lt;dbl&gt;, field_wt &lt;dbl&gt;</span></div><div class='input'><span class='fu'>summarize_factors_all_fields</span><span class='op'>(</span><span class='va'>iris</span>, dv <span class='op'>=</span> <span class='va'>Sepal.Length</span>, return <span class='op'>=</span> <span class='st'>"list"</span><span class='op'>)</span>
+#&gt; <span style='color: #949494;'>#   grand_avg &lt;dbl&gt;, field_wt &lt;dbl&gt;</span></div><div class='input'>
+<span class='co'># Can also return a list object</span>
+<span class='fu'>summarize_factors_all_fields</span><span class='op'>(</span><span class='va'>iris</span>, dv <span class='op'>=</span> <span class='va'>Sepal.Length</span>, return <span class='op'>=</span> <span class='st'>"list"</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; $data
 #&gt; <span style='color: #949494;'># A tibble: 26 x 10</span>
 #&gt;    field     value      factor_avg     n field_r_sq field_r_sq_adj field_p_value
@@ -229,7 +231,7 @@ grand average.</p></td>
 #&gt; <span style='color: #949494;'># ... with 16 more rows</span>
 #&gt; 
 #&gt; $grand_avg
-#&gt; [1] 5.843333
+#&gt; [1] 5.84
 #&gt; 
 #&gt; $orig_min
 #&gt;  2% 
