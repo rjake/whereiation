@@ -29,7 +29,6 @@ generate_estimate_details <- function(df, train_data, dv, ...) {
   orig_max <- group_stats$orig_max
 
 
-  suppressWarnings(
     base_data %>%
       gather(key = "field", value = "value", -c(1, 2, 3)) %>%
       mutate(value = as.character(.data$value)) %>%
@@ -50,5 +49,4 @@ generate_estimate_details <- function(df, train_data, dv, ...) {
           mid = group_stats$grand_avg
         )
       )
-  )
 }
