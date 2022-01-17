@@ -6,7 +6,7 @@
 #'
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
-#' @importFrom utils head tail capture.output
+#' @importFrom utils head tail
 #' @importFrom dplyr distinct arrange left_join select mutate rename_all desc
 #' @importFrom scales percent
 #' @importFrom glue glue
@@ -79,13 +79,15 @@ profile_n <- function(df,
     mutate(field_wt = percent(.data$field_wt, 3))
 
 
-  x <-
-    df_style %>%
+  df_style %>%
     kable(
-      escape = FALSE, align = "c",
+      escape = FALSE,
+      align = "c",
       format = "html",
       caption = glue("{dv_name}: {position} {n} observations")
     ) %>%
-    kable_styling(c("striped", "condensed"), full_width = TRUE) %>%
-    capture.output()
+    kable_styling(
+      c("striped", "condensed"),
+      full_width = TRUE
+    )
 }
