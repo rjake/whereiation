@@ -86,7 +86,7 @@ test_that("has layers in right order", {
 
   expect_equal(
     object = geom_layers,
-    expected = c("GeomCol", "GeomSegment", "GeomPoint", "GeomPoint")
+    expected = c("GeomCol", "GeomVline","GeomSegment", "GeomPoint", "GeomPoint")
   )
 })
 
