@@ -190,6 +190,7 @@ plot_expected_proportions <- function(df,
       aes(x = .data$expected, fill = .data$category),
       alpha = 0.2, color = NA
     ) +
+    geom_vline(aes(xintercept = 0)) +
     geom_segment(
       aes(
         x = .data$actual, xend = .data$expected,
@@ -221,6 +222,7 @@ plot_expected_proportions <- function(df,
     theme(
       axis.text.y = element_text(size = 9),
       panel.background = element_rect(color = "grey70", fill = "white"),
-      legend.position = "left"
+      plot.title.position = "plot",
+      legend.position = "bottom"
     )
 }
