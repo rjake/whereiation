@@ -1,5 +1,5 @@
 test_that("group_split works", {
-  p <- plot_group_split(ggplot2::mpg, split_on = year, dv = hwy)
+  p <- plot_group_split(ggplot2::mpg, split_on = year, dv = hwy, threshold = 0)
 
   actual_dim <- dim(p$data)
   expected_dim <- c(27, 16)
@@ -121,12 +121,12 @@ test_that("plot_group_split_prep", {
           n_cat = 5,
           dv = hwy
         ),
-      threshold = 1,
+      threshold = 0.02,
       ref_group = "1",
       trunc_length = 20
     )
 
-  expected_dim <- c(33, 15)
+  expected_dim <- c(43, 15)
   actual_dim <- dim(df)
   expect_equal(expected_dim, actual_dim)
 
