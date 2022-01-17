@@ -226,6 +226,7 @@ map_over_under_split <- function(df,
 #' @importFrom glue glue
 #' @importFrom dplyr case_when filter select n
 #' @importFrom stringr str_detect
+#' @importFrom forcats fct_rev
 #' @importFrom ggplot2 ggplot aes geom_col geom_segment geom_point scale_fill_manual scale_color_manual scale_y_discrete guides facet_wrap labs theme element_text element_rect
 #' @export
 #'
@@ -318,7 +319,7 @@ plot_group_split <- function(df,
       )
   }
 
-  # return plot ----
+  # else return plot ----
 
   # filter # of facets if n_field specified
   if (!is.null(n_field)) {
@@ -331,9 +332,11 @@ plot_group_split <- function(df,
   if (calc_type == "percent_factor") {
     # return df with expected %
     plot_data$x_end <- plot_data$expected
+    plot_data$value <- fct_rev(plot_data$value)
   } else {
     plot_data$x_end <- plot_data$x_bar
   }
+
 
   group_counts <-
     summarize_group_split_metadata(
@@ -372,10 +375,10 @@ plot_group_split <- function(df,
   } else {
     title_text <-
       case_when(
-        calc_type == "dv" ~ glue("Change in outcome ({dv_name})"),
+        calc_type == "dv" ~ glue("Difference in outcome ({dv_name})"),
         calc_type == "percent_field" ~ "Difference in proportion of population",
         calc_type == "percent_factor" ~ "Difference from overall average",
-        TRUE ~ "Change in # of observations"
+        TRUE ~ "Difference in # of observations"
       )
   }
 
@@ -505,7 +508,7 @@ summarize_group_split_metadata <- function(base_data, ref_group, split_on) {
 #' Prep data for group_split plotting
 #' @param base_data data frame
 #' @importFrom dplyr filter mutate coalesce arrange
-#' @importFrom forcats fct_inorder fct_rev
+#' @importFrom forcats fct_inorder
 #' @noRd
 #' @examples
 #' plot_group_split_prep(
@@ -528,8 +531,5 @@ plot_group_split_prep <- function(base_data, threshold, ref_group, trunc_length)
     reorder_within_field(
       trunc_length = trunc_length,
       sort_cols = c(.data$x_bar, .data$x_point)
-    ) %>%
-    mutate(
-      value = fct_rev(.data$value)
     )
 }
