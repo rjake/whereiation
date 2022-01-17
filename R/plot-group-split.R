@@ -115,7 +115,7 @@ summarize_over_under_split <- function(df,
     ungroup() %>%
     mutate(
       expected = mean(df$y_outcome),
-      delta = .data$x_point - .data$x_bar
+      delta = (.data$x_point - .data$x_bar) / .data$x_bar
     )
 
   if (type == "percent_factor") {
