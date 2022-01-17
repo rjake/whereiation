@@ -97,34 +97,32 @@ map_over_under_proportions <- function(df, ...) {
 #' @importFrom ggplot2 facet_wrap guides labs theme element_text element_rect
 #'
 #' @examples
-#' plot_expected_proportions(df = iris, dv = Sepal.Length > 5)
-#'
 #' # sorted by the expected representation (default)
 #' plot_expected_proportions(
-#'   df = mtcars,
-#'   dv = mpg > 15,
+#'   df = employee_attrition[, 1:5],
+#'   dv = attrition
 #' )
 #'
 #' # sorted by the actual representation
 #' plot_expected_proportions(
-#'   df = mtcars,
-#'   dv = mpg > 15,
+#'   df = employee_attrition[, 1:5],
+#'   dv = attrition,
 #'   sort_by = "actual"
 #' )
 #'
 #' # you can return the dataframe if you want
 #' plot_expected_proportions(
-#'   df = mtcars,
-#'   dv = mpg > 15,
+#'   df = employee_attrition[, 1:5],
+#'   dv = attrition,
 #'   return_data = TRUE
 #' )
 #'
 #' # an example with more parameters
 #' plot_expected_proportions(
-#'   df = mtcars, # data to use
-#'   dv = mpg > 15, # can be a field name or an evaluation
-#'   n_cat = 5, # collapse field values into 5 categories
-#'   n_field = 3, # keep the frist 3 facets
+#'   df = employee_attrition[, 1:5], # data to use
+#'   dv = attrition, # can be a field name or an evaluation
+#'   n_cat = 5, # collapse field values into 5 categories, all else in "Other"
+#'   n_field = 2, # keep the first 2 facets
 #'   threshold = NULL # keep all values
 #' )
 plot_expected_proportions <- function(df,
@@ -175,7 +173,7 @@ plot_expected_proportions <- function(df,
       base_data %>% mutate(value = clean_labels(.data$value))
     )
   }
-  
+
   # else return plot
   plot_data <- base_data
 
