@@ -199,50 +199,51 @@ column).</p></td>
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>plot_expected_proportions</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>iris</span>, dv <span class='op'>=</span> <span class='va'>Sepal.Length</span> <span class='op'>&gt;</span> <span class='fl'>5</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_expected_proportions-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># sorted by the expected representation (default)</span>
+    <pre class="examples"><div class='input'><span class='co'># sorted by the expected representation (default)</span>
 <span class='fu'>plot_expected_proportions</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>mtcars</span>,
-  dv <span class='op'>=</span> <span class='va'>mpg</span> <span class='op'>&gt;</span> <span class='fl'>15</span>,
+  df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,
+  dv <span class='op'>=</span> <span class='va'>attrition</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='plot_expected_proportions-2.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_expected_proportions-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># sorted by the actual representation</span>
 <span class='fu'>plot_expected_proportions</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>mtcars</span>,
-  dv <span class='op'>=</span> <span class='va'>mpg</span> <span class='op'>&gt;</span> <span class='fl'>15</span>,
+  df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,
+  dv <span class='op'>=</span> <span class='va'>attrition</span>,
   sort_by <span class='op'>=</span> <span class='st'>"actual"</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='plot_expected_proportions-3.png' alt='' width='700' height='433' /></div><div class='input'>
+</div><div class='img'><img src='plot_expected_proportions-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># you can return the dataframe if you want</span>
 <span class='fu'>plot_expected_proportions</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>mtcars</span>,
-  dv <span class='op'>=</span> <span class='va'>mpg</span> <span class='op'>&gt;</span> <span class='fl'>15</span>,
+  df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>,
+  dv <span class='op'>=</span> <span class='va'>attrition</span>,
   return_data <span class='op'>=</span> <span class='cn'>TRUE</span>
 <span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 42 x 10</span>
-#&gt;    field value      n total expected actual delta abs_delta field_delta category
-#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
-#&gt; <span style='color: #BCBCBC;'> 1</span> disp  01 [7~     6     6    18.8   23.1   4.33      4.33        27.4 over    
-#&gt; <span style='color: #BCBCBC;'> 2</span> disp  02 [1~     6     6    18.8   23.1   4.33      4.33        27.4 over    
-#&gt; <span style='color: #BCBCBC;'> 3</span> disp  03 [1~     4     4    12.5   15.4   2.88      2.88        27.4 over    
-#&gt; <span style='color: #BCBCBC;'> 4</span> disp  08 [3~     2     1     6.25   3.85 -<span style='color: #BB0000;'>2.40</span>      2.40        27.4 under   
-#&gt; <span style='color: #BCBCBC;'> 5</span> disp  10 [4~     3     0     9.38   0    -<span style='color: #BB0000;'>9.38</span>      9.38        27.4 under   
-#&gt; <span style='color: #BCBCBC;'> 6</span> drat  03 [3~     2     0     6.25   0    -<span style='color: #BB0000;'>6.25</span>      6.25        22.6 under   
-#&gt; <span style='color: #BCBCBC;'> 7</span> drat  04 [3~     2     1     6.25   3.85 -<span style='color: #BB0000;'>2.40</span>      2.40        22.6 under   
-#&gt; <span style='color: #BCBCBC;'> 8</span> drat  06 [3~     6     6    18.8   23.1   4.33      4.33        22.6 over    
-#&gt; <span style='color: #BCBCBC;'> 9</span> drat  07 [4~     5     5    15.6   19.2   3.61      3.61        22.6 over    
-#&gt; <span style='color: #BCBCBC;'>10</span> hp    01 [5~     5     5    15.6   19.2   3.61      3.61        37.5 over    
-#&gt; <span style='color: #949494;'># ... with 32 more rows</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 14 x 10</span>
+#&gt;    field value     n total expected actual  delta abs_delta field_delta category
+#&gt;    <span style='color: #949494; font-style: italic;'>&lt;fct&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;int&gt;</span>    <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>  <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>     <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span>       <span style='color: #949494; font-style: italic;'>&lt;dbl&gt;</span> <span style='color: #949494; font-style: italic;'>&lt;chr&gt;</span>   
+#&gt; <span style='color: #BCBCBC;'> 1</span> job_~ Dire~    69     5     4.69  2.11   -<span style='color: #BB0000;'>2.58</span>      2.58       46.8  under   
+#&gt; <span style='color: #BCBCBC;'> 2</span> job_~ Rese~    80     2     5.44  0.844  -<span style='color: #BB0000;'>4.60</span>      4.60       40.4  under   
+#&gt; <span style='color: #BCBCBC;'> 3</span> job_~ Sale~    83    33     5.65 13.9     8.28      8.28       40.4  over    
+#&gt; <span style='color: #BCBCBC;'> 4</span> job_~ Mana~   102     5     6.94  2.11   -<span style='color: #BB0000;'>4.83</span>      4.83       40.4  under   
+#&gt; <span style='color: #BCBCBC;'> 5</span> job_~ Seni~   106     5     7.21  2.11   -<span style='color: #BB0000;'>5.10</span>      5.10       46.8  under   
+#&gt; <span style='color: #BCBCBC;'> 6</span> job_~ Heal~   131     9     8.91  3.80   -<span style='color: #BB0000;'>5.11</span>      5.11       40.4  under   
+#&gt; <span style='color: #BCBCBC;'> 7</span> job_~ Manu~   145    10     9.86  4.22   -<span style='color: #BB0000;'>5.64</span>      5.64       40.4  under   
+#&gt; <span style='color: #BCBCBC;'> 8</span> job_~ Labo~   259    62    17.6  26.2     8.54      8.54       40.4  over    
+#&gt; <span style='color: #BCBCBC;'> 9</span> depa~ Sales   446    92    30.3  38.8     8.48      8.48       18.5  over    
+#&gt; <span style='color: #BCBCBC;'>10</span> job_~ Juni~   534    52    36.3  21.9   -<span style='color: #BB0000;'>14.4</span>      14.4        46.8  under   
+#&gt; <span style='color: #BCBCBC;'>11</span> job_~ Inte~   543   143    36.9  60.3    23.4      23.4        46.8  over    
+#&gt; <span style='color: #BCBCBC;'>12</span> gend~ Fema~   588    87    40    36.7    -<span style='color: #BB0000;'>3.29</span>      3.29        6.58 under   
+#&gt; <span style='color: #BCBCBC;'>13</span> gend~ Male    882   150    60    63.3     3.29      3.29        6.58 over    
+#&gt; <span style='color: #BCBCBC;'>14</span> depa~ Rese~   961   133    65.4  56.1    -<span style='color: #BB0000;'>9.26</span>      9.26       18.5  under   </div><div class='input'>
 <span class='co'># an example with more parameters</span>
 <span class='fu'>plot_expected_proportions</span><span class='op'>(</span>
-  df <span class='op'>=</span> <span class='va'>mtcars</span>, <span class='co'># data to use</span>
-  dv <span class='op'>=</span> <span class='va'>mpg</span> <span class='op'>&gt;</span> <span class='fl'>15</span>, <span class='co'># can be a field name or an evaluation</span>
-  n_cat <span class='op'>=</span> <span class='fl'>5</span>, <span class='co'># collapse field values into 5 categories</span>
-  n_field <span class='op'>=</span> <span class='fl'>3</span>, <span class='co'># keep the frist 3 facets</span>
+  df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, <span class='co'># data to use</span>
+  dv <span class='op'>=</span> <span class='va'>attrition</span>, <span class='co'># can be a field name or an evaluation</span>
+  n_cat <span class='op'>=</span> <span class='fl'>5</span>, <span class='co'># collapse field values into 5 categories, all else in "Other"</span>
+  n_field <span class='op'>=</span> <span class='fl'>2</span>, <span class='co'># keep the first 2 facets</span>
   threshold <span class='op'>=</span> <span class='cn'>NULL</span> <span class='co'># keep all values</span>
 <span class='op'>)</span>
-</div><div class='img'><img src='plot_expected_proportions-4.png' alt='' width='700' height='433' /></div></pre>
+</div><div class='img'><img src='plot_expected_proportions-3.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
