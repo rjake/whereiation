@@ -32,7 +32,7 @@ plot_spread <- function(df,
     factor_stats %>%
     # left_join(field_ranks) %>%
     mutate(
-      field = fct_reorder(.data$field, .data$field_wt, .fun = max),
+      field = fct_reorder(.data$field, .data$field_r_sq_adj, .fun = max),
       label = paste0(
         toupper(.data$value),
         "\n----------------------------",
