@@ -61,7 +61,15 @@ map_over_under_proportions <- function(df, ...) {
     select(-.data$unique_id)
 
   # give warning if dv isn't 0/1 or T/F
-  check_01_binary(refactor_df$y_outcome)
+  if (!is_binary(refactor_df$y_outcome)) {
+    warning(
+      glue(
+        "Expected 'dv' to be a binary field 0/1 or TRUE/FALSE \\
+        The result may not be meaningful."
+      ),
+      call. = FALSE
+    )
+  }
 
   names(refactor_df %>% select(-.data$y_outcome)) %>%
     map_dfr(summarize_over_under_proportions, df = refactor_df) %>%
