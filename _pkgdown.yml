@@ -19,7 +19,6 @@ reference:
   desc: >
     Functions that do something else or in-progress
   contents:
-  - profile_n
   - refactor_columns
 - title: Data
   desc: >

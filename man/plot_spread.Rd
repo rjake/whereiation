@@ -28,6 +28,7 @@ plot_spread_interactive(...)
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}, \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
     \item{\code{split_on}}{variable to split data / group by}
+    \item{\code{id_col}}{field to use as ID}
     \item{\code{n_cat}}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}
     \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
@@ -63,6 +64,7 @@ Visualize variation and logic for a single observation
 
 \examples{
 plot_spread(ggplot2::mpg, dv = hwy)
-plot_spread_single_obs(ggplot2::mpg, dv = hwy)
+plot_spread_single_obs(df = employee_attrition[,1:5], dv = attrition)
+plot_spread_single_obs(df = employee_attrition[,1:5], dv = attrition, labels = TRUE)
 plot_spread_interactive(ggplot2::mpg, dv = hwy)
 }
