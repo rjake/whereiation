@@ -20,7 +20,7 @@ isolate_record <- function(df, dv, id = 1,...) {
   group_stats <- summarize_factors_all_fields(df, dv = {{dv}}, ...)
 
   base_data %>%
-    filter(unique_id == id) %>%
+    filter(.data$unique_id == id) %>%
     gather(key = "field", value = "value", -c(1, 2, 3)) %>%
     mutate(value = as.character(.data$value)) %>%
     left_join(group_stats, by = c("field", "value"))
