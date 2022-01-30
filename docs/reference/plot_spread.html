@@ -147,6 +147,7 @@ Visualize variation and logic for a single observation" />
       <th>...</th>
       <td><p>Arguments passed on to <code><a href='refactor_columns.html'>refactor_columns</a></code>, <code><a href='refactor_columns.html'>refactor_columns</a></code>, <code><a href='refactor_columns.html'>refactor_columns</a></code></p><dl>
     <dt><code>split_on</code></dt><dd><p>variable to split data / group by</p></dd>
+    <dt><code>id_col</code></dt><dd><p>field to use as ID</p></dd>
     <dt><code>n_cat</code></dt><dd><p>for categorical variables, the max number of unique values
 to keep. This field feeds the <code><a href='https://forcats.tidyverse.org/reference/fct_lump.html'>forcats::fct_lump(n = )</a></code> argument.</p></dd>
     <dt><code>collapse_by</code></dt><dd><p>should <code>n_cat</code> collapse by the distance to the grand
@@ -187,9 +188,11 @@ a large proportion of null values</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>plot_spread</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dv <span class='op'>=</span> <span class='va'>hwy</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_spread-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_spread_single_obs</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dv <span class='op'>=</span> <span class='va'>hwy</span><span class='op'>)</span>
-</div><div class='img'><img src='plot_spread-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_spread_interactive</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dv <span class='op'>=</span> <span class='va'>hwy</span><span class='op'>)</span>
-</div></pre>
+</div><div class='img'><img src='plot_spread-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_spread_single_obs</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, dv <span class='op'>=</span> <span class='va'>attrition</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_spread-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_spread_single_obs</span><span class='op'>(</span>df <span class='op'>=</span> <span class='va'>employee_attrition</span><span class='op'>[</span>,<span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span><span class='op'>]</span>, dv <span class='op'>=</span> <span class='va'>attrition</span>, labels <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+</div><div class='img'><img src='plot_spread-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot_spread_interactive</span><span class='op'>(</span><span class='fu'>ggplot2</span><span class='fu'>::</span><span class='va'><a href='https://ggplot2.tidyverse.org/reference/mpg.html'>mpg</a></span>, dv <span class='op'>=</span> <span class='va'>hwy</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: `gather_()` was deprecated in tidyr 1.2.0.</span>
+#&gt; <span class='warning'>Please use `gather()` instead.</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

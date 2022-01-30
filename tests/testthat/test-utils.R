@@ -57,18 +57,11 @@ test_that("collapse_cat works", {
 })
 
 
-test_that("check_01_binary throws warnings/error", {
+test_that("is_binary works", {
   # allowed
-  expect_invisible(check_01_binary(c(0, 1, NA)))
-  expect_invisible(check_01_binary(c(TRUE, TRUE, FALSE)))
-  # not allowed
+  expect_true(is_binary(c(0, 1, NA)))
+  expect_true(is_binary(c(TRUE, TRUE, FALSE)))
   # not 2 integers
-  expect_warning(check_01_binary(c(1, NA)))
-  expect_warning(check_01_binary(c(0, NA)))
-  expect_warning(check_01_binary(c(1, NA)))
-  # not integers
-  expect_warning(check_01_binary(runif(10)))
-  expect_warning(check_01_binary(as.Date("2020-01-01") + 1:10))
-  # no
-  expect_error(check_01_binary("a"))
+  expect_false(is_binary(c(1:3)))
+  expect_false(is_binary(letters))
 })

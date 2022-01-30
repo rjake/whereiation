@@ -37,7 +37,7 @@ plot_group_split(
 \item{...}{
   Arguments passed on to \code{\link[=refactor_columns]{refactor_columns}}
   \describe{
-    \item{\code{id}}{field to use as ID}
+    \item{\code{id_col}}{field to use as ID}
     \item{\code{collapse_by}}{should \code{n_cat} collapse by the distance to the grand
 mean \code{"dv"} leaving the extremes as is and grouping factors closer to the
 grand mean as "other" or should it use size \code{"n"}}

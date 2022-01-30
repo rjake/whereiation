@@ -8,7 +8,7 @@ refactor_columns(
   df,
   dv,
   split_on = NA_character_,
-  id = NULL,
+  id_col = NULL,
   n_cat = 10,
   collapse_by = c("dv", "n"),
   n_quantile = 10,
@@ -24,7 +24,7 @@ refactor_columns(
 
 \item{split_on}{variable to split data / group by}
 
-\item{id}{field to use as ID}
+\item{id_col}{field to use as ID}
 
 \item{n_cat}{for categorical variables, the max number of unique values
 to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.}

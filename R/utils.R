@@ -68,63 +68,15 @@ collapse_cat <- function(x,
 }
 
 
-#' Test that x is a 0/1 binary variable
-#' @param x vector
-#' @importFrom glue glue
-#'
-#' @noRd
-check_01_binary <- function(x) {
-  if (!typeof(x) %in% c("integer", "double", "logical")) {
-    stop(
-      "the 'dv' specified is not binary (0/1) or logical",
-      call. = FALSE
-    )
-  }
-
-  eval_x <- as.numeric(unique(x[!is.na(x)]))
-  is_binary <- all(range(eval_x) == c(0, 1))
-
-  if (!is_binary) {
-    rng <-
-      range(eval_x, na.rm = TRUE) %>%
-      paste(collapse = " to ")
-
-    warning(
-      glue(
-        "Expected 'dv' to be a binary field 0/1 or TRUE/FALSE \\
-        and data has values {rng}.
-        The result may not be meaningful."
-      ),
-      call. = FALSE
-    )
-  }
-}
-
 #' Test that x is binary variable
 #' @param x vector
 #' @importFrom stringr str_trunc
 #' @importFrom glue glue
 #' @noRd
-check_binary <- function(x) {
-  unique_vals <- sort(unique(x[!is.na(x)]))
-  is_binary <- length(unique_vals) == 2
-
-  ex_inputs <-
-    paste0(unique_vals, collapse = ", ") %>%
-    str_trunc(80)
-
-  if (!is_binary) {
-    stop(
-      glue(
-        'Expecting a binary result.
-        Found: {ex_inputs}
-        Use a field with only two values or \\
-        a logical test.
-        Ex. \'date_field < "2020-01-01"\''
-      ),
-      call. = FALSE
-    )
-  }
+is_binary <- function(x) {
+ all(
+   unique(na.omit(x)) %in% c(0, 1)
+ )
 }
 
 
@@ -136,7 +88,7 @@ extract_field_name <- function(x) {
     gsub(pattern = "\\(", replacement = "")
 }
 
-
+#' used for reordering plot axes with factors
 #' @importFrom stringr str_remove_all
 #' @noRd
 #' @examples

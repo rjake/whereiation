@@ -188,7 +188,13 @@ map_over_under_split <- function(df,
     )
 
   # give warning if dv isn't 0/1 or T/F
-  check_binary(refactor_df$y_split)
+  if (n_distinct(refactor_df$y_split, na.rm = TRUE) > 2) {
+    stop(
+      "Expecting a binary split_on varaible. Use a field with only two values",
+      'or a logical test. Ex. \'date_field < "2020-01-01"\'',
+      call. = FALSE
+    )
+  }
 
   names(refactor_df)[4:length(refactor_df)] %>%
     map_dfr(summarize_over_under_split, df = refactor_df, type = type, n_cat = n_cat, base_group = base_group) %>%

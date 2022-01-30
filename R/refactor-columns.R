@@ -3,7 +3,7 @@
 #' @param df dataframe to evaluate
 #' @param dv dependent variable to use (column name)
 #' @param split_on variable to split data / group by
-#' @param id field to use as ID
+#' @param id_col field to use as ID
 #' @param n_cat for categorical variables, the max number of unique values
 #' to keep. This field feeds the \code{forcats::fct_lump(n = )} argument.
 #' @param collapse_by should \code{n_cat} collapse by the distance to the grand
@@ -31,7 +31,7 @@
 refactor_columns <- function(df,
                              dv,
                              split_on = NA_character_,
-                             id = NULL,
+                             id_col = NULL,
                              n_cat = 10,
                              collapse_by = c("dv", "n"),
                              n_quantile = 10,
@@ -53,24 +53,24 @@ refactor_columns <- function(df,
   }
 
   # add ID
-  if (missing(id)) {
+  if (missing(id_col)) {
     df$unique_id <- seq_len(nrow(df))
   } else {
     not_unique <-
       df %>%
-      pull({{id}}) %>%
+      pull({{id_col}}) %>%
       duplicated()
 
     if (any(not_unique)) {
       stop(
         glue(
           "the id field '{field}' is not unique",
-          field = deparse(substitute(id))
+          field = deparse(substitute(id_col))
         )
       )
     }
     if (!"unique_id" %in% names(df)) {
-      df <- df %>% rename(unique_id = {{id}})
+      df <- df %>% rename(unique_id = {{id_col}})
     }
   }
 

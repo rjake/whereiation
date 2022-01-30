@@ -53,14 +53,14 @@ test_that("plot_spread_single_obs works", {
   p2 <- plot_spread_single_obs(df = iris, dv = Petal.Length, labels = TRUE)
   actual_dim_p1 <- dim(p1$data)
   actual_dim_p2 <- dim(p2$data)
-  expected_dim <- c(28, 10)
+  expected_dim <- c(28, 11)
   expect_equal(actual_dim_p1, actual_dim_p2, expected_dim)
 
   actual_layers_p1 <- length(p1$layers)
-  expected_layers_p1 <- 6
+  expected_layers_p1 <- 4
   expect_equal(actual_layers_p1, expected_layers_p1)
 
   actual_layers_p2 <- length(p2$layers)
-  expected_layers_p2 <- 7
+  expected_layers_p2 <- expected_layers_p1 + 1
   expect_equal(actual_layers_p2, expected_layers_p2)
 })

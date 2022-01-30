@@ -80,15 +80,15 @@ plot_spread <- function(df,
 #' @inheritParams refactor_columns
 #'
 #' @importFrom dplyr filter select
-#' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs
-#' @importFrom ggrepel geom_label_repel
+#' @importFrom ggplot2 ggplot geom_vline aes geom_segment geom_point labs geom_text
 #' @importFrom rlang .data
 #'
 #' @export
 #' @describeIn plot_spread highlight a single observation
 #'
 #' @examples
-#' plot_spread_single_obs(ggplot2::mpg, dv = hwy)
+#' plot_spread_single_obs(df = employee_attrition[,1:5], dv = attrition)
+#' plot_spread_single_obs(df = employee_attrition[,1:5], dv = attrition, labels = TRUE)
 plot_spread_single_obs <- function(df,
                                    dv,
                                    ...,
@@ -102,37 +102,24 @@ plot_spread_single_obs <- function(df,
   avg <- eval(parse(text = avg_name))
 
   compare_values <-
-    generate_estimate_details(
+    isolate_record(
       df = df,
       dv = {{dv}},
       avg_type = avg_name,
+      id = id,
       ...
     )
 
-  get_id <- id
-
   one_obs_profile <-
     compare_values %>%
-    filter(.data$unique_id == get_id) %>%
     select(
       .data$field, .data$value, .data$field_wt,
-      .data$factor_avg, #.data$group_dist,
-      .data$factor_avg_wt,
-      .data$estimate
+      .data$factor_avg
     ) %>%
     mutate(label = "")
 
-
-  obs_estimate <- one_obs_profile$estimate[1]
-
   plot_orig <-
     plot_spread(df = df, dv = {{dv}}, ...) +
-    geom_vline(xintercept = obs_estimate, size = 1, alpha = .5) +
-    geom_segment(
-      data = one_obs_profile, xend = obs_estimate,
-      aes(yend = .data$field, size = .data$field_wt*10, alpha = .data$field_wt*10),
-      color = "black", show.legend = FALSE
-    ) +
     geom_point(
       data = one_obs_profile,
       color = "black", size = 5, shape = 21, stroke = 2
@@ -144,12 +131,10 @@ plot_spread_single_obs <- function(df,
   if (labels == TRUE) {
     plot_orig <-
       plot_orig +
-      geom_label_repel(
-        data = one_obs_profile, size = 4,
-        aes(label = paste0(.data$field, ": ", .data$value)),
-        color = "black",
-        segment.color = NA,
-        hjust = -0.15
+      geom_text(
+        data = one_obs_profile, size = 2.5,
+        aes(label = .data$value),
+        vjust = 2.5, color = "black"
       )
   }
 
