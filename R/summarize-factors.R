@@ -21,22 +21,20 @@
 #' @examples
 #' summarize_factors_all_fields(iris, dv = Sepal.Length)
 #'
-#' # Can also return a list object
-#' summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
+#' # similar to other functions, you can see the attributes
+#' summarize_factors_all_fields(iris, dv = Sepal.Length) %>% attr("about")
 summarize_factors_all_fields <- function(df,
-                         ...,
-                         avg_type = c("mean", "median"),
                          return = c("data", "list")
-                         ) {
+                                         ...
+                                         ) {
   base_data <-
     refactor_columns(df, ...) %>%
     filter(!is.na(.data$y_outcome))
 
   # get average method to use for of DV
-  avg_name <- match.arg(avg_type)
-
-  avg <- eval(parse(text = avg_name))
-  grand_avg <- avg(base_data$y_outcome)
+  attr_about <- attributes(base_data)$about
+  avg_name <- attr_about$avg_type
+  avg <- attr_about$avg_fn
 
   # find fields to use
   get_vars <-
@@ -56,33 +54,22 @@ summarize_factors_all_fields <- function(df,
     factor_stats %>%
     filter(!is.na(.data$value)) %>%
     left_join(field_stats, by = "field") %>%
-    mutate(
-      grand_avg = grand_avg
-    ) %>%
+    mutate(grand_avg = attr_about$grand_avg) %>%
     group_by(.data$field) %>%
     filter(max(row_number()) > 1) %>%
     ungroup() %>%
     mutate(
-      field_wt = abs(.data$field_r_sq_adj),
-      field = fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
+      field = fct_reorder(
+        .f = .data$field,
+        .x = abs(.data$field_r_sq_adj),
+        .fun = max,
+        .desc = TRUE
+      )
     )
 
-  # return the either a dataframe or a list
-  x_is <- match.arg(return)
+  attributes(agg_data)$about <- attr_about
 
-  if (x_is == "data") {
-    x <- agg_data
-  } else {
-    x <-
-      list(
-        data = agg_data,
-        field_stats = field_stats,
-        factor_stats = factor_stats,
-        grand_avg = grand_avg
-      )
-  }
-
-  x
+  agg_data
 }
 
 
