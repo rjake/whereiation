@@ -17,29 +17,19 @@ test_that("summarize_factors_all_fields works", {
   df <- summarize_factors_all_fields(iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
-  expected_dim <- c(28, 9)
+  expected_dim <- c(28, 8)
   expect_equal(actual_dim, expected_dim)
 
-  actual_names <- names(df)
-  expected_names <-
-    c("field", "value", "factor_avg",
-      "n",
-      "field_r_sq", "field_r_sq_adj", "field_p_value",
-      "grand_avg", "field_wt"
-    )
-
-  expect_equal(actual_names, expected_names)
 })
 
 
-test_that("summarize_factors_all_fields returns list", {
+test_that("summarize_factors_all_fields returns attributes", {
   x <-
     summarize_factors_all_fields(
       iris,
-      dv = Petal.Length,
-      return = "list"
+      dv = Petal.Length
     )
 
-  expect_true(is.list(x))
+  expect_true(!is.null(attr(x, "about")))
 })
 

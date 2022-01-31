@@ -39,3 +39,8 @@ test_that("refactor_columns uses weights correctly", {
     expected = c("Other (12)", "dodge", "toyota", "volkswagen")
   )
 })
+
+test_that("attributes added", {
+  x <- refactor_columns(df = employee_attrition[,1:5], dv = attrition)
+  expect_true(!is.null(attr(x, "about")))
+})

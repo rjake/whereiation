@@ -2,7 +2,7 @@ test_that("plot_spread works", {
   p <- plot_spread(iris, dv = Petal.Length)
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(28, 10)
+  expected_dim <- c(28, 9)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)
