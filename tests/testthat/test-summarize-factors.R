@@ -17,7 +17,7 @@ test_that("summarize_factors_all_fields works", {
   df <- summarize_factors_all_fields(iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
-  expected_dim <- c(28, 10)
+  expected_dim <- c(28, 9)
   expect_equal(actual_dim, expected_dim)
 
   actual_names <- names(df)
@@ -25,7 +25,8 @@ test_that("summarize_factors_all_fields works", {
     c("field", "value", "factor_avg",
       "n",
       "field_r_sq", "field_r_sq_adj", "field_p_value",
-      "rescale_factor_avg", "grand_avg", "field_wt")
+      "grand_avg", "field_wt"
+    )
 
   expect_equal(actual_names, expected_names)
 })

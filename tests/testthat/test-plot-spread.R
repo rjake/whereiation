@@ -2,7 +2,7 @@ test_that("plot_spread works", {
   p <- plot_spread(iris, dv = Petal.Length)
 
   actual_dim <- dim(p$data)
-  expected_dim <- c(28, 11)
+  expected_dim <- c(28, 10)
   expect_equal(actual_dim, expected_dim)
 
   actual_layers <- length(p$layers)
@@ -64,3 +64,4 @@ test_that("plot_spread_single_obs works", {
   expected_layers_p2 <- expected_layers_p1 + 1
   expect_equal(actual_layers_p2, expected_layers_p2)
 })
+
