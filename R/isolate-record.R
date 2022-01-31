@@ -1,7 +1,7 @@
 #' Generate stats for one observation at the factor level
 #'
-#' The dataset returned will be the length of the # of columns x # of rows
-#' @param train_data training dataset generated from summarize_factors
+#' One observation will be returned long-wise with factor/field stats
+#' @param isolate_id the unique ID of the row to return
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
 #'
@@ -14,14 +14,19 @@
 #' @noRd
 #' @examples
 #' isolate_record(df = iris, dv = Sepal.Length)
-isolate_record <- function(df, dv, id = 1,...) {
+isolate_record <- function(df, dv, isolate_id = 1, ...) {
 
   base_data <- refactor_columns(df, dv = {{dv}}, ...)
   group_stats <- summarize_factors_all_fields(df, dv = {{dv}}, ...)
 
-  base_data %>%
-    filter(.data$unique_id == id) %>%
+  final_df <-
+    base_data %>%
+    filter(.data$unique_id == isolate_id) %>%
     gather(key = "field", value = "value", -c(1, 2, 3)) %>%
     mutate(value = as.character(.data$value)) %>%
     left_join(group_stats, by = c("field", "value"))
+
+  attributes(final_df)$about <- attributes(base_data)$about
+
+  final_df
 }

@@ -4,12 +4,7 @@
 \alias{summarize_factors_all_fields}
 \title{Calculate the importance of ALL factors in a ALL fields}
 \usage{
-summarize_factors_all_fields(
-  df,
-  ...,
-  avg_type = c("mean", "median"),
-  return = c("data", "list")
-)
+summarize_factors_all_fields(df, ...)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -30,24 +25,23 @@ to split the data into a factor. Fields that have less than this amount
 will not be changed.}
     \item{\code{n_digits}}{for numeric fields, the number of digits to keep in the breaks
 ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
+    \item{\code{avg_type}}{mean or median}
     \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
   }}
-
-\item{avg_type}{mean or median}
-
-\item{return}{option to return a dataframe when TRUE and a list when FALSE.
-The list option includes the original min/max of the data and the
-grand average.}
 }
 \description{
 Pivots data and summarizes factor frequencies by field and generates stats
 used for plotting
 }
+\details{
+The list option includes the original min/max of the data and the
+grand average.
+}
 \examples{
 summarize_factors_all_fields(iris, dv = Sepal.Length)
 
-# Can also return a list object
-summarize_factors_all_fields(iris, dv = Sepal.Length, return = "list")
+# similar to other functions, you can see the attributes
+summarize_factors_all_fields(iris, dv = Sepal.Length) \%>\% attr("about")
 }

@@ -32,10 +32,7 @@ plot_deltas <- function(df,
                         ...,
                         trunc_length = 100,
                         return_data = FALSE,
-                        n_field = 9,
-                        avg_type = c("mean", "median")) {
-  avg_name <- match.arg(avg_type)
-  dv_name <- deparse(substitute(dv))
+                        n_field = 9) {
 
   factor_stats <-
     summarize_factors_all_fields(
@@ -44,13 +41,15 @@ plot_deltas <- function(df,
       ...
     )
 
+  attr_about <- attributes(factor_stats)$about
+  avg_name <- attr_about$avg_type
+  avg <- attr_about$avg_fn
+
+  dv_name <- deparse(substitute(dv))
+
   # prep plots/facets
   plot_data <-
     factor_stats %>%
-    mutate(
-      field =
-        fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
-    ) %>%
     reorder_within_field(
       sort_cols = .data$factor_avg,
       trunc_length = trunc_length

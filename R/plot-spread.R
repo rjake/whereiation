@@ -13,12 +13,8 @@
 #' plot_spread(ggplot2::mpg, dv = hwy)
 plot_spread <- function(df,
                         dv,
-                        ...,
-                        avg_type = c("mean", "median")
+                        ...
                         ) {
-  avg_name <- match.arg(avg_type)
-  dv_name <- deparse(substitute(dv))
-
   factor_stats <-
     summarize_factors_all_fields(
       df = df,
@@ -26,7 +22,11 @@ plot_spread <- function(df,
       ...
     )
 
-  grand_avg <- factor_stats$grand_avg[1]
+  attr_about <- attributes(factor_stats)$about
+  avg_name <- attr_about$avg_type
+  grand_avg <- attr_about$grand_avg
+
+  dv_name <- deparse(substitute(dv))
 
   group_value_ranks <-
     factor_stats %>%
@@ -74,7 +74,8 @@ plot_spread <- function(df,
 #' Visualize variation and logic for a single observation
 #'
 #' @param labels when TRUE will show the labels of the factor levels outlined in the plot
-#' @param id is id (row number) from \code{base_data()} to use
+#' @param isolate_id the unique id from the field specified in
+#' \code{unique_id} or the row number when \code{unique_id} is unspecified
 #'
 #' @inheritDotParams refactor_columns
 #' @inheritParams refactor_columns
@@ -92,30 +93,26 @@ plot_spread <- function(df,
 plot_spread_single_obs <- function(df,
                                    dv,
                                    ...,
-                                   avg_type = c("mean", "median"),
                                    labels = FALSE,
-                                   id = 1) {
-
-  avg_name <- match.arg(avg_type)
-  dv_name <- deparse(substitute(dv))
-
-  avg <- eval(parse(text = avg_name))
+                                   isolate_id = 1) {
 
   compare_values <-
     isolate_record(
       df = df,
       dv = {{dv}},
-      avg_type = avg_name,
-      id = id,
+      isolate_id = isolate_id,
       ...
     )
 
+  attr_about <- attributes(compare_values)$about
+  avg_name <- attr_about$avg_type
+  avg <- attr_about$avg_fn
+
+  dv_name <- deparse(substitute(dv))
+
   one_obs_profile <-
     compare_values %>%
-    select(
-      .data$field, .data$value, .data$field_wt,
-      .data$factor_avg
-    ) %>%
+    select(.data$field, .data$value, .data$factor_avg) %>%
     mutate(label = "")
 
   plot_orig <-

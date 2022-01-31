@@ -1,4 +1,4 @@
-#' Convert all fields to factors (same method as under plots)
+#' Convert all fields to factors
 #'
 #' @param df dataframe to evaluate
 #' @param dv dependent variable to use (column name)
@@ -78,7 +78,6 @@ refactor_columns <- function(df,
     df <- select(df, -c(!!enquo(ignore_cols)))
   }
 
-
   # create standard cols
   keep_cols <-
     as_tibble(df) %>%
@@ -113,8 +112,23 @@ refactor_columns <- function(df,
     mutate_if(is.character, collapse_cat, n = n_cat, w = wt)
 
 
-  keep_cols %>%
+  final_df <-
+    keep_cols %>%
     select(1:3) %>%
     bind_cols(clean_cols) %>%
     mutate_if(is.logical, as.integer)
+
+  # return df with attributes
+  structure(
+    final_df,
+    about = list(
+      avg_type = avg_name,
+      avg_fn = avg,
+      dv = deparse(substitute(dv)),
+      dv_binary = is_binary(final_df$y_outcome),
+      grand_avg = avg(final_df$y_outcome),
+      field_types = sapply(final_df, class)
+    )
+  )
 }
+

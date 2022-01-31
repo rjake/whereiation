@@ -4,15 +4,7 @@
 \alias{plot_deltas}
 \title{Visualize difference from avg. by factor (lollipop)}
 \usage{
-plot_deltas(
-  df,
-  dv,
-  ...,
-  trunc_length = 100,
-  return_data = FALSE,
-  n_field = 9,
-  avg_type = c("mean", "median")
-)
+plot_deltas(df, dv, ..., trunc_length = 100, return_data = FALSE, n_field = 9)
 }
 \arguments{
 \item{df}{dataframe to evaluate}
@@ -34,6 +26,7 @@ to split the data into a factor. Fields that have less than this amount
 will not be changed.}
     \item{\code{n_digits}}{for numeric fields, the number of digits to keep in the breaks
 ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
+    \item{\code{avg_type}}{mean or median}
     \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
@@ -44,8 +37,6 @@ a large proportion of null values}
 \item{return_data}{When TRUE will return data frame instead of a plot.}
 
 \item{n_field}{How many fields/facets should the plot return.}
-
-\item{avg_type}{mean or median}
 }
 \description{
 Visualize difference from avg. by factor (lollipop)
