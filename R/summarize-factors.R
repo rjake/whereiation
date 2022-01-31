@@ -3,7 +3,6 @@
 #' Pivots data and summarizes factor frequencies by field and generates stats
 #' used for plotting
 #'
-#' @param return option to return a dataframe when TRUE and a list when FALSE.
 #' The list option includes the original min/max of the data and the
 #' grand average.
 #'
@@ -24,7 +23,6 @@
 #' # similar to other functions, you can see the attributes
 #' summarize_factors_all_fields(iris, dv = Sepal.Length) %>% attr("about")
 summarize_factors_all_fields <- function(df,
-                         return = c("data", "list")
                                          ...
                                          ) {
   base_data <-
