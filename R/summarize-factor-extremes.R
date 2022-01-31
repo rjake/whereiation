@@ -14,8 +14,6 @@ summarize_factor_extremes <- function(...) {
 
   prep_df <- summarize_factors_all_fields(...)
 
-  grand_avg <- prep_df$grand_avg[1]
-
   factor_stats <-
     prep_df %>%
     group_by(.data$field) %>%
