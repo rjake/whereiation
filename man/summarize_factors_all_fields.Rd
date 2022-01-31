@@ -40,8 +40,8 @@ The list option includes the original min/max of the data and the
 grand average.
 }
 \examples{
-summarize_factors_all_fields(iris, dv = Sepal.Length)
+summarize_factors_all_fields(df = iris, dv = Sepal.Length)
 
 # similar to other functions, you can see the attributes
-summarize_factors_all_fields(iris, dv = Sepal.Length) \%>\% attr("about")
+summarize_factors_all_fields(df = iris, dv = Sepal.Length) \%>\% attr("about")
 }
