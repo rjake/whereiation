@@ -127,7 +127,7 @@ refactor_columns <- function(df,
       dv = deparse(substitute(dv)),
       dv_binary = is_binary(final_df$y_outcome),
       grand_avg = avg(final_df$y_outcome),
-      field_types = sapply(final_df, class)
+      field_types = sapply(df, class)
     )
   )
 }
