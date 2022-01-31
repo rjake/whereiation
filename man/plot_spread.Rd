@@ -6,16 +6,9 @@
 \alias{plot_spread_interactive}
 \title{Visualize spread of avg. values among all factors for all variables}
 \usage{
-plot_spread(df, dv, ..., avg_type = c("mean", "median"))
+plot_spread(df, dv, ...)
 
-plot_spread_single_obs(
-  df,
-  dv,
-  ...,
-  avg_type = c("mean", "median"),
-  labels = FALSE,
-  id = 1
-)
+plot_spread_single_obs(df, dv, ..., labels = FALSE, isolate_id = 1)
 
 plot_spread_interactive(...)
 }
@@ -39,16 +32,16 @@ to split the data into a factor. Fields that have less than this amount
 will not be changed.}
     \item{\code{n_digits}}{for numeric fields, the number of digits to keep in the breaks
 ex: [1.2345 to 2.3456] will be [1.23 to 2.34] if \code{n_digits = 2}}
+    \item{\code{avg_type}}{mean or median}
     \item{\code{ignore_cols}}{columns to ignore from analysis. Good candidates are
 fields that have have no duplicate values (primary keys) or fields with
 a large proportion of null values}
   }}
 
-\item{avg_type}{mean or median}
-
 \item{labels}{when TRUE will show the labels of the factor levels outlined in the plot}
 
-\item{id}{is id (row number) from \code{base_data()} to use}
+\item{isolate_id}{the unique id from the field specified in
+\code{unique_id} or the row number when \code{unique_id} is unspecified}
 }
 \description{
 Visualize spread of avg. values among all factors for all variables
