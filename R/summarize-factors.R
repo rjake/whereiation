@@ -14,7 +14,6 @@
 #' @importFrom broom glance
 #' @importFrom purrr map_dfr
 #' @importFrom forcats fct_reorder
-#' @importFrom scales rescale_mid
 #' @importFrom stats quantile
 #' @importFrom rlang .data
 #'
@@ -39,14 +38,6 @@ summarize_factors_all_fields <- function(df,
   avg <- eval(parse(text = avg_name))
   grand_avg <- avg(base_data$y_outcome)
 
-  # range of original DV
-  orig_min <- quantile(base_data$y_outcome, 0.02)
-  orig_max <- quantile(base_data$y_outcome, 0.98)
-
-  if (orig_min == orig_max && orig_min == 0) {
-    orig_max <- max(base_data$y_outcome)
-  }
-
   # find fields to use
   get_vars <-
     base_data %>%
@@ -66,11 +57,6 @@ summarize_factors_all_fields <- function(df,
     filter(!is.na(.data$value)) %>%
     left_join(field_stats, by = "field") %>%
     mutate(
-      rescale_factor_avg = rescale_mid(
-        x = .data$factor_avg,
-        to = c(orig_min, orig_max),
-        mid = grand_avg
-      ),
       grand_avg = grand_avg
     ) %>%
     group_by(.data$field) %>%
@@ -92,9 +78,7 @@ summarize_factors_all_fields <- function(df,
         data = agg_data,
         field_stats = field_stats,
         factor_stats = factor_stats,
-        grand_avg = grand_avg,
-        orig_min = orig_min,
-        orig_max = orig_max
+        grand_avg = grand_avg
       )
   }
 

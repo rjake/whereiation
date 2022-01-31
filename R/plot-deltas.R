@@ -47,7 +47,6 @@ plot_deltas <- function(df,
   # prep plots/facets
   plot_data <-
     factor_stats %>%
-    select(-.data$rescale_factor_avg) %>%
     mutate(
       field =
         fct_reorder(.data$field, .data$field_wt, .fun = max, .desc = TRUE)
