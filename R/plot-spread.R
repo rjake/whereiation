@@ -32,13 +32,19 @@ plot_spread <- function(df,
     factor_stats %>%
     # left_join(field_ranks) %>%
     mutate(
-      field = fct_reorder(.data$field, .data$field_r_sq_adj, .fun = max),
+      field = fct_rev(.data$field),
       label = paste0(
         toupper(.data$value),
         "\n----------------------------",
         "\n", avg_name, ": ", round(.data$factor_avg, 3),
         "\nN: ", .data$n,
-        "\nAdj. R2: ", round(.data$field_r_sq_adj, 3)
+        "\n----------------------------",
+        "\nField p-value ",
+        ifelse(
+          test = .data$field_p_value > 0.001,
+          yes = .data$field_p_value,
+          no = format(.data$field_p_value, scientific = TRUE)
+        )
       )
     )
 
@@ -54,19 +60,24 @@ plot_spread <- function(df,
     geom_vline(
       xintercept = grand_avg, color = "grey60", size = 1, linetype = "dotted"
     ) +
-    geom_line(size = 6, alpha = 0.2, lineend = "round") +
+    geom_line(size = 1, alpha = 0.2, lineend = "round") +
     geom_point(
       aes(size = .data$n),
       shape = 21, color = "black", stroke = 0.5
     ) +
     guides(color = FALSE, fill = FALSE) +
-    theme(panel.background = element_rect(fill = "white", color = "grey60")) +
+    theme(
+      panel.background = element_rect(fill = "white", color = "grey60"),
+      plot.title.position = "plot",
+      plot.caption.position = "plot"
+    ) +
     labs(
       title = paste0(dv_name, " across all factors of all fields"),
-      subtitle = paste0("each point represents a factor in the field along the y axis, factors with 5 or fewer observations have been excluded \nthe dotted line is the grand ", avg_name, " across all observations"),
-      y = "Field ranked by adjusted r-squared",
-      x = paste0("group ", avg_name, " of the dependent variable for each factor"),
-      size = "# of \n observations"
+      subtitle = paste0("each point represents a factor in the field along the y axis, factors with 5 or fewer observations \nhave been excluded the dotted line is the grand ", avg_name, " across all observations"),
+      y = "ranked by p-value*",
+      x = paste(avg_name, "values by group"),
+      size = "# of \n observations",
+      caption = paste("* ranked using", factor_stats$method[1])
     )
 }
 
@@ -143,10 +154,23 @@ plot_spread_single_obs <- function(df,
 #' @export
 #' @inheritDotParams refactor_columns
 #' @describeIn plot_spread utilizing ggplotly
-#' @importFrom plotly ggplotly
+#' @importFrom plotly ggplotly hide_legend layout
 #' @examples
 #' plot_spread_interactive(ggplot2::mpg, dv = hwy)
 plot_spread_interactive <- function(...) {
   p <- plot_spread(...)
-  ggplotly(p, tooltip = c("label"))
+
+  ggplotly(p, tooltip = c("label")) %>%
+    hide_legend() %>%
+    layout(
+      margin = list(b = 100, t = 50),
+      annotations =
+        list(
+          text = paste("* ranked using", p$data$method[1]),
+          x = 1, y = -0.4,
+          xref = "paper", yref = "paper",
+          showarrow = FALSE,
+          font = list(size = 10)
+        )
+    )
 }
