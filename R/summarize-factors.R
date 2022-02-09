@@ -129,7 +129,8 @@ summarize_one_field <- function(var, df) {
     stats_df <-
       df %>%
       select(value = var, .data$y_outcome) %>%
-      kruskal_test(y_outcome ~ value)
+      kruskal_test(y_outcome ~ value) %>%
+      mutate(method = paste(.data$method, "test"))
   }
 
   stats_df %>%
