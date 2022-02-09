@@ -4,6 +4,7 @@
 #'
 #' @export
 #'
+#' @importFrom rlang inform
 #' @importFrom dplyr group_by arrange slice mutate row_number ungroup desc select
 #' @importFrom tidyr pivot_wider
 #'
@@ -13,6 +14,12 @@ summarize_factor_extremes <- function(...) {
   # prep_df <- summarize_factors_all_fields(df = mpg, dv = hwy)
 
   prep_df <- summarize_factors_all_fields(...)
+
+  inform(
+    paste(
+      "exploring:", attr(prep_df, "about")$dv,
+      "\np-values from", prep_df$method[1])
+  )
 
   factor_stats <-
     prep_df %>%
@@ -36,10 +43,15 @@ summarize_factor_extremes <- function(...) {
     ) %>%
     select(
       .data$p_value,
-      .data$n_low, .data$value_low, .data$avg_low,
       .data$field,
-      .data$avg_high, .data$value_high, .data$n_high
-    )
-  # mention method?
-}
 
+      lowest_avg = .data$avg_low,
+      highest_avg = .data$avg_high,
+
+      lowest_factor = .data$value_low,
+      lowest_n = .data$n_low,
+
+      highest_factor = .data$value_high,
+      highest_n = .data$n_high
+    )
+}
