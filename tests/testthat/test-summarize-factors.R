@@ -17,7 +17,7 @@ test_that("summarize_factors_all_fields works", {
   df <- summarize_factors_all_fields(iris, dv = Petal.Length)
 
   actual_dim <- dim(df)
-  expected_dim <- c(28, 8)
+  expected_dim <- c(28, 9)
   expect_equal(actual_dim, expected_dim)
 
 })

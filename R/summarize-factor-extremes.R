@@ -21,12 +21,11 @@ summarize_factor_extremes <- function(...) {
     slice(c(1, n())) %>%
     mutate(position = ifelse(row_number() == 1, "low", "high")) %>%
     ungroup() %>%
-    arrange(desc(abs(.data$field_r_sq_adj))) %>%
+    arrange(.data$field_p_value) %>%
     #mutate(rank = row_number()) %>%
     select(
       .data$field, .data$value, .data$n, .data$position,
       avg = .data$factor_avg,
-      adj_r_sq = .data$field_r_sq_adj,
       p_value = .data$field_p_value
     )
 
@@ -36,10 +35,11 @@ summarize_factor_extremes <- function(...) {
       values_from = c(.data$value, .data$avg, .data$n)
     ) %>%
     select(
-      .data$adj_r_sq, .data$p_value,
+      .data$p_value,
       .data$n_low, .data$value_low, .data$avg_low,
       .data$field,
       .data$avg_high, .data$value_high, .data$n_high
     )
+  # mention method?
 }
 

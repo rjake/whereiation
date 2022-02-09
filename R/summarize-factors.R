@@ -18,10 +18,10 @@
 #'
 #' @export
 #' @examples
-#' summarize_factors_all_fields(iris, dv = Sepal.Length)
+#' summarize_factors_all_fields(df = iris, dv = Sepal.Length)
 #'
 #' # similar to other functions, you can see the attributes
-#' summarize_factors_all_fields(iris, dv = Sepal.Length) %>% attr("about")
+#' summarize_factors_all_fields(df = iris, dv = Sepal.Length) %>% attr("about")
 summarize_factors_all_fields <- function(df,
                                          ...
                                          ) {
@@ -37,7 +37,7 @@ summarize_factors_all_fields <- function(df,
   # find fields to use
   get_vars <-
     base_data %>%
-    select(-c(1:2)) %>%
+    select(-c(1:3)) %>%
     select_if(function(x) n_distinct(x) > 1) %>%
     names()
 
@@ -59,9 +59,8 @@ summarize_factors_all_fields <- function(df,
     mutate(
       field = fct_reorder(
         .f = .data$field,
-        .x = abs(.data$field_r_sq_adj),
-        .fun = max,
-        .desc = TRUE
+        .x = abs(.data$field_p_value),
+        .fun = min
       )
     )
 
@@ -81,11 +80,11 @@ summarize_factors_all_fields <- function(df,
 #'
 #' @noRd
 #' @examples
-#' # summarize_factors_one_field(
-#' #   var = "Sepal.Length",
-#' #   df = refactor_columns(iris, dv = Sepal.Width),
-#' #   avg_fn = mean
-#' # )
+#' summarize_factors_one_field(
+#'   var = "Sepal.Length",
+#'   df = refactor_columns(df = iris, dv = Sepal.Width),
+#'   avg_fn = mean
+#' )
 summarize_factors_one_field <- function(var, df, avg_fn) {
   df %>%
     select(value = var, .data$y_outcome) %>%
@@ -107,22 +106,39 @@ summarize_factors_one_field <- function(var, df, avg_fn) {
 #' @param var variable/field to group by
 #' @param df refactored data
 #'
-#' @importFrom dplyr select do mutate
-#' @importFrom broom glance
-#' @importFrom stats lm
+#' @importFrom dplyr select summarise transmute
+#' @importFrom rstatix chisq_test kruskal_test
+#' @importFrom tidyr unnest
 #'
 #' @noRd
 #' @examples
-#' # summarize_one_field("Sepal.Length", refactor_columns(iris, Sepal.Width))
+#' summarize_one_field(var = "Sepal.Length", df = refactor_columns(iris, Sepal.Width))
+#' summarize_one_field(var = "Species", df = refactor_columns(iris, Sepal.Width > 3))
 summarize_one_field <- function(var, df) {
-  df %>%
-    select(value = var, .data$y_outcome) %>%
-    do(glance(lm(.data$y_outcome ~ .data$value, data = .data))) %>%
-    mutate(field = var) %>%
-    select(
-      .data$field,
-      field_r_sq = .data$r.squared,
-      field_r_sq_adj = .data$adj.r.squared,
-      field_p_value = .data$p.value
+  # if binary use chi-square test
+  if (is_binary(df$y_outcome)) {
+    stats_df <-
+      df %>%
+      select(value = var, .data$y_outcome) %>%
+      summarise(pval = chisq_test(.data$value, y = .data$y_outcome)) %>%
+      unnest(.data$pval) %>%
+      suppressWarnings()
+
+  } else {
+    # if continuous use kruskal-wallis test
+    stats_df <-
+      df %>%
+      select(value = var, .data$y_outcome) %>%
+      kruskal_test(y_outcome ~ value) %>%
+      mutate(method = paste(.data$method, "test"))
+  }
+
+  stats_df %>%
+    transmute(
+      field = var,
+      field_p_value = .data$p,
+      method = .data$method,
+      statistic = .data$statistic,
+      df = .data$df
     )
 }

@@ -97,11 +97,12 @@ plot_deltas <- function(df,
     labs(
       title = glue("Difference in {avg_name} {dv_name} from grand {avg_name} across all factors of all fields"),
       subtitle = glue(
-        "Each chart shows the different values (factors) within each field and the {avg_name} {dv_name} for each. Charts with the highest \nadjusted R-square start in the top left. Factors with 5 or fewer observations have been excluded and the vertical line \nis the grand {avg_name} across all observations"
+        "Each chart shows the different values (factors) within each field and the {avg_name} {dv_name} for each. Charts with the \nlowest p-value* start in the top left. Factors with 5 or fewer observations have been excluded and the vertical \nline is the grand {avg_name} across all observations"
       ),
       y = NULL,
       x = paste(avg_name, dv_name),
-      size = "# of \n observations"
+      size = "# of \n observations",
+      caption = paste("* ranked using", plot_data$method[1])
     )
 }
 
