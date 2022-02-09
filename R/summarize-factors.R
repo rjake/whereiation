@@ -121,7 +121,7 @@ summarize_one_field <- function(var, df) {
       df %>%
       select(value = var, .data$y_outcome) %>%
       summarise(pval = chisq_test(.data$value, y = .data$y_outcome)) %>%
-      unnest(pval) %>%
+      unnest(.data$pval) %>%
       suppressWarnings()
 
   } else {
